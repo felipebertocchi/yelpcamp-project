@@ -6,6 +6,13 @@
     <h3>
         <%= campground.location %>
     </h3>
+    <img src="<%= campground.imageUrl %>" alt="campground">
+    <h6>
+        $ <%= campground.price %>
+    </h6>
+    <p>
+        <%= campground.description %>
+    </p>
     <footer>
         <a href="/campgrounds" rel="noopener noreferrer">Back</a>
         <a href="/campgrounds/<%= campground.id %>/edit" rel="noopener noreferrer">Edit</a>
