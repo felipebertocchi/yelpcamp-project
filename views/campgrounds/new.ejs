@@ -10,10 +10,28 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="location">Location</label>
-                    <input class="form-control" type="text" name="campground[location]" id="location">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                        <input class="form-control" type="text" name="campground[location]" id="location">
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <label class="form-label" for="price">Price</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
+                        <input class="form-control" type="text" name="campground[price]" id="price" placeholder="0.00">
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <button class="btn btn-primary" type="submit">Add campground</button>
+                    <label class="form-label" for="image">Image URL</label>
+                    <input class="form-control" type="text" name="campground[imageUrl]" id="image">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="description">Description</label>
+                    <textarea class="form-control" type="text" name="campground[description]" id="description" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-success" type="submit">Add campground</button>
                 </div>
             </form>
         </div>
