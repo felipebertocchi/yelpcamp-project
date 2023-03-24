@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const catchAsync = require('./utils/catchAsync');
 const Campground = require('./models/campground');
+const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
@@ -71,8 +72,14 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
     res.redirect('/campgrounds');
 }))
 
+app.all('*', (req, res, next) => {
+    next(new ExpressError('Page Not Found', 404))
+})
+
 app.use((err, req, res, next) => {
-    res.send("Something went wrong!")
+    if (!err.message) err.message = 'Something went wrong'
+    if (!err.statusCode) err.statusCode = 500
+    res.status(err.statusCode).render('error', { err })
 })
 
 app.listen(port, () => {
