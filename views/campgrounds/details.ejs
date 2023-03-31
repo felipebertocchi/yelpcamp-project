@@ -19,6 +19,21 @@
                 </form>
             </div>
         </div>
+        <h3>Leave a review</h3>
+        <form action="/campgrounds/<%= campground.id %>/reviews" class="mb-3" method="POST">
+            <div class="mb-3">
+                <label class="form-label" for="rating">Rating</label>
+                <div>
+                    <i class="bi bi-star-fill" style="color: gold;"> </i><output>3</output> / 5 
+                    <input class="form-range" type="range" min="1" max="5" name="review[rating]" id="rating" oninput="this.previousElementSibling.value = this.value">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="body">Review</label>
+                <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3"></textarea>
+            </div>
+            <button class="btn btn-success" type="submit">Submit review</button>
+        </form>
     </div>
 </div>
 <div class="mb-3">
