@@ -9,6 +9,7 @@ const Review = require('./models/review');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 const validateCampground = require('./middleware/validateCampground');
+const validateReview = require('./middleware/validateReview');
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true,
@@ -62,7 +63,7 @@ app.post('/campgrounds', validateCampground, catchAsync(async (req, res) => {
     res.redirect(`/campgrounds/${campground._id}`);
 }))
 
-app.post('/campgrounds/:id/reviews', catchAsync(async (req, res) => {
+app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
     const review = new Review({ ...req.body.review, campground });
