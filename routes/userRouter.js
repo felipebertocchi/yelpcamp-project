@@ -16,7 +16,7 @@ router.post('/register', catchAsync(async (req, res) => {
         res.redirect('/campgrounds')
     } catch (error) {
         req.flash('error', error.message)
-        res.redirect('/users/register')
+        res.redirect('/register')
     }
 }));
 

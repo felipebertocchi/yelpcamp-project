@@ -63,7 +63,7 @@ app.use((req, res, next) => {
     next();
 })
 
-app.use('/users', userRouter)
+app.use('/', userRouter)
 app.use('/campgrounds', campgroundsRouter)
 app.use('/campgrounds/:id/reviews', reviewsRouter)
 
