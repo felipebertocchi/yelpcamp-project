@@ -11,6 +11,7 @@ const methodOverride = require('method-override');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 
+const userRouter = require('./routes/userRouter');
 const campgroundsRouter = require('./routes/campgroundsRouter');
 const reviewsRouter = require('./routes/reviewsRouter');
 const User = require('./models/user');
@@ -62,6 +63,7 @@ app.use((req, res, next) => {
     next();
 })
 
+app.use('/users', userRouter)
 app.use('/campgrounds', campgroundsRouter)
 app.use('/campgrounds/:id/reviews', reviewsRouter)
 
