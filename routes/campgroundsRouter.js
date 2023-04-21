@@ -3,6 +3,7 @@ const router = express.Router();
 const Campground = require('../models/campground');
 const catchAsync = require('../utils/catchAsync');
 const validateCampground = require('../middleware/validateCampground');
+const authUser = require('../middleware/authUser');
 
 
 router.get('/', catchAsync(async (req, res) => {
@@ -10,7 +11,7 @@ router.get('/', catchAsync(async (req, res) => {
     res.render('campgrounds/index', { campgrounds });
 }))
 
-router.get('/new', (req, res) => {
+router.get('/new', authUser, (req, res) => {
     res.render('campgrounds/new');
 })
 
@@ -24,7 +25,7 @@ router.get('/:id', catchAsync(async (req, res) => {
     res.render('campgrounds/details', { campground });
 }))
 
-router.get('/:id/edit', catchAsync(async (req, res) => {
+router.get('/:id/edit', authUser, catchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
     if (!campground) {
@@ -34,21 +35,21 @@ router.get('/:id/edit', catchAsync(async (req, res) => {
     res.render('campgrounds/edit', { campground });
 }))
 
-router.post('/', validateCampground, catchAsync(async (req, res) => {
+router.post('/', authUser, validateCampground, catchAsync(async (req, res) => {
     const campground = new Campground(req.body.campground);
     await campground.save();
     req.flash('success', 'Succesfully added a new campground');
     res.redirect(`/campgrounds/${campground._id}`);
 }))
 
-router.put('/:id', validateCampground, catchAsync(async (req, res) => {
+router.put('/:id', authUser, validateCampground, catchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
     req.flash('success', 'Succesfully updated campground');
     res.redirect(`/campgrounds/${campground._id}`);
 }))
 
-router.delete('/:id', catchAsync(async (req, res) => {
+router.delete('/:id', authUser, catchAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
     req.flash('success', 'Succesfully deleted campground');
