@@ -18,6 +18,9 @@
                     </div>
                 </form>
             </div>
+            <div class="card-footer">
+                Submitted <%= campground.createdAt %> by <i><%= campground.author.username || "unknown" %></i>
+            </div>
         </div>
     </div>
     <div class="col-4">
