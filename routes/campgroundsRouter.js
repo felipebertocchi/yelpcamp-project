@@ -4,6 +4,9 @@ const Campground = require('../models/campground');
 const catchAsync = require('../utils/catchAsync');
 const validateCampground = require('../middleware/validateCampground');
 const authUser = require('../middleware/authUser');
+const dayjs = require('dayjs');
+const relativeTime = require('dayjs/plugin/relativeTime');
+dayjs.extend(relativeTime);
 
 
 router.get('/', catchAsync(async (req, res) => {
@@ -17,11 +20,12 @@ router.get('/new', authUser, (req, res) => {
 
 router.get('/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
-    const campground = await Campground.findById(id).populate('reviews');
+    const campground = await Campground.findById(id).populate('reviews').populate('author');
     if (!campground) {
         req.flash('error', 'The requested campground was not found');
         res.redirect(`/campgrounds`);
     }
+    campground._doc.createdAt = dayjs(campground.createdAt).fromNow();
     res.render('campgrounds/details', { campground });
 }))
 
