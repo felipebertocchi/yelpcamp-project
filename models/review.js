@@ -7,6 +7,6 @@ const reviewSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Campground"
     }
-})
+}, { timestamps: true })
 
 module.exports = model('Review', reviewSchema);

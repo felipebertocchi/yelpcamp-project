@@ -7,7 +7,7 @@ const UserSchema = new Schema({
         required: true,
         unique: true,
     }
-})
+}, { timestamps: true })
 
 UserSchema.plugin(passportLocalMongoose); // this will add username and password field w/ additional methods
 

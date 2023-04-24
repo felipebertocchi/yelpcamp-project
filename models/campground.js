@@ -13,7 +13,7 @@ const CampgroundSchema = new Schema({
             ref: 'Review'
         }
     ]
-})
+}, { timestamps: true });
 
 CampgroundSchema.post(('findOneAndDelete'), async function (doc) {
     if (doc) {
