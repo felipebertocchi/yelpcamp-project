@@ -36,6 +36,9 @@ router.get('/:id', catchAsync(async (req, res) => {
         res.redirect(`/campgrounds`);
     }
     campground._doc.createdAt = dayjs(campground.createdAt).fromNow();
+    campground._doc.reviews.forEach(review => {
+        review._doc.createdAt = dayjs(review.createdAt).fromNow();
+    });
     res.render('campgrounds/details', { campground });
 }))
 
