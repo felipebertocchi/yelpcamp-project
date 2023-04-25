@@ -4,6 +4,7 @@ const Campground = require('../models/campground');
 const catchAsync = require('../utils/catchAsync');
 const validateCampground = require('../middleware/validateCampground');
 const authUser = require('../middleware/authUser');
+const isCampAuthor = require('../middleware/isCampAuthor');
 const dayjs = require('dayjs');
 const relativeTime = require('dayjs/plugin/relativeTime');
 dayjs.extend(relativeTime);
@@ -42,12 +43,12 @@ router.get('/:id', catchAsync(async (req, res) => {
     res.render('campgrounds/details', { campground });
 }))
 
-router.get('/:id/edit', authUser, catchAsync(async (req, res) => {
+router.get('/:id/edit', authUser, isCampAuthor, catchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
     if (!campground) {
         req.flash('error', 'The requested campground was not found');
-        res.redirect(`/campgrounds`);
+        return res.redirect(`/campgrounds`);
     }
     res.render('campgrounds/edit', { campground });
 }))
@@ -60,14 +61,14 @@ router.post('/', authUser, validateCampground, catchAsync(async (req, res) => {
     res.redirect(`/campgrounds/${campground._id}`);
 }))
 
-router.put('/:id', authUser, validateCampground, catchAsync(async (req, res) => {
+router.put('/:id', authUser, isCampAuthor, validateCampground, catchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
     req.flash('success', 'Succesfully updated campground');
     res.redirect(`/campgrounds/${campground._id}`);
 }))
 
-router.delete('/:id', authUser, catchAsync(async (req, res) => {
+router.delete('/:id', authUser, isCampAuthor, catchAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
     req.flash('success', 'Succesfully deleted campground');
