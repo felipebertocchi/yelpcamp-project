@@ -5,7 +5,9 @@
         <%- include('./campground-card', { campground }) %>
     </div>
     <div class="col-4">
-        <%- include('./review-form', { campground }) %>
+        <% if (currentUser) { %>
+            <%- include('./review-form', { campground }) %>
+        <% } %>
         <%- include('./reviews-section', { campground }) %>
     </div>
 </div>
