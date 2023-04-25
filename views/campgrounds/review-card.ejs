@@ -1,0 +1,24 @@
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title"> <i class="bi bi-person-circle"></i> <%= review.author?.username %> </h5>
+        <p class="card-subtitle mb-2">
+            <% for (let i = 0; i < review.rating; i++) { %>
+                <i class="bi bi-star-fill" style="color: gold;"> </i>
+            <% } %>
+            <% for (let i = 0; i < (5 - review.rating); i++) { %>
+                <i class="bi bi-star-fill" style="color: gainsboro;"> </i>
+            <% } %>
+            <span class="text-muted ms-1">
+                <%= review.createdAt %>
+            </span>
+        </p>
+        <p class="card-text"><%= review.body %></p>
+        <form action="/campgrounds/<%= campground.id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+            <div>
+                <button type="submit" class="btn position-absolute top-0 end-0 m-2" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Delete review">
+                    <i class="bi bi-trash-fill"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
