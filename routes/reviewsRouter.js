@@ -3,9 +3,7 @@ const router = express.Router({ mergeParams: true });
 const Review = require('../models/review');
 const Campground = require('../models/campground');
 const catchAsync = require('../utils/catchAsync');
-const validateReview = require('../middleware/validateReview');
-const authUser = require('../middleware/authUser');
-const isReviewAuthor = require('../middleware/isReviewAuthor');
+const { authUser, isReviewAuthor, validateReview } = require('../middleware');
 
 
 router.post('/', authUser, validateReview, catchAsync(async (req, res) => {
