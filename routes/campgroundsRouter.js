@@ -3,10 +3,14 @@ const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const { authUser, isCampAuthor, validateCampground } = require('../middleware');
 const campgroundsController = require('../controllers/campgroundsController');
+const multer = require('multer');
+const { storage } = require('../cloudinary');
+const upload = multer({ storage });
 
 router.route('/')
     .get(catchAsync(campgroundsController.index))
-    .post(authUser, validateCampground, catchAsync(campgroundsController.postNewCampground));
+    .post(authUser, upload.array('images'), validateCampground, catchAsync(campgroundsController.postNewCampground));
+    // TODO Refactor middleware to use validate before multer
 
 router.get('/new', authUser, campgroundsController.getNewCampgroundForm);
 
