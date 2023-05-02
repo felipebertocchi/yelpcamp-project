@@ -16,7 +16,8 @@ router.get('/new', authUser, campgroundsController.getNewCampgroundForm);
 
 router.route('/:id')
     .get(catchAsync(campgroundsController.getCampground))
-    .put(authUser, isCampAuthor, validateCampground, catchAsync(campgroundsController.updateCampground))
+    .put(authUser, isCampAuthor, upload.array('images'), validateCampground, catchAsync(campgroundsController.updateCampground))
+    // TODO Refactor middleware to use validate before multer
     .delete(authUser, isCampAuthor, catchAsync(campgroundsController.deleteCampground));
 
 router.get('/:id/edit', authUser, isCampAuthor, catchAsync(campgroundsController.getEditCampgroundForm));
