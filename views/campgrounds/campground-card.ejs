@@ -24,22 +24,47 @@
             </button>
         <% } %>
     </div>
-    <div class="card-body">
+    <div class="card-body position-relative">
         <h5 class="card-title"><%= campground.title %></h5>
         <h6 class="card-subtitle mb-2 text-muted"><i class="bi bi-geo-alt"> </i><%= campground.location %></h6>
         <p class="card-text"><%= campground.description %></p>
         <p class="card-text fw-bold">$<%= campground.price %> per night</p>
-    </div>
-    <% if (campground.author?.equals(currentUser?._id)) { %>
-        <div class="card-body">
-            <form action="/campgrounds/<%= campground.id %>?_method=DELETE" method="POST">
-                <div class="text-center">
-                    <a href="/campgrounds/<%= campground.id %>/edit" rel="noopener noreferrer" class="btn btn-primary"><i class="bi bi-pencil-fill"> </i>Edit</a>
-                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash-fill"> </i>Delete</button>
-                </div>
-            </form>
+        <div class="dropstart position-absolute top-0 end-0 m-2">
+            <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-three-dots-vertical"></i>
+            </button>
+            <ul class="dropdown-menu">
+                <% if (campground.author?.equals(currentUser?._id)) { %>
+                    <li>
+                        <a href="/campgrounds/<%= campground.id %>/edit" rel="noopener noreferrer" class="dropdown-item">
+                            <i class="bi bi-pencil-fill me-2"></i>
+                            Edit
+                        </a>
+                    </li>
+                    <li>
+                        <form action="/campgrounds/<%= campground.id %>?_method=DELETE" method="POST">
+                            <button type="submit" class="dropdown-item">
+                                <i class="bi bi-trash-fill me-2"></i>
+                                Delete
+                            </button>
+                        </form>
+                    </li>
+                <% } %>
+                <li>
+                    <button class="dropdown-item">
+                        <i class="bi bi-share-fill me-2"></i>
+                        Share <!-- TODO add functionality -->
+                    </button>
+                </li>
+                <li>
+                    <button class="dropdown-item">
+                        <i class="bi bi-flag me-2"></i>
+                        Report <!-- TODO add functionality -->
+                    </button>
+                </li>
+            </ul>
         </div>
-    <% } %>
+    </div>
     <div class="card-footer">
         Submitted <%= campground.createdAt %> by <i><%= campground.author?.username || "unknown" %></i>
     </div>
