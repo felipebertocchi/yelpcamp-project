@@ -2,6 +2,7 @@ const Campground = require("../models/campground");
 const dayjs = require('dayjs');
 const relativeTime = require('dayjs/plugin/relativeTime');
 dayjs.extend(relativeTime);
+const { cloudinary } = require('../cloudinary');
 
 module.exports = {
     index: async (req, res) => {
@@ -53,6 +54,12 @@ module.exports = {
     updateCampground: async (req, res) => {
         const { id } = req.params;
         const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
+        if (req.body.deleteImages) {
+            for (const filename of req.body.deleteImages) {
+                await cloudinary.uploader.destroy(filename);
+            }
+            await campground.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } })
+        }
         campground.images.push(...req.files.map(file => ({ url: file.path, filename: file.filename })));
         await campground.save();
         req.flash('success', 'Succesfully updated campground');
