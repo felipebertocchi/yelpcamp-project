@@ -11,7 +11,7 @@ async function getImage() {
             },
         })
         return {
-            url: resp.data.urls.small,
+            url: resp.data.urls.raw + "&fit=crop&crop=entropy&w=400&h=267",
             filename: `unsplash/${resp.data.id}`
         }
     } catch (err) {
