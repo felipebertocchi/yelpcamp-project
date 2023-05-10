@@ -10,7 +10,10 @@ async function getImage() {
                 collections: 483251,
             },
         })
-        return resp.data.urls.small
+        return {
+            url: resp.data.urls.small,
+            filename: `unsplash/${resp.data.id}`
+        }
     } catch (err) {
         console.error(err)
     }
