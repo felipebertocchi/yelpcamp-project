@@ -56,9 +56,9 @@ module.exports = {
         const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
         if (req.body.deleteImages) {
             for (const filename of req.body.deleteImages) {
-                await cloudinary.uploader.destroy(filename);
+                if (filename.includes("YelpCamp")) await cloudinary.uploader.destroy(filename);
             }
-            await campground.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } })
+            await campground.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } });
         }
         campground.images.push(...req.files.map(file => ({ url: file.path, filename: file.filename })));
         await campground.save();
