@@ -3,6 +3,9 @@ const dayjs = require('dayjs');
 const relativeTime = require('dayjs/plugin/relativeTime');
 dayjs.extend(relativeTime);
 const { cloudinary } = require('../cloudinary');
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mbxToken = process.env.MAPBOX_TOKEN;
+const geocodingClient = mbxGeocoding({ accessToken: mbxToken });
 
 module.exports = {
     index: async (req, res) => {
@@ -47,6 +50,15 @@ module.exports = {
         const campground = new Campground(req.body.campground);
         campground.images = req.files.map(file => ({ url: file.path, filename: file.filename }));
         campground.author = req.user._id;
+        await geocodingClient.forwardGeocode({
+            query: req.body.campground.location,
+            limit: 1
+        })
+            .send()
+            .then(response => {
+                campground.geometry = response.body.features[0].geometry;
+            })
+            .catch(err => console.log(err));
         await campground.save();
         req.flash('success', 'Succesfully added a new campground');
         res.redirect(`/campgrounds/${campground._id}`);
