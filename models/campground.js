@@ -37,7 +37,15 @@ const CampgroundSchema = new Schema({
             ref: 'Review'
         }
     ]
-}, { timestamps: true });
+}, { timestamps: true, toJSON: { virtuals: true } });
+
+CampgroundSchema.virtual('properties').get(function() {
+    return {
+        id: this.id,
+        title: this.title,
+        location: this.location
+    }
+});
 
 CampgroundSchema.post(('findOneAndDelete'), async function (doc) {
     if (doc) {
