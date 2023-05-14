@@ -2,12 +2,12 @@
 
 <div class="row">
     <div class="col-8">
-        <% if (campground.geometry && campground.geometry.coordinates.length > 0) { %>
-            <%- include('./campground-map', { campground }) %>
-        <% } %>
         <%- include('./campground-card', { campground }) %>
     </div>
     <div class="col-4">
+        <% if (campground.geometry && campground.geometry.coordinates.length > 0) { %>
+            <%- include('./campground-map', { campground }) %>
+        <% } %>
         <% if (currentUser) { %>
             <%- include('./review-form', { campground }) %>
         <% } %>
