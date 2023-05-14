@@ -7,8 +7,17 @@ const map = new mapboxgl.Map({
     zoom: 9
 });
 
+const popup = new mapboxgl.Popup({ offset: 35, closeButton: false })
+    .setHTML(`
+        <h5 class="card-title mb-2">${campground.title}</h5>
+        <h6 class="card-subtitle text-muted">
+            <i class="bi bi-geo-alt"> </i>${campground.location}
+        </h6>
+    `)
+
 new mapboxgl.Marker()
     .setLngLat(campground.geometry.coordinates)
+    .setPopup(popup)
     .addTo(map);
 
 map.addControl(new mapboxgl.FullscreenControl());
