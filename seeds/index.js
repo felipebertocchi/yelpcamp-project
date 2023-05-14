@@ -20,8 +20,8 @@ db.once("open", () => {
 
 const sample = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-const seedDB = async (type, count = 5) => {
-    await Campground.deleteMany({});
+const seedDB = async (type, count = 5, addOn = false) => {
+    if (!addOn) await Campground.deleteMany({});
     console.log("Generating new data...".yellow)
     for (let i = 0; i < count; i++) {
         const images = [];
@@ -77,6 +77,7 @@ const seedDB = async (type, count = 5) => {
 
 let type;
 let count = args[1] || 5;
+let addOn = args[2];
 
 if (args.includes('cloudinary')) {
     type = "cloudinary"
@@ -86,7 +87,7 @@ if (args.includes('cloudinary')) {
     type = "both unsplash and cloudinary";
 }
 
-seedDB(type, count).then(() => {
+seedDB(type, count, addOn).then(() => {
     console.log(`Generated ${count} camps with images from ${type}`.bgYellow)
     console.log("[mongodb] campgrounds collection seeded successfully".cyan);
     mongoose.connection.close();
