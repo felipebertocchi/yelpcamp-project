@@ -10,3 +10,8 @@ const map = new mapboxgl.Map({
 new mapboxgl.Marker()
     .setLngLat(campground.geometry.coordinates)
     .addTo(map);
+
+map.addControl(new mapboxgl.FullscreenControl());
+map.addControl(new mapboxgl.NavigationControl({
+    showCompass: false
+}));
