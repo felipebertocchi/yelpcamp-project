@@ -2,6 +2,7 @@
 
 <div class="row">
     <div class="col-8">
+        <%- include('./campground-map', { campground }) %>
         <%- include('./campground-card', { campground }) %>
     </div>
     <div class="col-4">
@@ -14,4 +15,3 @@
 <div class="mb-3">
     <a href="/campgrounds" rel="noopener noreferrer" class="btn btn-secondary"><i class="bi bi-caret-left-fill"> </i>Back to campgrounds</a>
 </div>
-
