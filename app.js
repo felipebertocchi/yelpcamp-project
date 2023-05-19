@@ -44,11 +44,13 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(mongoSanitize());
 
 const sessionConfig = {
+    name: 'session',
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
+        // secure: true,
         maxAge: 900000
     }
 }
