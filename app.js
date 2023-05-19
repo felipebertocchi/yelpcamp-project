@@ -86,5 +86,5 @@ app.use((err, req, res, next) => {
 })
 
 app.listen(port, () => {
-    console.log('Webserver running on port', port)
+    console.log('Webserver running on', `http://localhost:${port}`.yellow)
 })
