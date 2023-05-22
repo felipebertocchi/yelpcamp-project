@@ -1,13 +1,14 @@
 {
   "name": "yelpcamp",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Full-Stack Project from The Web Developer Bootcamp course by Colt Steele in Udemy.",
+  "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Felipe Ariel Bertocchi",
   "license": "ISC",
   "dependencies": {
     "@mapbox/mapbox-sdk": "^0.15.1",
