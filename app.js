@@ -1,5 +1,10 @@
+let dbURI;
+
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
+    dbURI = 'mongodb://localhost:27017/yelp-camp'
+} else {
+    dbURI = process.env.MONGODB_URI;
 }
 
 require('colors');
@@ -21,8 +26,6 @@ const userRouter = require('./routes/userRouter');
 const campgroundsRouter = require('./routes/campgroundsRouter');
 const reviewsRouter = require('./routes/reviewsRouter');
 const User = require('./models/user');
-
-const dbURI = 'mongodb://localhost:27017/yelp-camp'
 
 mongoose.connect(dbURI, {
     useNewUrlParser: true,
@@ -153,5 +156,9 @@ app.use((err, req, res, next) => {
 })
 
 app.listen(port, () => {
-    console.log('Webserver running on', `http://localhost:${port}`.yellow)
+    if (process.env.NODE_ENV !== "production") {
+        console.log('Webserver running on', `http://localhost:${port}`.yellow)
+    } else {
+        console.log('Webserver running on production')
+    }
 })
