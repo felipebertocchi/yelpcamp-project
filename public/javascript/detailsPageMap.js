@@ -20,6 +20,7 @@ new mapboxgl.Marker()
     .setPopup(popup)
     .addTo(map);
 
+map.dragRotate.disable();
 map.addControl(new mapboxgl.FullscreenControl());
 map.addControl(new mapboxgl.NavigationControl({
     showCompass: false
