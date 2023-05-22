@@ -7,15 +7,15 @@ const map = new mapboxgl.Map({
     zoom: 9
 });
 
-const popup = new mapboxgl.Popup({ offset: 35, closeButton: false })
+const popup = new mapboxgl.Popup({ offset: 35 })
     .setHTML(`
-        <h5 class="card-title mb-2">${campground.title}</h5>
-        <h6 class="card-subtitle text-muted">
+        <h5 class="mb-1">${campground.title}</h5>
+        <h6 class="text-muted">
             <i class="bi bi-geo-alt"> </i>${campground.location}
         </h6>
     `)
 
-new mapboxgl.Marker()
+new mapboxgl.Marker({ color: '#F84D4D' })
     .setLngLat(campground.geometry.coordinates)
     .setPopup(popup)
     .addTo(map);

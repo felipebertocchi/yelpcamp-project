@@ -7,16 +7,18 @@ const map = new mapboxgl.Map({
     zoom: 3
 });
 
-// new mapboxgl.Marker()
-//     .setLngLat(campground.geometry.coordinates)
-//     .setPopup(popup)
-//     .addTo(map);
-
 map.dragRotate.disable();
 map.addControl(new mapboxgl.FullscreenControl());
 map.addControl(new mapboxgl.NavigationControl({
     showCompass: false
 }));
+
+map.loadImage(
+    'images/mapbox-marker-icon-20px-red.png',
+    (error, image) => {
+        if (error) throw error;
+        map.addImage('marker-icon', image);
+    }); 
 
 map.on('load', () => {
     // Add a new source from our GeoJSON data and
@@ -79,14 +81,12 @@ map.on('load', () => {
 
     map.addLayer({
         id: 'unclustered-point',
-        type: 'circle',
+        type: 'symbol',
         source: 'campgrounds',
         filter: ['!', ['has', 'point_count']],
-        paint: {
-            'circle-color': '#C1554D',
-            'circle-radius': 5,
-            'circle-stroke-width': 1,
-            'circle-stroke-color': '#000'
+        layout: {
+            'icon-image': 'marker-icon',
+            'icon-allow-overlap': true
         }
     });
 
@@ -124,7 +124,7 @@ map.on('load', () => {
             coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
         }
 
-        new mapboxgl.Popup({ offset: 5, closeButton: false })
+        new mapboxgl.Popup({ offset: 18 })
             .setLngLat(coordinates)
             .setHTML(`
                 <a href='campgrounds/${id}'><h5 class="mb-1">${title}</h5></a>
