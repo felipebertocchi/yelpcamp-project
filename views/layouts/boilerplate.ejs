@@ -17,6 +17,9 @@
 
 <body class="d-flex flex-column vh-100">
     <%- include('../partials/navbar') %>
+    <% if (typeof campgrounds === 'object' && campgrounds) { %>
+        <%- include('../partials/cluster-map') %>
+    <% } %>
     <main class="container mt-5">
         <%- include('../partials/flash') %>
         <%- body %>
