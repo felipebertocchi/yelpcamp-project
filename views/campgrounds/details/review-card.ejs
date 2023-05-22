@@ -11,14 +11,34 @@
             Rated: <%= review.rating %> stars
         </p>
         <p class="card-text fst-italic"><%= review.body %></p>
-        <% if (review.author?.equals(currentUser?._id)) { %>
-            <form action="/campgrounds/<%= campground.id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-                <div>
-                    <button type="submit" class="btn position-absolute top-0 end-0 m-2" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Delete review">
-                        <i class="bi bi-trash-fill"></i>
+        <div class="dropstart position-absolute top-0 end-0 mt-2">
+            <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-three-dots-vertical"></i>
+            </button>
+            <ul class="dropdown-menu">
+                <% if (review.author?.equals(currentUser?._id)) { %>
+                    <li>
+                        <form action="/campgrounds/<%= campground.id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                            <button type="submit" class="dropdown-item">
+                                <i class="bi bi-trash-fill me-2"></i>
+                                Delete
+                            </button>
+                        </form>
+                    </li>
+                <% } %>
+                <li>
+                    <button class="dropdown-item">
+                        <i class="bi bi-share-fill me-2"></i>
+                        Share <!-- TODO add functionality -->
                     </button>
-                </div>
-            </form>
-        <% } %>
+                </li>
+                <li>
+                    <button class="dropdown-item">
+                        <i class="bi bi-flag me-2"></i>
+                        Report <!-- TODO add functionality -->
+                    </button>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
