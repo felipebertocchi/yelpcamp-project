@@ -1,14 +1,17 @@
 <div id="top"></div>
 
-# YelpCamp
+<p align="center">
+  <img src=https://github.com/felipebertocchi/yelpcamp-project/blob/main/public/images/logo.png?raw=true/>
+</p>
 
 YelpCamp is a website where users can browse, create and review campgrounds. This project is part of The Web Developer Bootcamp course by Colt Steele in Udemy. It was developed using Node.js, Express, MongoDB & Bootstrap. Passport.js was used to handle user authentication.
 
 ---
 
 ## Features
-  - User sign up & authentication
-  - Browse campgrounds, or submit new campgrounds and post reviews.
+  - User registration & authentication
+  - Browse, create and edit campgrounds
+  - Submit campground reviews
 
 ## Prequisites
 * [Node.js 14 or higher](https://nodejs.org/es/)
@@ -41,7 +44,7 @@ To run this project, you need to create a .env file in the root of the project w
   CLOUDINARY_API_KEY=**********************
   CLOUDINARY_SECRET=**********************************
 
-  MAPBOX_TOKEN=********************************************************************************************
+  MAPBOX_TOKEN=********************************************************************
   ```
 > *Unsplash API key is only required for running the seeds file, while Mapbox is required to display the map and Cloudinary to upload images*
 <br>
@@ -60,16 +63,25 @@ To run this project, you need to create a .env file in the root of the project w
 
 If all goes well, this should appear in the console:
 
-> Webserver running on http://localhost:3000 <br>
-> [mongodb] database connected
+> [mongodb] database connected <br>
+> Webserver running on http://localhost:3000
 
 ## 🌐 Live Demo
 
 ### [YelpCamp on Render](https://yelpcamp-p1p4.onrender.com)
 
-## 🤝 Contributing
-Contributions, issues and feature requests are welcome.
+## 🛣️ Roadmap
 
-## Author
+- [ ] Index pagination
+- [ ] Search campgrounds by name or location
+- [ ] User profiles
+- [ ] Campground bookmarks
+- [ ] Sort campgrounds by price, rating, etc
+
+## 🤝 Contributing
+Contributions, issues and feature requests are welcome <br>
+Don't foget to leave a star! ⭐
+
+## 💻 Author
 Felipe Bertocchi - fabertocchi@gmail.com
 <p align="right"><a href="#top">Go to top</a></p>
