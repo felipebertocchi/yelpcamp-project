@@ -5,10 +5,8 @@ if (process.env.NODE_ENV !== "production") {
 require('colors');
 const express = require('express');
 const path = require('path');
-const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
-const MongoDBStore = require('connect-mongo');
 const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
@@ -17,23 +15,11 @@ const LocalStrategy = require('passport-local');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 
+const mongo = require('./database/mongo');
 const userRouter = require('./routes/userRouter');
 const campgroundsRouter = require('./routes/campgroundsRouter');
 const reviewsRouter = require('./routes/reviewsRouter');
 const User = require('./models/user');
-
-const dbURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/yelp-camp';
-
-mongoose.connect(dbURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
-
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", () => {
-    console.log("[mongodb] database connected".cyan);
-})
 
 const app = express();
 const port = 3000;
@@ -47,16 +33,8 @@ app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(mongoSanitize());
 
-const store = MongoDBStore.create({
-    mongoUrl: dbURI,
-    touchAfter: 24 * 3600,
-    crypto: {
-        secret: process.env.SESSION_SECRET
-    },
-}) 
-
 const sessionConfig = {
-    store,
+    store: mongo.store,
     name: 'session',
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -152,7 +130,8 @@ app.use((err, req, res, next) => {
     res.status(err.statusCode).render('error', { err })
 })
 
-app.listen(port, () => {
+app.listen(port, async () => {
+    await mongo.connect();
     if (process.env.NODE_ENV !== "production") {
         console.log('Webserver running on', `http://localhost:${port}`.yellow)
     } else {
