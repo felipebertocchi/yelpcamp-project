@@ -9,14 +9,15 @@ const geocodingClient = mbxGeocoding({ accessToken: mbxToken });
 
 module.exports = {
     index: async (req, res) => {
-        const { page = 1, limit = 10 } = req.query;
+        const { page = 1, limit = 10, search = '' } = req.query;
+        const searchRegex = new RegExp(search, 'i');
         try {
             const campgrounds = await Campground
-                .find({})
+                .find({ title: searchRegex })
                 .skip((page - 1) * limit)
                 .limit(limit);
 
-            const total = await Campground.countDocuments();
+            const total = await Campground.countDocuments({ title: searchRegex });
 
             const pages = Math.ceil(total / limit);
 
