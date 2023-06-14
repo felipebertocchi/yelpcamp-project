@@ -1,43 +1,63 @@
 <% layout('layouts/boilerplate') %>
 <% currentPage = Number(currentPage) %>
+<% total = Number(total) %>
 
-    <h1 class="mb-4">Campgrounds</h1>
-    <ul>
-        <% for (let cg of campgrounds) { %>
-            <div class="card mb-3">
-                <div class="row">
-                    <div class="col-md-4">
-                        <img class="img-fluid" alt="campground" src="<%= cg.images[0].url %>">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title"><%= cg.title %></h5>
-                            <h6 class="card-subtitle mb-2 text-muted"><i class="bi bi-geo-alt"> </i><%= cg.location %></h6>
-                            <p class="card-text"><%= cg.description %></p>
-                            <a href="campgrounds/<%= cg._id %>" rel="noopener noreferrer" class="btn btn-primary">View <%= cg.title %></a>
-                        </div>
+
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <h1>Campgrounds</h1>
+        <form class="w-35" role="search">
+            <div class="input-group input-group-lg">
+                <input role="searchbox" class="form-control" type="search" name="search" value="<%= searchValue %>" placeholder="Search campgrounds" required autocomplete="off" aria-label="Search">
+                <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
+            </div>
+        </form>
+    </div>
+    <div class="d-flex align-items-center justify-content-between my-4">
+        <% if (searchValue) { %>
+            <% if (total > 0) { %>
+                <h3><%= total %> search results for "<b><%= searchValue %></b>"</h3>
+            <% } else { %>
+                <h3>No search results for "<b><%= searchValue %></b>"</h3>
+            <% } %>
+            <a href="/campgrounds" class="text-decoration-none" rel="noopener noreferrer" ><i class="bi bi-arrow-up-left-square me-1"></i>Return to all campgrounds</a>
+        <% } %>
+    </div>
+    <% for (let cg of campgrounds) { %>
+        <div class="card mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <img class="img-fluid" alt="campground" src="<%= cg.images[0].url %>">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= cg.title %></h5>
+                        <h6 class="card-subtitle mb-2 text-muted"><i class="bi bi-geo-alt"> </i><%= cg.location %></h6>
+                        <p class="card-text"><%= cg.description %></p>
+                        <a href="campgrounds/<%= cg._id %>" rel="noopener noreferrer" class="btn btn-primary">View <%= cg.title %></a>
                     </div>
                 </div>
             </div>
-        <% } %>
-    </ul>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            <li class="page-item <%= (currentPage === 1) && 'disabled' %>">
-                <a class="page-link" href="campgrounds?page=<%= currentPage - 1 %>"><i class="bi bi-caret-left-fill"></i></a>
-            </li>
-            <% for ( let page = 1; page <= pages; page++ ) { %>
-                <li class="page-item <%= (page === currentPage) && 'active' %>">
-                    <% if (page === currentPage) { %>
-                        <a class="page-link"> <%= page %> </a>
-                    <% } else { %>
-                        <a class="page-link" href="campgrounds?page=<%= page %>"> <%= page %> </a>
-                    <% } %>
+        </div>
+    <% } %>
+    <% if (total > 0) { %>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item <%= (currentPage === 1) && 'disabled' %>">
+                    <a class="page-link" href="campgrounds?page=<%= currentPage - 1 %>"><i class="bi bi-caret-left-fill"></i></a>
                 </li>
-            <% } %>
-            <li class="page-item <%= (currentPage === pages) && 'disabled' %>">
-                <a class="page-link" href="campgrounds?page=<%= currentPage + 1 %>"><i class="bi bi-caret-right-fill"></i></a>
-            </li>
-        </ul>
-    </nav>
+                <% for ( let page = 1; page <= pages; page++ ) { %>
+                    <li class="page-item <%= (page === currentPage) && 'active' %>">
+                        <% if (page === currentPage) { %>
+                            <a class="page-link"> <%= page %> </a>
+                        <% } else { %>
+                            <a class="page-link" href="campgrounds?page=<%= page %>"> <%= page %> </a>
+                        <% } %>
+                    </li>
+                <% } %>
+                <li class="page-item <%= (currentPage === pages) && 'disabled' %>">
+                    <a class="page-link" href="campgrounds?page=<%= currentPage + 1 %>"><i class="bi bi-caret-right-fill"></i></a>
+                </li>
+            </ul>
+        </nav>
+    <% } %>
     <br>
