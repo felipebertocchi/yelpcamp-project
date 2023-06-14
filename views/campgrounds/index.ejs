@@ -28,7 +28,11 @@
             </li>
             <% for ( let page = 1; page <= pages; page++ ) { %>
                 <li class="page-item <%= (page === currentPage) && 'active' %>">
-                    <a class="page-link" href="campgrounds?page=<%= page %>"><%= page %></a>
+                    <% if (page === currentPage) { %>
+                        <a class="page-link"> <%= page %> </a>
+                    <% } else { %>
+                        <a class="page-link" href="campgrounds?page=<%= page %>"> <%= page %> </a>
+                    <% } %>
                 </li>
             <% } %>
             <li class="page-item <%= (currentPage === pages) && 'disabled' %>">
