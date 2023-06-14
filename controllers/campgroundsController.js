@@ -9,8 +9,22 @@ const geocodingClient = mbxGeocoding({ accessToken: mbxToken });
 
 module.exports = {
     index: async (req, res) => {
-        const campgrounds = await Campground.find({});
-        res.render('campgrounds/index', { campgrounds });
+        const { page = 1, limit = 10 } = req.query;
+        try {
+            const campgrounds = await Campground
+                .find({})
+                .skip((page - 1) * limit)
+                .limit(limit);
+
+            const total = await Campground.countDocuments();
+
+            const pages = Math.ceil(total / limit);
+
+            return res.render('campgrounds/index', { campgrounds, total, currentPage: page, pages, limit });
+        } catch (err) {
+            console.log(err)
+            return res.status(500).json({ error: 'There was an error trying to retrieve the campgrounds' });
+        }
     },
     getNewCampgroundForm: (req, res) => {
         res.render('campgrounds/new');
