@@ -21,7 +21,7 @@ module.exports = {
 
             const pages = Math.ceil(total / limit);
 
-            return res.render('campgrounds/index', { campgrounds, total, currentPage: page, pages, limit });
+            return res.render('campgrounds/index', { campgrounds, total, currentPage: page, pages, limit, searchValue: search });
         } catch (err) {
             console.log(err)
             return res.status(500).json({ error: 'There was an error trying to retrieve the campgrounds' });
