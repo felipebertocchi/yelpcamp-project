@@ -30,8 +30,21 @@
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h5 class="card-title"><%= cg.title %></h5>
-                        <h6 class="card-subtitle mb-2 text-muted"><i class="bi bi-geo-alt"> </i><%= cg.location %></h6>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5 class="card-title"><%= cg.title %></h5>
+                                <h6 class="card-subtitle mb-2 text-muted"><i class="bi bi-geo-alt"> </i><%= cg.location %></h6>
+                            </div>
+                            <span data-bs-toggle="tooltip" data-bs-title="Estimated price">
+                                <% if (cg.price < 20) { %>
+                                    $
+                                <% } else if (cg.price >= 20 && cg.price < 45) { %>
+                                    $$
+                                <% } else { %>
+                                    $$$
+                                <% } %>
+                            </span>
+                        </div>
                         <p class="card-text"><%= cg.description %></p>
                         <a href="campgrounds/<%= cg._id %>" rel="noopener noreferrer" class="btn btn-primary">View <%= cg.title %></a>
                     </div>
