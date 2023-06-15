@@ -4,7 +4,20 @@
 
 
     <div class="d-flex align-items-center justify-content-between mb-4">
-        <h1>Campgrounds</h1>
+        <form>
+            <div class="dropdown">
+                <button class="btn btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-sort-down me-2" style="font-size: 1.5rem;"></i>Sort by
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/campgrounds">Relevance</a></li>
+                    <li><button class="dropdown-item" type="submit" name="sort" value="price">Lowest price</button></li>
+                    <li><button class="dropdown-item" type="submit" name="sort" value="price-desc">Highest price</button></li>
+                    <li><button class="dropdown-item" type="submit" name="sort" value="averageRating">Lowest rating</button></li>
+                    <li><button class="dropdown-item" type="submit" name="sort" value="averageRating-desc">Highest rating</button></li>
+                </ul>
+            </div>
+        </form>
         <form class="w-35" role="search">
             <div class="input-group input-group-lg">
                 <input role="searchbox" class="form-control" type="search" name="search" value="<%= searchValue %>" placeholder="Search campgrounds" required autocomplete="off" aria-label="Search">

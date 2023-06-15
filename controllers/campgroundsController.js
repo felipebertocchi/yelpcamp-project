@@ -9,11 +9,20 @@ const geocodingClient = mbxGeocoding({ accessToken: mbxToken });
 
 module.exports = {
     index: async (req, res) => {
-        const { page = 1, limit = 10, search = '' } = req.query;
+        const { page = 1, limit = 10, search = '', sort } = req.query;
+        let sorted = {};
+        if (sort) {
+            if (sort.includes("desc")) {
+                sorted = { [sort.split("-")[0]]: -1 }
+            } else {
+                sorted = { [sort]: 1 }
+            }
+        }
         const searchRegex = new RegExp(search, 'i');
         try {
             const campgrounds = await Campground
                 .find({ title: searchRegex })
+                .sort(sorted)
                 .skip((page - 1) * limit)
                 .limit(limit);
 
