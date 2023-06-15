@@ -33,17 +33,31 @@
                         <div class="d-flex justify-content-between">
                             <div>
                                 <h5 class="card-title"><%= cg.title %></h5>
+                                <div class="d-flex my-2 text-muted">
+                                    <% if (cg.reviews && cg.reviews.length > 0) { %>
+                                        <span class="me-2"><%= cg.averageRating && cg.averageRating.toFixed(1) %></span>
+                                        <p class="card-subtitle mb-2 starability-result" style="scale: 0.75; margin-left: -18px; margin-right: -12px;" data-rating="<%= parseInt(cg.averageRating) %>">
+                                            Rated: <%= cg.averageRating %> stars
+                                        </p>
+                                        <span data-bs-toggle="tooltip" data-bs-title="Reviews">
+                                            (<%= cg.reviews.length %>)
+                                        </span>
+                                    <% } else { %>
+                                        <span class="mb-2">No reviews</span>
+                                    <% } %>
+                                    <span class="mx-2">·</span>
+                                    <span data-bs-toggle="tooltip" data-bs-title="Price range">
+                                        <% if (cg.price < 25) { %>
+                                            $
+                                        <% } else if (cg.price >= 25 && cg.price < 45) { %>
+                                            $$
+                                        <% } else { %>
+                                            $$$
+                                        <% } %>
+                                    </span>
+                                </div>
                                 <h6 class="card-subtitle mb-2 text-muted"><i class="bi bi-geo-alt"> </i><%= cg.location %></h6>
                             </div>
-                            <span data-bs-toggle="tooltip" data-bs-title="Estimated price">
-                                <% if (cg.price < 20) { %>
-                                    $
-                                <% } else if (cg.price >= 20 && cg.price < 45) { %>
-                                    $$
-                                <% } else { %>
-                                    $$$
-                                <% } %>
-                            </span>
                         </div>
                         <p class="card-text"><%= cg.description %></p>
                         <a href="campgrounds/<%= cg._id %>" rel="noopener noreferrer" class="btn btn-primary">View <%= cg.title %></a>
