@@ -1,7 +1,9 @@
 <div id="top"></div>
 
 <p align="center">
-  <img src=https://github.com/felipebertocchi/yelpcamp-project/blob/main/public/images/logo.png?raw=true/>
+  <a href="https://yelpcamp-p1p4.onrender.com" target="_blank">
+    <img src=https://github.com/felipebertocchi/yelpcamp-project/blob/main/public/images/logo.png?raw=true/>
+  </a>
 </p>
 
 YelpCamp is a website where users can browse, create and review campgrounds. This project is part of The Web Developer Bootcamp course by Colt Steele in Udemy. It was developed using Node.js, Express, MongoDB & Bootstrap. Passport.js was used to handle user authentication.
