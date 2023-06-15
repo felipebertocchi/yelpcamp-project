@@ -25,7 +25,7 @@ const seedDB = async (type, count = 5, addOn = false) => {
     console.log("Generating new data...".yellow)
     for (let i = 0; i < count; i++) {
         const images = [];
-        const price = parseFloat(((Math.floor(Math.random() * 2000) + 10) / 100).toFixed(2));
+        const price = parseFloat((Math.random() * (60 - 10) + 10).toFixed(2));
         const random1000 = Math.floor(Math.random() * 1000);
         const randomCity = cities[random1000];
         const imgCount = Array(Math.floor(Math.random() * 4) + 2); // random number between 2 and 5
