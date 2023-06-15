@@ -6,7 +6,7 @@ const ImageSchema = new Schema({
     filename: String
 });
 
-ImageSchema.virtual('thumbnail').get(function() {
+ImageSchema.virtual('thumbnail').get(function () {
     return this.url.replace('/upload', '/upload/w_200')
 });
 
@@ -36,10 +36,11 @@ const CampgroundSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Review'
         }
-    ]
+    ],
+    averageRating: Number
 }, { timestamps: true, toJSON: { virtuals: true } });
 
-CampgroundSchema.virtual('properties').get(function() {
+CampgroundSchema.virtual('properties').get(function () {
     return {
         id: this.id,
         title: this.title,
@@ -55,6 +56,29 @@ CampgroundSchema.post(('findOneAndDelete'), async function (doc) {
             }
         });
     }
+});
+
+CampgroundSchema.pre('save', async function (next) {
+    if (this.reviews && this.reviews.length > 0) {
+        const campgroundId = this._id;
+
+        const query = await Review
+            .aggregate([
+                {
+                    $match: { campground: campgroundId }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        averageRating: { $avg: '$rating' }
+                    }
+                }
+            ])
+            .exec();
+
+        this.averageRating = parseFloat(query[0].averageRating.toFixed(1));
+    }
+    next();
 })
 
 module.exports = model('Campground', CampgroundSchema);
