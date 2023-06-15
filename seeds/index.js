@@ -1,6 +1,7 @@
 require('colors');
 const mongoose = require('mongoose');
 const Campground = require('../models/campground');
+const Review = require('../models/review');
 const cities = require('./cities');
 const cloudImages = require('./cloudImages');
 const { getImage } = require('./getImage');
@@ -21,7 +22,10 @@ db.once("open", () => {
 const sample = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 const seedDB = async (type, count = 5, addOn = false) => {
-    if (!addOn) await Campground.deleteMany({});
+    if (!addOn) {
+        await Campground.deleteMany({});
+        await Review.deleteMany({});
+    }
     console.log("Generating new data...".yellow)
     for (let i = 0; i < count; i++) {
         const images = [];
