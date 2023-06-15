@@ -75,10 +75,11 @@ If all goes well, this should appear in the console:
 ## 🛣️ Roadmap
 
 - [x] Campgrounds index pagination
-- [ ] Search campgrounds by name or location
-- [ ] Sort campgrounds by price, rating, etc
+- [x] Search campgrounds by name
+- [x] Sort campgrounds by price, rating, etc
 - [ ] User profiles
 - [ ] Campground bookmarks
+- [ ] Search autocomplete/suggestions
 
 ## 🤝 Contributing
 Contributions, issues and feature requests are welcome <br>
