@@ -22,7 +22,7 @@ const reviewsRouter = require('./routes/reviewsRouter');
 const User = require('./models/user');
 
 const app = express();
-const port = 3000;
+const port = 4000;
 
 app.engine('ejs', ejsMate)
 app.set('view engine', 'ejs')
