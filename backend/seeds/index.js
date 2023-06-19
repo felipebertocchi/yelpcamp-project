@@ -8,7 +8,7 @@ const { getImage } = require('./getImage');
 const { places, descriptors } = require('./seedHelpers');
 const args = process.argv.slice(2);
 
-mongoose.connect('mongodb://localhost:27017/yelp-camp', {
+mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
