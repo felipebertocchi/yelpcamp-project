@@ -1,30 +1,129 @@
-import React from 'react'
+import { useState } from 'react';
+import {
+    createStyles,
+    Header,
+    Container,
+    Group,
+    Burger,
+    Paper,
+    Transition,
+    rem,
+} from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import ThemeToggle from './components/ThemeToggle';
+import Logo from './components/Logo';
 
-export default () => {
+const HEADER_HEIGHT = rem(60);
+
+const useStyles = createStyles((theme) => ({
+    root: {
+        position: 'relative',
+        zIndex: 1,
+    },
+
+    dropdown: {
+        position: 'absolute',
+        top: HEADER_HEIGHT,
+        left: 0,
+        right: 0,
+        zIndex: 0,
+        borderTopRightRadius: 0,
+        borderTopLeftRadius: 0,
+        borderTopWidth: 0,
+        overflow: 'hidden',
+
+        [theme.fn.largerThan('sm')]: {
+            display: 'none',
+        },
+    },
+
+    header: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        height: '100%',
+    },
+
+    links: {
+        [theme.fn.smallerThan('sm')]: {
+            display: 'none',
+        },
+    },
+
+    burger: {
+        [theme.fn.largerThan('sm')]: {
+            display: 'none',
+        },
+    },
+
+    link: {
+        display: 'block',
+        lineHeight: 1,
+        padding: `${rem(8)} ${rem(12)}`,
+        borderRadius: theme.radius.sm,
+        textDecoration: 'none',
+        color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.colors.gray[7],
+        fontSize: theme.fontSizes.sm,
+        fontWeight: 500,
+
+        '&:hover': {
+            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+        },
+
+        [theme.fn.smallerThan('sm')]: {
+            borderRadius: 0,
+            padding: theme.spacing.md,
+        },
+    },
+
+    linkActive: {
+        '&, &:hover': {
+            backgroundColor: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).background,
+            color: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).color,
+        },
+    },
+}));
+
+
+export default function ({ links }) {
+    const [opened, { toggle, close }] = useDisclosure(false);
+    const [active, setActive] = useState(links[0].link);
+    const { classes, cx } = useStyles();
+
+    const items = links.map((link) => (
+        <a
+            key={link.label}
+            href={link.link}
+            className={cx(classes.link, { [classes.linkActive]: active === link.link })}
+            onClick={(event) => {
+                event.preventDefault();
+                setActive(link.link);
+                close();
+            }}
+        >
+            {link.label}
+        </a>
+    ));
+
     return (
-        <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-            <header class="mb-auto">
-                <div>
-                    <img class="float-md-left mt-1" src="src/assets/logo.png" alt="yelp-camp-logo" />
-                    <nav class="nav nav-masthead justify-content-center float-md-right">
-                        <a class="nav-link" href="/campgrounds">Campgrounds</a>
-                        <a class="nav-link" href="/login">Login</a>
-                        <a class="nav-link" href="/register">Register</a>
-                        <a class="nav-link" href="/logout">Logout</a>
-                    </nav>
-                </div>
-            </header>
-            <main class="px-3">
-                <img src="src/assets/logo.png" alt="yelp-camp-logo" />
-                <p class="lead my-4">
-                    Welcome to YelpCamp! <br /> Jump right in and explore our many campgrounds. <br />
-                    Feel free to share some of your own and comment on others!
-                </p>
-                <a href="/campgrounds" class="btn btn-lg btn-secondary font-weight-bold border-white bg-white">View Campgrounds</a>
-            </main>
-            <footer class="footer py-3 mt-auto text-white-50">
-                <span>&copy; YelpCamp 2023</span>
-            </footer>
-        </div>
-    )
+        <Header height={HEADER_HEIGHT} mb={120} className={classes.root}>
+            <Container className={classes.header}>
+                <Logo />
+                <Group spacing={5} className={classes.links}>
+                    {items}
+                    <ThemeToggle />
+                </Group>
+
+                <Burger opened={opened} onClick={toggle} className={classes.burger} size="sm" />
+
+                <Transition transition="pop-top-right" duration={200} mounted={opened}>
+                    {(styles) => (
+                        <Paper className={classes.dropdown} withBorder style={styles}>
+                            {items}
+                        </Paper>
+                    )}
+                </Transition>
+            </Container>
+        </Header>
+    );
 }
