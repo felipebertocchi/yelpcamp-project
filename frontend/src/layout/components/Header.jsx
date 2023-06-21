@@ -42,6 +42,7 @@ const useStyles = createStyles((theme) => ({
         justifyContent: 'space-between',
         alignItems: 'center',
         height: '100%',
+        maxWidth: '80rem',
     },
 
     links: {
