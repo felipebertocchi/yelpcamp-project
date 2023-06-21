@@ -14,6 +14,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
+const cors = require('cors')
 
 const mongo = require('./database/mongo');
 const userRouter = require('./routes/userRouter');
@@ -23,6 +24,14 @@ const User = require('./models/user');
 
 const app = express();
 const port = 4000;
+
+const corsOptions = {
+    origin: process.env.FRONTEND_DOMAIN,
+    credentials: true,
+    optionSuccessStatus: 200
+}
+
+app.use(cors(corsOptions));
 
 app.engine('ejs', ejsMate)
 app.set('view engine', 'ejs')
