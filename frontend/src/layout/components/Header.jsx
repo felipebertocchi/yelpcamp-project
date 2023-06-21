@@ -12,6 +12,7 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import ThemeToggle from './ThemeToggle';
 import Logo from './Logo';
+import { Link } from 'react-router-dom';
 
 const HEADER_HEIGHT = rem(60);
 
@@ -92,18 +93,17 @@ export default function ({ links }) {
     const { classes, cx } = useStyles();
 
     const items = links.map((link) => (
-        <a
+        <Link
             key={link.label}
-            href={link.link}
+            to={link.link}
             className={cx(classes.link, { [classes.linkActive]: active === link.link })}
-            onClick={(event) => {
-                event.preventDefault();
+            onClick={() => {
                 setActive(link.link);
                 close();
             }}
         >
             {link.label}
-        </a>
+        </Link>
     ));
 
     return (
