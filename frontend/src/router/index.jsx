@@ -4,24 +4,7 @@ import Layout from '../layout';
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <Layout links={[
-            {
-                "link": "/about",
-                "label": "About"
-            },
-            {
-                "link": "/campgrounds",
-                "label": "Campgrounds"
-            },
-            {
-                "link": "/Login",
-                "label": "Login"
-            },
-            {
-                "link": "/register",
-                "label": "Sign up"
-            },
-        ]} />,
+        element: <Layout />,
         children: [
             // ...
         ],
