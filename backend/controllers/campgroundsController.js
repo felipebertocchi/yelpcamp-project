@@ -9,7 +9,7 @@ const geocodingClient = mbxGeocoding({ accessToken: mbxToken });
 
 module.exports = {
     index: async (req, res) => {
-        const { page = 1, limit = 10, search = '', sort } = req.query;
+        const { page = 1, limit = 12, search = '', sort } = req.query;
         let sorted = {};
         if (sort) {
             if (sort.includes("desc")) {
@@ -30,7 +30,7 @@ module.exports = {
 
             const pages = Math.ceil(total / limit);
 
-            return res.render('campgrounds/index', { campgrounds, total, currentPage: page, pages, limit, searchValue: search });
+            return res.status(200).json({ campgrounds, total, currentPage: page, pages, limit, searchValue: search });
         } catch (err) {
             console.log(err)
             return res.status(500).json({ error: 'There was an error trying to retrieve the campgrounds' });
