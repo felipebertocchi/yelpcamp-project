@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import Footer from './components/Footer';
 import Header from './components/Header';
+import { Container } from '@mantine/core';
 
 export default function () {
     const links = [
@@ -25,7 +26,9 @@ export default function () {
     return (
         <>
             <Header links={links} />
-            <Outlet />
+            <Container size={"xl"}>
+                <Outlet />
+            </Container>
             <Footer links={links} />
         </>
     );
