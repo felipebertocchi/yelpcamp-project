@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Group, Pagination, SimpleGrid } from "@mantine/core";
-import { CGCard } from "./components/Card";
+import { CampCard } from "./components/CampCard";
 import axios from "axios";
 
 export function Component() {
@@ -36,7 +36,7 @@ export function Component() {
                 ]}
             >
                 {(campgrounds.length > 0) && campgrounds.map((cg) =>
-                    <CGCard key={cg.id} {...cg} />
+                    <CampCard key={cg.id} {...cg} />
                 )}
             </SimpleGrid>
             <Box mt="xl">
