@@ -59,7 +59,7 @@ module.exports = {
         campground._doc.reviews.forEach(review => {
             review._doc.createdAt = dayjs(review.createdAt).fromNow();
         });
-        res.render('campgrounds/details', { campground });
+        return res.status(200).json(campground);
     },
     getEditCampgroundForm: async (req, res) => {
         const { id } = req.params;
