@@ -10,6 +10,7 @@ import {
     rem,
     Rating,
 } from '@mantine/core';
+import { Link } from 'react-router-dom';
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -35,7 +36,7 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-export function CGCard({ images, title, description }) {
+export function CGCard({ id, images, title, description }) {
     const { classes } = useStyles();
 
     return (
@@ -57,7 +58,7 @@ export function CGCard({ images, title, description }) {
             </Card.Section>
 
             <Group mt="xs">
-                <Button radius="md" style={{ flex: 1 }}>
+                <Button component={Link} to={`${id}`} relative='path' radius="md" style={{ flex: 1 }}>
                     Show details
                 </Button>
                 <ActionIcon variant="default" radius="md" size={36}>
