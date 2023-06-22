@@ -2,7 +2,7 @@ import { createStyles, Container, Group, Anchor, rem } from '@mantine/core';
 
 const useStyles = createStyles((theme) => ({
     footer: {
-        marginTop: rem(120),
+        marginTop: rem(60),
         borderTop: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2]}`,
     },
 

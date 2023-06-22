@@ -107,7 +107,7 @@ export default function ({ links }) {
     ));
 
     return (
-        <Header height={HEADER_HEIGHT} mb={120} className={classes.root}>
+        <Header height={HEADER_HEIGHT} mb={60} className={classes.root}>
             <Container className={classes.header}>
                 <Logo />
                 <Group spacing={5} className={classes.links}>
