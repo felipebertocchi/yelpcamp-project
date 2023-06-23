@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IconMapPin } from '@tabler/icons-react';
-import { Title } from "@mantine/core";
+import { Divider, Group, Text, Title } from "@mantine/core";
 import ImageGallery from "./components/ImageGallery";
 
 export function Component() {
@@ -26,12 +26,15 @@ export function Component() {
         <>
             {campground &&
                 <>
-                    <Title mb={10}>{campground.title}</Title>
-                    <div style={{ display: 'flex' }}>
+                    <Group spacing={5}>
                         <IconMapPin />
-                        <Title order={3} ml={5}>{campground.location}</Title>
-                    </div>
+                        <Title order={4} mt={4}>{campground.location}</Title>
+                    </Group>
                     <ImageGallery images={campground.images} />
+                    <Title my={30}>{campground.title}</Title>
+                    <Title order={3} my={15}>About this campground</Title>
+                    <Text fz='lg'>{campground.description}</Text>
+                    <Divider my='lg' />
                 </>
             }
         </>
