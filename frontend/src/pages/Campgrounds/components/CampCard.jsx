@@ -1,4 +1,4 @@
-import { createStyles, Image, Card, Text, Group, Button, getStylesRef, rem, Flex } from '@mantine/core';
+import { createStyles, Image, Card, Text, Group, Button, getStylesRef, rem } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import { IconMapPin, IconStar } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
@@ -67,26 +67,20 @@ export function CampCard({ id, images, title, location, description, price }) {
                 </Carousel>
             </Card.Section>
 
-            <Group position="apart" mt="lg">
-                <Text fw={700} fz="lg">
-                    {title}
-                </Text>
+            <Text fw={700} fz="lg" mt="lg">
+                {title}
+            </Text>
 
-            </Group>
-            <Flex justify={'space-between'}>
+            <Group position='apart'>
                 <Group spacing={3}>
                     <IconMapPin size="1rem" />
-                    <Text fw={500} fz="sm">{location}</Text>
+                    <Text fw={500} fz="sm" mt={4}>{location}</Text>
                 </Group>
                 <Group spacing={3}>
                     <IconStar size="1rem" />
-                    <Text fw={500} fz="sm">4.78</Text>
+                    <Text fw={500} fz="sm" mt={4}>4.78</Text>
                 </Group>
-            </Flex>
-
-            <Text fz="sm" mt="sm">
-                {description}
-            </Text>
+            </Group>
 
             <Group position="apart" mt="md">
                 <div>
