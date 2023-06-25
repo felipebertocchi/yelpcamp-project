@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { IconMapPin } from '@tabler/icons-react';
 import { Divider, Group, Text, Title } from "@mantine/core";
 import ImageGallery from "./components/ImageGallery";
+import ActivitiesSection from "./components/ActivitiesSection";
+import AmenitiesSection from "./components/AmenitiesSection";
 
 export function Component() {
     const { campgroundId } = useParams();
@@ -35,6 +37,8 @@ export function Component() {
                     <Title order={3} my={15}>About this campground</Title>
                     <Text fz='lg'>{campground.description}</Text>
                     <Divider my='lg' />
+                    <AmenitiesSection amenities={campground.amenities} />
+                    <ActivitiesSection activities={campground.activities} />
                 </>
             }
         </>

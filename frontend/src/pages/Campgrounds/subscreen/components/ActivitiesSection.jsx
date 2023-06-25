@@ -19,7 +19,7 @@ export default function ({ activities }) {
                     <Title order={3} my={15}>Activities</Title>
                     <Group>
                         {activities.map(activity =>
-                            <Paper key={activity} shadow='md' p='md' radius='lg' withBorder>
+                            <Paper key={activity} shadow='md' p='sm' radius='lg' withBorder>
                                 <Group>
                                     {activityIcons[activity]}
                                     <Text fz='lg' tt='capitalize'>{activity}</Text>

@@ -1,5 +1,5 @@
 import { Divider, Group, Paper, Text, Title } from "@mantine/core";
-import { IconAntennaBars5, IconBadgeWc, IconBasket, IconBath, IconCampfire, IconDisabled, IconGrill, IconParking, IconPaw, IconPhoto, IconTrash, IconWashMachine, IconWifi } from "@tabler/icons-react";
+import { IconAntennaBars5, IconBadgeWc, IconBasket, IconBath, IconCampfire, IconDisabled, IconGrill, IconParking, IconPaw, IconPhoto, IconSnowflake, IconTrash, IconTrees, IconWashMachine, IconWifi } from "@tabler/icons-react";
 
 const amenityIcons = {
     "wi-fi": <IconWifi />,
@@ -9,6 +9,8 @@ const amenityIcons = {
     "showers": <IconBath />,
     "accessibility": <IconDisabled />,
     "fire ring": <IconCampfire />,
+    "picnic area": <IconTrees />,
+    "ice": <IconSnowflake />,
     "grills": <IconGrill />,
     "camp store": <IconBasket />,
     "laundry": <IconWashMachine />,
@@ -25,7 +27,7 @@ export default function ({ amenities }) {
                     <Title order={3} my={15}>Services & Amenities</Title>
                     <Group>
                         {amenities.map(amenity =>
-                            <Paper key={amenity} shadow='md' p='md' radius='lg' withBorder>
+                            <Paper key={amenity} shadow='md' p='sm' radius='lg' withBorder>
                                 <Group>
                                     {amenityIcons[amenity]}
                                     <Text fz='lg' tt='capitalize'>{amenity}</Text>
