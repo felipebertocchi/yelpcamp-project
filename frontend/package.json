@@ -13,9 +13,11 @@
     "@emotion/react": "^11.11.1",
     "@mantine/carousel": "^6.0.14",
     "@mantine/core": "^6.0.14",
+    "@mantine/dates": "^6.0.14",
     "@mantine/hooks": "^6.0.14",
     "@tabler/icons-react": "^2.22.0",
     "axios": "^1.4.0",
+    "dayjs": "^1.11.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.13.0"

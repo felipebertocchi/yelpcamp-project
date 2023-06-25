@@ -6,6 +6,7 @@ import { Divider, Group, Text, Title } from "@mantine/core";
 import ImageGallery from "./components/ImageGallery";
 import ActivitiesSection from "./components/ActivitiesSection";
 import AmenitiesSection from "./components/AmenitiesSection";
+import BookingCalendar from "./components/BookingCalendar";
 
 export function Component() {
     const { campgroundId } = useParams();
@@ -39,6 +40,7 @@ export function Component() {
                     <Divider my='lg' />
                     <AmenitiesSection amenities={campground.amenities} />
                     <ActivitiesSection activities={campground.activities} />
+                    <BookingCalendar campgroundName={campground.title} />
                 </>
             }
         </>
