@@ -4,6 +4,7 @@ if (process.env.NODE_ENV !== "production") {
 
 require('colors');
 const express = require('express');
+const bodyParser = require('body-parser');
 const path = require('path');
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
@@ -32,6 +33,7 @@ const corsOptions = {
 }
 
 app.use(cors(corsOptions));
+app.use(bodyParser.json())
 
 app.engine('ejs', ejsMate)
 app.set('view engine', 'ejs')
