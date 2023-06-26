@@ -7,6 +7,7 @@ import ImageGallery from "./components/ImageGallery";
 import ActivitiesSection from "./components/ActivitiesSection";
 import AmenitiesSection from "./components/AmenitiesSection";
 import BookingCalendar from "./components/BookingCalendar";
+import ReviewsSection from "./components/ReviewsSection";
 
 export function Component() {
     const { campgroundId } = useParams();
@@ -41,6 +42,7 @@ export function Component() {
                     <AmenitiesSection amenities={campground.amenities} />
                     <ActivitiesSection activities={campground.activities} />
                     <BookingCalendar campgroundName={campground.title} />
+                    <ReviewsSection campgroundId={campgroundId} reviews={campground.reviews} avgRating={campground.averageRating} />
                 </>
             }
         </>
