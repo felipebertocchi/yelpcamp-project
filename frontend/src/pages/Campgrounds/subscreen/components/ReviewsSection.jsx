@@ -1,5 +1,6 @@
 import { Avatar, Divider, Group, Paper, Rating, SimpleGrid, Spoiler, Text, Title } from "@mantine/core";
 import { IconStarFilled } from "@tabler/icons-react";
+import ReviewModal from "./ReviewModal";
 
 export default function ({ campgroundId, reviews, avgRating }) {
 
@@ -38,6 +39,7 @@ export default function ({ campgroundId, reviews, avgRating }) {
             ) : (
                 <Text color="dimmed">There are no reviews yet. Be the first one to write one!</Text>
             )}
+            <ReviewModal campgroundId={campgroundId} />
             <Divider my='lg' />
         </>
     )
