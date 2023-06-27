@@ -1,4 +1,4 @@
-import { Button, Divider, Group, Text, Title } from '@mantine/core';
+import { Box, Button, Divider, Group, Text, Title } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { useState } from 'react';
 import dayjs from 'dayjs';
@@ -30,24 +30,30 @@ export default function ({ campgroundName }) {
 
     return (
         <>
-            <Group position='apart'>
-                <Title order={3} mt={15}>{calendarTitle}</Title>
-                <Button disabled={dates[0] === null} variant='subtle' onClick={() => handleDateSelect([null, null])}>
-                    Clear dates
-                </Button>
-            </Group>
-            <Text order={5} color="dimmed">{calendarSubtitle}</Text>
-            <DatePicker
-                type="range"
-                maxLevel="month"
-                numberOfColumns={2}
-                firstDayOfWeek={0}
-                minDate={dayjs().add(2, 'day').toDate()}
-                value={dates}
-                onChange={handleDateSelect}
-                size="lg"
-                my={15}
-            />
+            <Box w="fit-content" mt={15}>
+                <Group position='apart'>
+                    <div>
+                        <Title order={3}>{calendarTitle}</Title>
+                        <Text order={5} color="dimmed">{calendarSubtitle}</Text>
+                    </div>
+                    {(dates[0] !== null && dates[1] !== null) &&
+                        <Button disabled={dates[0] === null} variant='subtle' onClick={() => handleDateSelect([null, null])}>
+                            Clear dates
+                        </Button>
+                    }
+                </Group>
+                <DatePicker
+                    type="range"
+                    maxLevel="month"
+                    numberOfColumns={2}
+                    firstDayOfWeek={0}
+                    minDate={dayjs().add(2, 'day').toDate()}
+                    value={dates}
+                    onChange={handleDateSelect}
+                    size="md"
+                    my={15}
+                />
+            </Box>
             <Divider my='lg' />
         </>
     )
