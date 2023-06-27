@@ -24,6 +24,7 @@ export default function ({ amenities }) {
         <>
             {amenities &&
                 <>
+                    <Divider my='lg' />
                     <Title order={3} my={15}>Services & Amenities</Title>
                     <Group>
                         {amenities.map(amenity =>
@@ -35,7 +36,6 @@ export default function ({ amenities }) {
                             </Paper>
                         )}
                     </Group>
-                    <Divider my='lg' />
                 </>
             }
         </>

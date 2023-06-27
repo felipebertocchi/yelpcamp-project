@@ -30,6 +30,7 @@ export default function ({ campgroundName }) {
 
     return (
         <>
+            <Divider my='lg' />
             <Box w="fit-content" mt={15}>
                 <Group position='apart'>
                     <div>
@@ -54,7 +55,6 @@ export default function ({ campgroundName }) {
                     my={15}
                 />
             </Box>
-            <Divider my='lg' />
         </>
     )
 }

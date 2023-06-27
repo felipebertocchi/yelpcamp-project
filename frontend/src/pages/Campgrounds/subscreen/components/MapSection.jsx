@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
+import { Box, Divider, Title } from "@mantine/core";
 import mapboxgl from 'mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN
-import { Divider, Title } from "@mantine/core";
 
 export default function ({ geometry }) {
     const [lng, lat] = geometry.coordinates;
@@ -32,11 +32,9 @@ export default function ({ geometry }) {
 
     return (
         <>
-            <Title order={3} my={15}>Map of the Campground</Title>
-            <div>
-                <div style={{ height: 500 }} ref={mapContainer} className="map-container" />
-            </div>
             <Divider my='lg' />
+            <Title order={3} my={15}>Map of the Campground</Title>
+            <Box h={500} ref={mapContainer} className="map-container" />
         </>
     )
 }

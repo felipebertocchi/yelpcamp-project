@@ -16,6 +16,7 @@ export default function ({ activities }) {
         <>
             {activities &&
                 <>
+                    <Divider my='lg' />
                     <Title order={3} my={15}>Activities</Title>
                     <Group>
                         {activities.map(activity =>
@@ -27,7 +28,6 @@ export default function ({ activities }) {
                             </Paper>
                         )}
                     </Group>
-                    <Divider my='lg' />
                 </>
             }
         </>

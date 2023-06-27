@@ -6,6 +6,7 @@ export default function ({ campgroundId, reviews, avgRating }) {
 
     return (
         <>
+            <Divider my='lg' />
             <Title order={3} my={15}>
                 <Group spacing={5}>
                     {reviews && reviews.length > 0 &&
@@ -40,7 +41,6 @@ export default function ({ campgroundId, reviews, avgRating }) {
                 <Text color="dimmed">There are no reviews yet. Be the first one to write one!</Text>
             )}
             <ReviewModal campgroundId={campgroundId} />
-            <Divider my='lg' />
         </>
     )
 }
