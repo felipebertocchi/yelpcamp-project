@@ -2,12 +2,13 @@ import { Button, Container, Divider, Grid, Group, HoverCard, Paper, Text } from 
 import { IconInfoCircle, IconStarFilled } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 
-export default function ({ campground, scrollIntoView, bookingDates }) {
+export default function ({ campground, actions, bookingDates }) {
+    const { scrollToCalendar, scrollToReviews } = actions;
     const [checkIn, checkOut] = bookingDates;
     const checkInDate = dayjs(checkIn);
     const checkOutDate = dayjs(checkOut);
     const nights = checkOutDate.diff(checkInDate, 'day');
-    
+
     const serviceFee = 25
     const priceOfStay = (campground.price * nights).toFixed(0)
     let weeklyStayDiscount = 0
@@ -26,11 +27,11 @@ export default function ({ campground, scrollIntoView, bookingDates }) {
                         / night
                     </Text>
                 </div>
-                <Group spacing={5}>
+                <Group spacing={5} onClick={scrollToReviews} sx={{ cursor: "pointer" }}>
                     {(campground.reviews && campground.reviews.length > 0) &&
-                        <Group spacing={5}>
-                            <IconStarFilled size={16} />
-                            <Text fw={700}>{campground.averageRating}</Text> · <Text c="dimmed">{campground.reviews.length} reviews</Text>
+                        <Group spacing={5} align="baseline">
+                            <IconStarFilled size={14} />
+                            <Text fw={700}>{campground.averageRating}</Text> · <Text opacity={0.5}>{campground.reviews.length} reviews</Text>
                         </Group>
                     }
                 </Group>
@@ -38,7 +39,7 @@ export default function ({ campground, scrollIntoView, bookingDates }) {
             <Container p={0} my={20}>
                 <Grid grow gutter={0}>
                     <Grid.Col span={6}>
-                        <Paper p="xs" withBorder sx={{ cursor: "pointer" }} onClick={scrollIntoView}>
+                        <Paper p="xs" withBorder sx={{ cursor: "pointer" }} onClick={scrollToCalendar}>
                             <Text tt="uppercase" fz="xs" fw={700}>Check-in</Text>
                             {checkIn ? (
                                 <Text fz="sm">{checkInDate.format("DD/MM/YYYY")}</Text>
@@ -48,7 +49,7 @@ export default function ({ campground, scrollIntoView, bookingDates }) {
                         </Paper>
                     </Grid.Col>
                     <Grid.Col span={6}>
-                        <Paper p="xs" withBorder sx={{ cursor: "pointer" }} onClick={scrollIntoView}>
+                        <Paper p="xs" withBorder sx={{ cursor: "pointer" }} onClick={scrollToCalendar}>
                             <Text tt="uppercase" fz="xs" fw={700}>Check-out</Text>
                             {checkOut ? (
                                 <Text fz="sm">{checkOutDate.format("DD/MM/YYYY")}</Text>
@@ -65,7 +66,7 @@ export default function ({ campground, scrollIntoView, bookingDates }) {
                         Reserve
                     </Button>
                 ) : (
-                    <Button fullWidth size="lg" onClick={scrollIntoView}>
+                    <Button fullWidth size="lg" onClick={scrollToCalendar}>
                         Check availability
                     </Button>
                 )}

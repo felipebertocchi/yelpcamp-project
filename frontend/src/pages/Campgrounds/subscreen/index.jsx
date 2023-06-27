@@ -16,9 +16,10 @@ export function Component() {
     const { campgroundId } = useParams();
     const [campground, setCampground] = useState(null);
     const [bookingDates, setBookingDates] = useState([null, null]);
-    const { scrollIntoView, targetRef } = useScrollIntoView({
+    const { scrollIntoView: scrollToCalendar, targetRef: targetCalendarRef } = useScrollIntoView({
         offset: 350,
     });
+    const { scrollIntoView: scrollToReviews, targetRef: targetReviewsRef } = useScrollIntoView();
 
     useEffect(() => {
         const getData = async () => {
@@ -49,15 +50,17 @@ export function Component() {
                             <Text fz='lg'>{campground.description}</Text>
                             <AmenitiesSection amenities={campground.amenities} />
                             <ActivitiesSection activities={campground.activities} />
-                            <Box ref={targetRef}>
+                            <Box ref={targetCalendarRef}>
                                 <BookingCalendar campgroundName={campground.title} bookingDates={bookingDates} setBookingDates={setBookingDates} />
                             </Box>
                         </Grid.Col>
                         <Grid.Col span={5}>
-                            <ReserveWidget campground={campground} scrollIntoView={scrollIntoView} bookingDates={bookingDates} />
+                            <ReserveWidget campground={campground} bookingDates={bookingDates} actions={{ scrollToCalendar, scrollToReviews }} />
                         </Grid.Col>
                     </Grid>
-                    <ReviewsSection campgroundId={campgroundId} reviews={campground.reviews} avgRating={campground.averageRating} />
+                    <Box ref={targetReviewsRef}>
+                        <ReviewsSection campgroundId={campgroundId} reviews={campground.reviews} avgRating={campground.averageRating} />
+                    </Box>
                     <MapSection geometry={campground.geometry} />
                 </>
             }
