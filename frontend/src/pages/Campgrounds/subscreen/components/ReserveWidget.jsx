@@ -1,7 +1,12 @@
 import { Button, Container, Grid, Group, Paper, Text } from "@mantine/core";
 import { IconStarFilled } from '@tabler/icons-react';
+import dayjs from 'dayjs';
 
-export default function ({ campground, scrollIntoView }) {
+export default function ({ campground, scrollIntoView, bookingDates }) {
+    const [checkIn, checkOut] = bookingDates;
+    const checkInDate = dayjs(checkIn).format("DD/MM/YYYY");
+    const checkOutDate = dayjs(checkOut).format("DD/MM/YYYY");
+
     return (
         <Paper shadow="lg" p="xl" m={"30px 60px"} radius="lg" withBorder pos="sticky" top={30}>
             <Group position="apart">
@@ -28,19 +33,35 @@ export default function ({ campground, scrollIntoView }) {
                     <Grid.Col span={6}>
                         <Paper p="xs" withBorder sx={{ cursor: "pointer" }} onClick={scrollIntoView}>
                             <Text tt="uppercase" fz="xs" fw={700}>Check-in</Text>
-                            <Text c="dimmed" fz="sm">Add date</Text>
+                            {checkIn ? (
+                                <Text fz="sm">{checkInDate}</Text>
+                            ) : (
+                                <Text c="dimmed" fz="sm">Add date</Text>
+                            )}
                         </Paper>
                     </Grid.Col>
                     <Grid.Col span={6}>
                         <Paper p="xs" withBorder sx={{ cursor: "pointer" }} onClick={scrollIntoView}>
                             <Text tt="uppercase" fz="xs" fw={700}>Check-out</Text>
-                            <Text c="dimmed" fz="sm">Add date</Text>
+                            {checkOut ? (
+                                <Text fz="sm">{checkOutDate}</Text>
+                            ) : (
+                                <Text c="dimmed" fz="sm">Add date</Text>
+                            )}
                         </Paper>
                     </Grid.Col>
                 </Grid>
             </Container>
             <Group>
-                <Button fullWidth size="lg">Reserve</Button>
+                {(checkIn && checkOut) ? (
+                    <Button fullWidth size="lg">
+                        Reserve
+                    </Button>
+                ) : (
+                    <Button fullWidth size="lg" onClick={scrollIntoView}>
+                        Check availability
+                    </Button>
+                )}
             </Group>
         </Paper>
     )

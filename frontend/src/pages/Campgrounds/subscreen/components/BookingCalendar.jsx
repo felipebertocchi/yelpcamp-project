@@ -3,8 +3,8 @@ import { DatePicker } from '@mantine/dates';
 import { useState } from 'react';
 import dayjs from 'dayjs';
 
-export default function ({ campgroundName }) {
-    const [dates, setDates] = useState([null, null]);
+export default function ({ campgroundName, bookingDates, setBookingDates }) {
+    const [checkIn, checkOut] = bookingDates;
     const [calendarTitle, setCalendarTitle] = useState("Select check-in date");
     const [calendarSubtitle, setCalendarSubtitle] = useState("Add your travel dates for exact pricing");
 
@@ -25,7 +25,7 @@ export default function ({ campgroundName }) {
             setCalendarSubtitle("Add your travel dates for exact pricing");
         }
 
-        setDates(dates);
+        setBookingDates(dates);
     }
 
     return (
@@ -37,8 +37,8 @@ export default function ({ campgroundName }) {
                         <Title order={3}>{calendarTitle}</Title>
                         <Text order={5} color="dimmed">{calendarSubtitle}</Text>
                     </div>
-                    {(dates[0] !== null && dates[1] !== null) &&
-                        <Button disabled={dates[0] === null} variant='subtle' onClick={() => handleDateSelect([null, null])}>
+                    {(checkIn !== null && checkOut !== null) &&
+                        <Button variant='subtle' onClick={() => handleDateSelect([null, null])}>
                             Clear dates
                         </Button>
                     }
@@ -49,7 +49,7 @@ export default function ({ campgroundName }) {
                     numberOfColumns={2}
                     firstDayOfWeek={0}
                     minDate={dayjs().add(2, 'day').toDate()}
-                    value={dates}
+                    value={bookingDates}
                     onChange={handleDateSelect}
                     size="md"
                     my={15}

@@ -15,6 +15,7 @@ import ReserveWidget from "./components/ReserveWidget";
 export function Component() {
     const { campgroundId } = useParams();
     const [campground, setCampground] = useState(null);
+    const [bookingDates, setBookingDates] = useState([null, null]);
     const { scrollIntoView, targetRef } = useScrollIntoView({
         offset: 350,
     });
@@ -49,11 +50,11 @@ export function Component() {
                             <AmenitiesSection amenities={campground.amenities} />
                             <ActivitiesSection activities={campground.activities} />
                             <Box ref={targetRef}>
-                                <BookingCalendar campgroundName={campground.title} />
+                                <BookingCalendar campgroundName={campground.title} bookingDates={bookingDates} setBookingDates={setBookingDates} />
                             </Box>
                         </Grid.Col>
                         <Grid.Col span={5}>
-                            <ReserveWidget campground={campground} scrollIntoView={scrollIntoView} />
+                            <ReserveWidget campground={campground} scrollIntoView={scrollIntoView} bookingDates={bookingDates} />
                         </Grid.Col>
                     </Grid>
                     <ReviewsSection campgroundId={campgroundId} reviews={campground.reviews} avgRating={campground.averageRating} />
