@@ -9,6 +9,11 @@ const UserSchema = new Schema({
     }
 }, { timestamps: true })
 
-UserSchema.plugin(passportLocalMongoose); // this will add username and password field w/ additional methods
+UserSchema.plugin(passportLocalMongoose, {
+    usernameField: 'email',
+    errorMessages: {
+        UserExistsError: 'A user with the given email is already registered'
+    }
+});
 
 module.exports = model('User', UserSchema);
