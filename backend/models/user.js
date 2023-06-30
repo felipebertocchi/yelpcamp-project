@@ -6,7 +6,15 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         unique: true,
-    }
+    },
+    name: {
+        type: String,
+        required: true,
+    },
+    phone: {
+        type: String,
+        required: true,
+    },
 }, { timestamps: true })
 
 UserSchema.plugin(passportLocalMongoose, {
