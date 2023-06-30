@@ -6,17 +6,16 @@ module.exports = {
     },
     registerNewUser: async (req, res) => {
         try {
-            const { username, email, password } = req.body;
-            const user = new User({ email, username });
+            const { email, password } = req.body;
+            const user = new User({ email });
             const registedUser = await User.register(user, password);
             req.login(registedUser, function (err) {
                 if (err) { return next(err); }
-                req.flash('success', `Welcome to Yelp Camp, ${username}!`)
-                return res.redirect('/campgrounds')
+                return res.status(200).json({ message: 'User registered successfully' });
             });
-        } catch (error) {
-            req.flash('error', error.message)
-            res.redirect('/register')
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({ message: 'Error registering user', error: err.message });
         }
     },
     getLoginForm: (req, res) => {
