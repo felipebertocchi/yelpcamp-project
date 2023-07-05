@@ -1,4 +1,4 @@
-import { Alert, Button, Group, Modal, Paper, Title } from "@mantine/core";
+import { Alert, Button, Group, Modal, Paper, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconAlertCircle } from "@tabler/icons-react";
 import { useContext } from "react";
@@ -12,7 +12,7 @@ export default function () {
 
     return (
         <>
-            <Modal opened={opened} onClose={close} title={<Title order={5}>Submit a review</Title>} radius="md" centered>
+            <Modal opened={opened} onClose={close} title={<Text fw={700}>Submit a review</Text>} radius="md" centered>
                 <Paper p={14} radius="md" miw={400}>
                     {user ? (
                         <ReviewForm cancel={close} />
