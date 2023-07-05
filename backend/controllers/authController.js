@@ -22,16 +22,31 @@ module.exports = {
         res.render('users/login');
     },
     loginUser: async (req, res) => {
-        const { username } = req.body;
-        req.flash('success', `Welcome back ${username}!`);
-        const redirectUrl = res.locals.returnTo || '/campgrounds';
-        delete req.session.returnTo;
-        res.redirect(redirectUrl);
+        if (req.isAuthenticated()) {
+            return res.status(200).json({
+                verified: true,
+                user: req.user
+            });
+        } else {
+            return res.status(500).json({ message: 'There was an error processing the login request' });
+        }
     },
     logoutUser: (req, res, next) => {
         req.logout(function (err) {
             if (err) { return next(err); }
             res.redirect('/campgrounds');
         });
+    },
+    getUser: (req, res, next) => {
+        if (req.isAuthenticated()) {
+            return res.status(200).json({
+                verified: true,
+                user: req.user
+            });
+        } else {
+            return res.status(401).json({
+                message: "User not authenticated"
+            });
+        }
     }
 }
