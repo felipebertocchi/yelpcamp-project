@@ -72,6 +72,7 @@ export default function () {
         if (user) {
             return (
                 <>
+                    <PageLink page={"new-campground"} label={"Add your campground"} onClick={close} />
                     <PageLink page={"profile"} onClick={close} />
                     <PageLink page={"logout"} onClick={logOut} />
                 </>
