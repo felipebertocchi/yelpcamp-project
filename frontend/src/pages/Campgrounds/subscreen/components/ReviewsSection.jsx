@@ -19,12 +19,12 @@ export default function ({ campgroundId, reviews, avgRating }) {
             </Title>
             {(reviews && reviews.length > 0) ? (
                 <SimpleGrid cols={2} spacing="xl" verticalSpacing="xl">
-                    {reviews.map(({ rating, body, createdAt }, index) => (
+                    {reviews.map(({ rating, body, author, createdAt }, index) => (
                         <Paper key={index} p='lg' withBorder>
-                            <Group mb={15}>
+                            <Group mb={15} spacing={10}>
                                 <Avatar color="cyan" radius="xl"></Avatar>
                                 <div>
-                                    <Text fw={700} size="md" tt="capitalize">placeholder name</Text>
+                                    <Text fw={700} size="md" tt="capitalize" ml={4}>{author?.name || "Anonymous"}</Text>
                                     <Group spacing={8}>
                                         <Rating mb={4} value={rating} readOnly />
                                         <Text color="dimmed">{createdAt}</Text>
