@@ -4,12 +4,18 @@ import { IconLock, IconMail } from "@tabler/icons-react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { z } from 'zod';
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../../auth/AuthContext";
 
 export function Component() {
-    const { setUser } = useContext(AuthContext);
+    const { user, setUser } = useContext(AuthContext);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user) {
+            navigate("/campgrounds");
+        }
+    }, [])
 
     const form = useForm({
         initialValues: {
@@ -31,6 +37,7 @@ export function Component() {
     const handleSubmit = async (userInput) => {
         await axios.post("http://localhost:4000/login", userInput)
             .then(response => {
+                console.log(response.data.message);
                 setUser(response.data.user);
                 return navigate("/campgrounds");
             })

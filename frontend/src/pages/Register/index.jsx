@@ -3,11 +3,20 @@ import { useForm, zodResolver } from "@mantine/form";
 import { IconLock, IconMail, IconPhone, IconUser } from "@tabler/icons-react";
 import { Link, useNavigate } from "react-router-dom";
 import { userSchema } from "../../schemas/userSchema";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "../../auth/AuthContext";
 import axios from "axios";
 
 
 export function Component() {
     const navigate = useNavigate();
+    const { user, setUser } = useContext(AuthContext);
+
+    useEffect(() => {
+        if (user) {
+            navigate("/campgrounds");
+        }
+    }, [])
 
     const form = useForm({
         initialValues: {
@@ -25,6 +34,7 @@ export function Component() {
         await axios.post("http://localhost:4000/register", userInput)
             .then(response => {
                 console.log(response.data.message);
+                setUser(response.data.user);
                 return navigate("/campgrounds");
             })
             .catch(error => {
