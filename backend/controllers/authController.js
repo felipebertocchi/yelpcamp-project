@@ -31,13 +31,13 @@ module.exports = {
             return res.status(500).json({ message: 'There was an error processing the login request' });
         }
     },
-    logoutUser: (req, res, next) => {
+    logoutUser: (req, res) => {
         req.logout(function (err) {
-            if (err) { return next(err); }
-            res.redirect('/campgrounds');
+            if (err) return res.status(500).json({ message: 'User logout failed' });
+            return res.status(200).json({ message: 'User logout successful' });
         });
     },
-    getUser: (req, res, next) => {
+    getUser: (req, res) => {
         if (req.isAuthenticated()) {
             return res.status(200).json({
                 verified: true,
