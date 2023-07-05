@@ -12,7 +12,8 @@ const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 const passport = require('passport');
-const LocalStrategy = require('passport-local');
+const LocalStrategy = require('passport-local').Strategy;
+const MongoDBStore = require('connect-mongo');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const cors = require('cors')
@@ -44,8 +45,16 @@ app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(mongoSanitize());
 
+const store = MongoDBStore.create({
+    mongoUrl: process.env.MONGODB_URI,
+    touchAfter: 24 * 3600,
+    crypto: {
+        secret: process.env.SESSION_SECRET
+    },
+}) 
+
 const sessionConfig = {
-    store: mongo.store,
+    store: store,
     name: 'session',
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -112,7 +121,9 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(new LocalStrategy(User.authenticate()));
+passport.use(new LocalStrategy({
+    usernameField: 'email'
+}, User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
