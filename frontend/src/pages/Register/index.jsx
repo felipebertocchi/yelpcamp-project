@@ -97,7 +97,7 @@ export function Component() {
                 <Divider my="lg" />
                 <Center>
                     <Text mr={5}>Already have an account?</Text>
-                    <Link style={{ textDecorationLine: "none" }} to="/">
+                    <Link style={{ textDecorationLine: "none" }} to="/login">
                         <Text c="blue">
                             Log in
                         </Text>
