@@ -1,6 +1,6 @@
 import { createStyles, Image, Card, Text, Group, Button, getStylesRef, rem } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
-import { IconMapPin, IconStar } from '@tabler/icons-react';
+import { IconMapPin, IconStarFilled } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 
 const useStyles = createStyles((theme) => ({
@@ -39,7 +39,7 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-export function CampCard({ id, images, title, location, description, price }) {
+export function CampCard({ id, images, title, location, averageRating, price }) {
     const { classes } = useStyles();
 
     const slides = images.map(({ url }, index) => (
@@ -77,8 +77,8 @@ export function CampCard({ id, images, title, location, description, price }) {
                     <Text fw={500} fz="sm" mt={4}>{location}</Text>
                 </Group>
                 <Group spacing={3}>
-                    <IconStar size="1rem" />
-                    <Text fw={500} fz="sm" mt={4}>4.78</Text>
+                    <IconStarFilled size="1rem" />
+                    <Text fw={500} fz="sm" mt={4}>{averageRating || "-"}</Text>
                 </Group>
             </Group>
 
