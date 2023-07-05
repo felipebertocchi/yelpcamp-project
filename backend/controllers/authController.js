@@ -10,8 +10,12 @@ module.exports = {
             const user = new User({ name, email, phone });
             const registedUser = await User.register(user, password);
             req.login(registedUser, function (err) {
-                if (err) { return next(err); }
-                return res.status(200).json({ message: 'User registered successfully' });
+                if (err) return res.status(500).json({ message: 'User register failed', error: err });
+                return res.status(200).json({
+                    message: 'User registered successfully',
+                    verified: true,
+                    user: req.user,
+                });
             });
         } catch (err) {
             console.log(err);
@@ -33,7 +37,7 @@ module.exports = {
     },
     logoutUser: (req, res) => {
         req.logout(function (err) {
-            if (err) return res.status(500).json({ message: 'User logout failed' });
+            if (err) return res.status(500).json({ message: 'User logout failed', error: err });
             return res.status(200).json({ message: 'User logout successful' });
         });
     },
