@@ -4,7 +4,7 @@ import { useDisclosure } from "@mantine/hooks";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function () {
+export default function ({ cancel }) {
     const { campgroundId } = useParams();
     const [visible, { toggle }] = useDisclosure(false);
     const navigate = useNavigate();
@@ -50,7 +50,7 @@ export default function () {
                 {...form.getInputProps('body')}
             />
             <Group position="right" mt="md">
-                <Button type="button" onClick={close} variant="outline">Cancel</Button>
+                <Button type="button" onClick={cancel} variant="outline">Cancel</Button>
                 <Button type="submit" disabled={!form.isDirty('rating') || !form.isDirty('body')}>Submit review</Button>
             </Group>
             <LoadingOverlay visible={visible} overlayBlur={2} />

@@ -15,7 +15,7 @@ export default function () {
             <Modal opened={opened} onClose={close} title={<Title order={5}>Submit a review</Title>} radius="md" centered>
                 <Paper p={14} radius="md" miw={400}>
                     {user ? (
-                        <ReviewForm />
+                        <ReviewForm cancel={close} />
                     ) : (
                         <>
                             <Alert icon={<IconAlertCircle size="1rem" />} title="">
