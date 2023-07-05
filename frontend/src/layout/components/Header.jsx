@@ -14,6 +14,8 @@ import { AuthContext } from '../../auth/AuthContext';
 import ThemeToggle from './ThemeToggle';
 import Logo from './Logo';
 import PageLink from './PageLink';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const HEADER_HEIGHT = rem(70);
 
@@ -63,14 +65,15 @@ const useStyles = createStyles((theme) => ({
 export default function () {
     const [opened, { toggle, close }] = useDisclosure(false);
     const { classes } = useStyles();
-    const { user } = useContext(AuthContext);
+    const { user, setUser } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const userLinks = (user) => {
         if (user) {
             return (
                 <>
                     <PageLink page={"profile"} onClick={close} />
-                    <PageLink page={"logout"} onClick={close} />
+                    <PageLink page={"logout"} onClick={logOut} />
                 </>
             )
         } else {
@@ -82,6 +85,19 @@ export default function () {
             )
         }
     }
+
+    const logOut = async (e) => {
+        e.preventDefault()
+        await axios.get('http://localhost:4000/logout')
+            .then(() => {
+                setUser(null);
+                return navigate("/");
+            })
+            .catch(error => {
+                console.error('Error logging out:', error);
+            })
+            .finally(close);
+    };
 
     return (
         <Header height={HEADER_HEIGHT} mb={60} className={classes.root}>
