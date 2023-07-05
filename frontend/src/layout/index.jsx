@@ -14,7 +14,7 @@ export default function () {
             "label": "Campgrounds"
         },
         {
-            "link": "/Login",
+            "link": "/login",
             "label": "Login"
         },
         {
