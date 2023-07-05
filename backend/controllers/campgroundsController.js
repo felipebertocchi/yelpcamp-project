@@ -46,9 +46,10 @@ module.exports = {
             .populate('author')
             .populate({
                 path: 'reviews',
+                options: { sort: [[['createdAt', 'desc']]] },
                 populate: {
                     path: 'author',
-                    model: 'User'
+                    model: 'User',
                 }
             });
         if (!campground) {
