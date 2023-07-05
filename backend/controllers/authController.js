@@ -44,8 +44,8 @@ module.exports = {
                 user: req.user
             });
         } else {
-            return res.status(401).json({
-                message: "User not authenticated"
+            return res.status(200).json({
+                message: "User is not authenticated"
             });
         }
     }
