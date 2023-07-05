@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../../../auth/AuthContext";
 
-export default function () {
+export default function ({ preventRedirect }) {
     const { user, setUser } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -39,7 +39,7 @@ export default function () {
             .then(response => {
                 console.log(response.data.message);
                 setUser(response.data.user);
-                return navigate("/campgrounds");
+                if (!preventRedirect) return navigate("/campgrounds");
             })
             .catch(error => {
                 console.log(error);

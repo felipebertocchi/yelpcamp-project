@@ -21,7 +21,7 @@ export default function () {
                             <Alert icon={<IconAlertCircle size="1rem" />} title="">
                                 You need to log in to submit a review
                             </Alert>
-                            <LoginForm />
+                            <LoginForm preventRedirect />
                         </>
                     )}
                 </Paper>
