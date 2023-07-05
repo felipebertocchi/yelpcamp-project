@@ -30,7 +30,7 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-export default function ({ page, onClick }) {
+export default function ({ page, label, onClick }) {
     const { classes, cx } = useStyles();
 
     return (
@@ -40,8 +40,8 @@ export default function ({ page, onClick }) {
             className={({ isActive }) => cx(classes.link, { [classes.linkActive]: isActive })}
             onClick={onClick}
         >
-            <Text tt={"capitalize"}>
-                {page}
+            <Text tt={!label && "capitalize"}>
+                {label || page}
             </Text>
         </NavLink>
     )
