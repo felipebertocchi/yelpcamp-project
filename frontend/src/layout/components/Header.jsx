@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
     createStyles,
     Header,
@@ -10,11 +9,13 @@ import {
     rem,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { useContext } from 'react';
+import { AuthContext } from '../../auth/AuthContext';
 import ThemeToggle from './ThemeToggle';
 import Logo from './Logo';
-import { Link } from 'react-router-dom';
+import PageLink from './PageLink';
 
-const HEADER_HEIGHT = rem(60);
+const HEADER_HEIGHT = rem(70);
 
 const useStyles = createStyles((theme) => ({
     root: {
@@ -43,7 +44,6 @@ const useStyles = createStyles((theme) => ({
         justifyContent: 'space-between',
         alignItems: 'center',
         height: '100%',
-        maxWidth: '80rem',
     },
 
     links: {
@@ -57,70 +57,55 @@ const useStyles = createStyles((theme) => ({
             display: 'none',
         },
     },
-
-    link: {
-        display: 'block',
-        lineHeight: 1,
-        padding: `${rem(8)} ${rem(12)}`,
-        borderRadius: theme.radius.sm,
-        textDecoration: 'none',
-        color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.colors.gray[7],
-        fontSize: theme.fontSizes.sm,
-        fontWeight: 500,
-
-        '&:hover': {
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-        },
-
-        [theme.fn.smallerThan('sm')]: {
-            borderRadius: 0,
-            padding: theme.spacing.md,
-        },
-    },
-
-    linkActive: {
-        '&, &:hover': {
-            backgroundColor: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).background,
-            color: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).color,
-        },
-    },
 }));
 
 
-export default function ({ links }) {
+export default function () {
     const [opened, { toggle, close }] = useDisclosure(false);
-    const [active, setActive] = useState(links[0].link);
-    const { classes, cx } = useStyles();
+    const { classes } = useStyles();
+    const { user } = useContext(AuthContext);
 
-    const items = links.map((link) => (
-        <Link
-            key={link.label}
-            to={link.link}
-            className={cx(classes.link, { [classes.linkActive]: active === link.link })}
-            onClick={() => {
-                setActive(link.link);
-                close();
-            }}
-        >
-            {link.label}
-        </Link>
-    ));
+    const userLinks = (user) => {
+        if (user) {
+            return (
+                <>
+                    <PageLink page={"profile"} onClick={close} />
+                    <PageLink page={"logout"} onClick={close} />
+                </>
+            )
+        } else {
+            return (
+                <>
+                    <PageLink page={"login"} onClick={close} />
+                    <PageLink page={"register"} onClick={close} />
+                </>
+            )
+        }
+    }
 
     return (
         <Header height={HEADER_HEIGHT} mb={60} className={classes.root}>
-            <Container className={classes.header}>
-                <Logo />
+            <Container size={"xl"} className={classes.header}>
+                <Group spacing={10}>
+                    <Logo />
+                    <Group spacing={5} className={classes.links}>
+                        <PageLink page={"campgrounds"} onClick={close} />
+                        <PageLink page={"about"} onClick={close} />
+                    </Group>
+                </Group>
+
                 <Group spacing={5} className={classes.links}>
-                    {items}
+                    {userLinks(user)}
                     <ThemeToggle />
                 </Group>
 
-                <Burger opened={opened} onClick={toggle} className={classes.burger} size="sm" />
+                <Burger opened={opened} onClick={toggle} className={classes.burger} size="md" />
 
-                <Transition transition="pop-top-right" duration={200} mounted={opened}>
+                <Transition transition="slide-down" duration={200} mounted={opened}>
                     {(styles) => (
-                        <Paper className={classes.dropdown} withBorder style={styles}>
-                            {items}
+                        <Paper className={classes.dropdown} pb={5} radius={15} withBorder style={styles}>
+                            <PageLink page={"campgrounds"} onClick={close} />
+                            {userLinks(user)}
                         </Paper>
                     )}
                 </Transition>
