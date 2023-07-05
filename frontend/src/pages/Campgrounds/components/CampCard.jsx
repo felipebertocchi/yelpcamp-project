@@ -45,7 +45,7 @@ export function CampCard({ id, images, title, location, averageRating, price }) 
     const slides = images.map(({ url }, index) => (
         <Carousel.Slide key={index}>
             <Link to={`${id}`} relative='path'>
-                <Image src={url} height={220} />
+                <Image src={url} height={220} withPlaceholder/>
             </Link>
         </Carousel.Slide>
     ));
@@ -63,7 +63,7 @@ export function CampCard({ id, images, title, location, averageRating, price }) 
                         indicator: classes.carouselIndicator,
                     }}
                 >
-                    {slides}
+                    {images?.length ? slides : <Image height={220} withPlaceholder/>}
                 </Carousel>
             </Card.Section>
 
