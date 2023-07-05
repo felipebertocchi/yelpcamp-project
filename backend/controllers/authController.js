@@ -28,6 +28,7 @@ module.exports = {
     loginUser: async (req, res) => {
         if (req.isAuthenticated()) {
             return res.status(200).json({
+                message: 'Login successful',
                 verified: true,
                 user: req.user
             });
