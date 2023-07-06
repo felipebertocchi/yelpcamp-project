@@ -1,15 +1,5 @@
 import { Divider, Group, Paper, Text, Title } from "@mantine/core";
-import { IconBike, IconFishHook, IconKayak, IconSailboat, IconScubaMask, IconSwimming, IconTrekking } from "@tabler/icons-react";
-
-const activityIcons = {
-    "swimming": <IconSwimming />,
-    "scuba diving": <IconScubaMask />,
-    "fishing": <IconFishHook />,
-    "hiking trails": <IconTrekking />,
-    "boat rental": <IconSailboat />,
-    "canoe/kayak rental": <IconKayak />,
-    "bike rental": <IconBike />,
-}
+import activityIcons from "../../../../utils/activityIcons";
 
 export default function ({ activities }) {
     return (
@@ -19,11 +9,11 @@ export default function ({ activities }) {
                     <Divider my='lg' />
                     <Title order={3} my={15}>Activities</Title>
                     <Group>
-                        {activities.map(activity =>
-                            <Paper key={activity} shadow='md' p='sm' radius='lg' withBorder>
+                        {activities.filter(a => a.active).map(activity =>
+                            <Paper key={activity.name} shadow='md' p='sm' radius='lg' withBorder>
                                 <Group>
-                                    {activityIcons[activity]}
-                                    <Text fz='lg' tt='capitalize'>{activity}</Text>
+                                    {activityIcons[activity.name]}
+                                    <Text fz='lg' tt='capitalize'>{activity.name}</Text>
                                 </Group>
                             </Paper>
                         )}

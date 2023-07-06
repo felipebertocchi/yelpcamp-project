@@ -1,23 +1,5 @@
 import { Divider, Group, Paper, Text, Title } from "@mantine/core";
-import { IconAntennaBars5, IconBadgeWc, IconBasket, IconBath, IconCampfire, IconDisabled, IconGrill, IconParking, IconPaw, IconPhoto, IconSnowflake, IconTrash, IconTrees, IconWashMachine, IconWifi } from "@tabler/icons-react";
-
-const amenityIcons = {
-    "wi-fi": <IconWifi />,
-    "scenic view": <IconPhoto />,
-    "coverage": <IconAntennaBars5 />,
-    "restrooms": <IconBadgeWc />,
-    "showers": <IconBath />,
-    "accessibility": <IconDisabled />,
-    "fire ring": <IconCampfire />,
-    "picnic area": <IconTrees />,
-    "ice": <IconSnowflake />,
-    "grills": <IconGrill />,
-    "camp store": <IconBasket />,
-    "laundry": <IconWashMachine />,
-    "dump station": <IconTrash />,
-    "pet-friendly": <IconPaw />,
-    "parking": <IconParking />,
-}
+import amenityIcons from "../../../../utils/amenityIcons";
 
 export default function ({ amenities }) {
     return (
@@ -27,11 +9,11 @@ export default function ({ amenities }) {
                     <Divider my='lg' />
                     <Title order={3} my={15}>Services & Amenities</Title>
                     <Group>
-                        {amenities.map(amenity =>
-                            <Paper key={amenity} shadow='md' p='sm' radius='lg' withBorder>
+                        {amenities.filter(a => a.active).map(amenity =>
+                            <Paper key={amenity.name} shadow='md' p='sm' radius='lg' withBorder>
                                 <Group>
-                                    {amenityIcons[amenity]}
-                                    <Text fz='lg' tt='capitalize'>{amenity}</Text>
+                                    {amenityIcons[amenity.name]}
+                                    <Text fz='lg' tt='capitalize'>{amenity.name}</Text>
                                 </Group>
                             </Paper>
                         )}
