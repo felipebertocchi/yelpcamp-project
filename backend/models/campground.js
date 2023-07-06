@@ -6,6 +6,11 @@ const ImageSchema = new Schema({
     filename: String
 });
 
+const ServiceSchema = new Schema({
+    name: String,
+    active: Boolean
+});
+
 ImageSchema.virtual('thumbnail').get(function () {
     return this.url.replace('/upload', '/upload/w_200')
 });
@@ -16,6 +21,13 @@ const CampgroundSchema = new Schema({
     price: Number,
     description: String,
     location: String,
+    contact: {
+        email: String,
+        phone: String,
+        includeAccContact: Boolean,
+    },
+    amenities: [ServiceSchema],
+    activities: [ServiceSchema],
     geometry: {
         type: {
             type: String,

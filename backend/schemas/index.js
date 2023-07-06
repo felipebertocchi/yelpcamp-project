@@ -27,9 +27,22 @@ module.exports = {
     campgroundSchema: Joi.object({
         campground: Joi.object({
             title: Joi.string().required().escapeHTML(),
+            description: Joi.string().required().escapeHTML(),
             location: Joi.string().required().escapeHTML(),
             price: Joi.number().required().min(0),
-            description: Joi.string().required().escapeHTML(),
+            contact: Joi.object({
+                phone: Joi.string(),
+                email: Joi.string().email(),
+                includeAccContact : Joi.boolean(),
+            }),
+            amenities: Joi.array().items(Joi.object({
+                name: Joi.string().required().escapeHTML(),
+                active: Joi.boolean().required(),
+            })),
+            activities: Joi.array().items(Joi.object({
+                name: Joi.string().required().escapeHTML(),
+                active: Joi.boolean().required(),
+            })),
         }).required(),
         deleteImages: Joi.array()
     }),
