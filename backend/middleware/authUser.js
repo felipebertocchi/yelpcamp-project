@@ -1,8 +1,7 @@
 module.exports = (req, res, next) => {
     if (!req.isAuthenticated()) {
         req.session.returnTo = req.originalUrl;
-        req.flash('error', 'You must sign in to continue');
-        return res.redirect('/login');
+        return res.status(400).json({ message: 'You must log in to continue', sessionExpired: true})
     } else {
         next();
     }
