@@ -31,8 +31,8 @@ module.exports = {
             location: Joi.string().required().escapeHTML(),
             price: Joi.number().required().min(0),
             contact: Joi.object({
-                phone: Joi.string(),
-                email: Joi.string().email(),
+                phone: Joi.string().allow('').optional(),
+                email: Joi.string().email().allow('').optional(),
                 includeAccContact : Joi.boolean(),
             }),
             amenities: Joi.array().items(Joi.object({
