@@ -1,7 +1,7 @@
-import { Button, Checkbox, Divider, Group, NumberInput, Paper, Stepper, Text, TextInput, Textarea, Title, rem } from "@mantine/core";
+import { ActionIcon, Box, Button, Checkbox, Divider, Group, Image, NumberInput, Paper, SimpleGrid, Stepper, Text, TextInput, Textarea, Title, Tooltip, rem } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
-import { IconAt, IconBlockquote, IconCurrencyDollar, IconMapPin, IconPhone, IconPhoto, IconTent, IconUpload, IconX } from "@tabler/icons-react";
+import { IconAt, IconBlockquote, IconCurrencyDollar, IconMapPin, IconPhone, IconPhoto, IconTent, IconTrash, IconUpload, IconX } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
@@ -71,6 +71,37 @@ export default function ({ preventRedirect }) {
             })
             .finally(() => setUploading(false));
     };
+
+    const deleteImage = (index) => {
+        const newImageFiles = [...imageFiles];
+        newImageFiles.splice(index, 1);
+        setImageFiles(newImageFiles);
+    };
+
+    const previews = imageFiles.map((file, index) => {
+        const imageUrl = URL.createObjectURL(file);
+        return (
+            <Box pos="relative">
+                <Image
+                    key={index}
+                    src={imageUrl}
+                    imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
+                />
+                <Tooltip label="Remove image" position="left">
+                    <ActionIcon
+                        color="red"
+                        radius="xl"
+                        pos="absolute"
+                        top="3%"
+                        right="2%"
+                        onClick={() => deleteImage(index)}
+                    >
+                        <IconTrash size="1.125rem" />
+                    </ActionIcon>
+                </Tooltip>
+            </Box>
+        );
+    });
 
     return (
         <>
@@ -185,7 +216,7 @@ export default function ({ preventRedirect }) {
                             Upload pictures to show guests your campground
                         </Text>
                         <Dropzone
-                            onDrop={(files) => setImageFiles(files)}
+                            onDrop={(files) => setImageFiles([...imageFiles, ...files])}
                             onReject={(files) => console.log('rejected files', files)}
                             maxSize={3 * 1024 ** 2}
                             accept={IMAGE_MIME_TYPE}
@@ -193,16 +224,10 @@ export default function ({ preventRedirect }) {
                         >
                             <Group position="center" spacing="xl" style={{ minHeight: rem(220), pointerEvents: 'none' }}>
                                 <Dropzone.Accept>
-                                    <IconUpload
-                                        size="3.2rem"
-                                        stroke={1.5}
-                                    />
+                                    <IconUpload size="3.2rem" stroke={1.5} />
                                 </Dropzone.Accept>
                                 <Dropzone.Reject>
-                                    <IconX
-                                        size="3.2rem"
-                                        stroke={1.5}
-                                    />
+                                    <IconX size="3.2rem" stroke={1.5} />
                                 </Dropzone.Reject>
                                 <Dropzone.Idle>
                                     <IconPhoto size="3.2rem" stroke={1.5} />
@@ -217,6 +242,13 @@ export default function ({ preventRedirect }) {
                                 </div>
                             </Group>
                         </Dropzone>
+                        <SimpleGrid
+                            cols={4}
+                            breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
+                            mt={previews.length > 0 ? 'xl' : 0}
+                        >
+                            {previews}
+                        </SimpleGrid>
                     </Stepper.Step>
                 </Stepper>
                 <Group position="center" mt="xl">
