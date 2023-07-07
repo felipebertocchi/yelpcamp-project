@@ -1,7 +1,7 @@
-import { ActionIcon, Box, Button, Checkbox, Divider, Group, Image, NumberInput, Paper, SimpleGrid, Stepper, Text, TextInput, Textarea, Title, Tooltip, rem } from "@mantine/core";
+import { ActionIcon, Alert, Box, Button, Checkbox, Divider, Group, Image, Modal, NumberInput, Paper, SimpleGrid, Stepper, Text, TextInput, Textarea, Title, Tooltip, rem } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
-import { IconAt, IconBlockquote, IconCurrencyDollar, IconMapPin, IconPhone, IconPhoto, IconTent, IconTrash, IconUpload, IconX } from "@tabler/icons-react";
+import { IconAlertCircle, IconAt, IconBlockquote, IconCurrencyDollar, IconMapPin, IconPhone, IconPhoto, IconTent, IconTrash, IconUpload, IconX } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
@@ -10,9 +10,12 @@ import { campSchema } from "../../../schemas/campSchema";
 import amenityIcons from "../../../utils/amenityIcons";
 import activityIcons from "../../../utils/activityIcons";
 import { getFormData } from "../../../utils/getFormData";
+import LoginForm from "../../Login/components/LoginForm";
+import { useDisclosure } from "@mantine/hooks";
 
-export default function ({ preventRedirect }) {
+export default function () {
     const { user, setUser } = useContext(AuthContext);
+    const [loginModal, handleLoginModal] = useDisclosure(false);
     const navigate = useNavigate();
     const [imageFiles, setImageFiles] = useState([]);
     const [uploading, setUploading] = useState(false);
@@ -29,6 +32,12 @@ export default function ({ preventRedirect }) {
             navigate("/login");
         }
     }, [])
+
+    useEffect(() => {
+        if (loginModal && user) {
+            handleLoginModal.close();
+        }
+    }, [user])
 
     const form = useForm({
         validateInputOnBlur: true,
@@ -60,13 +69,13 @@ export default function ({ preventRedirect }) {
             .then(response => {
                 console.log(response.data.message);
                 const { campground } = response.data
-                if (!preventRedirect) return navigate(`/campgrounds/${campground.id}`);
+                return navigate(`/campgrounds/${campground.id}`);
             })
             .catch(error => {
                 console.log(error.response.data.message);
                 if (error.response.data.sessionExpired) {
                     setUser(null);
-                    navigate("/login");
+                    handleLoginModal.open();
                 }
             })
             .finally(() => setUploading(false));
@@ -81,9 +90,8 @@ export default function ({ preventRedirect }) {
     const previews = imageFiles.map((file, index) => {
         const imageUrl = URL.createObjectURL(file);
         return (
-            <Box pos="relative">
+            <Box pos="relative" key={index}>
                 <Image
-                    key={index}
                     src={imageUrl}
                     imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
                 />
@@ -266,6 +274,14 @@ export default function ({ preventRedirect }) {
                     )}
                 </Group>
             </form>
+            <Modal opened={loginModal} onClose={handleLoginModal.close} title="Action requires login" centered>
+                <Paper p={14} radius="md" miw={400}>
+                    <Alert icon={<IconAlertCircle />} color="yellow">
+                        Your session has expired! Log in to continue
+                    </Alert>
+                    <LoginForm preventRedirect />
+                </Paper>
+            </Modal>
         </>
     )
 }
