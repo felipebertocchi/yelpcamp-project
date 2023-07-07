@@ -4,11 +4,12 @@ import { IconLock, IconMail } from "@tabler/icons-react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { z } from 'zod';
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../auth/AuthContext";
 
 export default function ({ preventRedirect }) {
     const { user, setUser } = useContext(AuthContext);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -35,6 +36,7 @@ export default function ({ preventRedirect }) {
     });
 
     const handleSubmit = async (userInput) => {
+        setLoading(true);
         await axios.post("http://localhost:4000/login", userInput)
             .then(response => {
                 console.log(response.data.message);
@@ -45,7 +47,8 @@ export default function ({ preventRedirect }) {
                 console.log(error);
                 console.error(error.response.data.error);
                 handleFormErrors(error.response.data.error)
-            });
+            })
+            .finally(() => setLoading(false));
     };
 
     const handleFormErrors = (error) => {
@@ -78,7 +81,7 @@ export default function ({ preventRedirect }) {
                     icon={<IconLock size="1rem" />}
                     {...form.getInputProps('password')}
                 />
-                <Button type="submit" fullWidth size="md" mt="xl">
+                <Button type="submit" fullWidth size="md" mt="xl" loading={loading}>
                     Login
                 </Button>
             </form>
