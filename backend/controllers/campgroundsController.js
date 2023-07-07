@@ -72,21 +72,24 @@ module.exports = {
         res.render('campgrounds/edit', { campground });
     },
     postNewCampground: async (req, res) => {
-        const campground = new Campground(req.body.campground);
-        campground.images = req.files.map(file => ({ url: file.path, filename: file.filename }));
-        campground.author = req.user._id;
-        await geocodingClient.forwardGeocode({
-            query: req.body.campground.location,
-            limit: 1
-        })
-            .send()
-            .then(response => {
-                campground.geometry = response.body.features[0].geometry;
+        try {
+            const campground = new Campground(req.body.campground);
+            campground.images = req.files.map(file => ({ url: file.path, filename: file.filename }));
+            campground.author = req.user._id;
+            await geocodingClient.forwardGeocode({
+                query: req.body.campground.location,
+                limit: 1
             })
-            .catch(err => console.log(err));
-        await campground.save();
-        req.flash('success', 'Succesfully added a new campground');
-        res.redirect(`/campgrounds/${campground._id}`);
+                .send()
+                .then(response => {
+                    campground.geometry = response.body.features[0].geometry;
+                })
+                .catch(err => console.log(err));
+            await campground.save();
+            return res.status(200).json({ message: "Succesfully added a new campground", campground })
+        } catch (error) {
+            return res.status(500).json({ message: "", error })
+        }
     },
     updateCampground: async (req, res) => {
         const { id } = req.params;
