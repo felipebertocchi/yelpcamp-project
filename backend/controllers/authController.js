@@ -39,7 +39,7 @@ module.exports = {
     logoutUser: (req, res) => {
         req.logout(function (err) {
             if (err) return res.status(500).json({ message: 'User logout failed', error: err });
-            return res.status(200).json({ message: 'User logout successful' });
+            return res.status(200).json({ message: 'See you later!' });
         });
     },
     getUser: (req, res) => {
