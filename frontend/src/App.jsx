@@ -1,7 +1,8 @@
 import { RouterProvider } from 'react-router-dom';
 import { ColorSchemeProvider, MantineProvider } from "@mantine/core";
-import { AuthProvider } from './auth/AuthContext';
 import { useLocalStorage } from '@mantine/hooks';
+import { Notifications } from '@mantine/notifications';
+import { AuthProvider } from './auth/AuthContext';
 import router from './router';
 import axios from 'axios';
 
@@ -19,6 +20,7 @@ export default () => {
         <AuthProvider>
             <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
                 <MantineProvider withGlobalStyles withNormalizeCSS theme={{ colorScheme }} >
+                    <Notifications autoClose={8000} />
                     <RouterProvider router={router} />
                 </MantineProvider>
             </ColorSchemeProvider>
