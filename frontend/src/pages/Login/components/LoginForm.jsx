@@ -40,7 +40,6 @@ export default function ({ preventRedirect }) {
         setLoading(true);
         await axios.post("http://localhost:4000/login", userInput)
             .then(response => {
-                console.log(response.data.message);
                 setUser(response.data.user);
                 notifications.show({
                     title: 'Login',
