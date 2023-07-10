@@ -1,11 +1,12 @@
 import { Anchor, Button, Center, Checkbox, Divider, Group, Paper, PasswordInput, Text, TextInput, Title } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { IconLock, IconMail, IconPhone, IconUser } from "@tabler/icons-react";
+import { IconCheck, IconLock, IconMail, IconPhone, IconUser, IconX } from "@tabler/icons-react";
 import { Link, useNavigate } from "react-router-dom";
 import { userSchema } from "../../schemas/userSchema";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../../auth/AuthContext";
 import axios from "axios";
+import { notifications } from "@mantine/notifications";
 
 
 export function Component() {
@@ -33,13 +34,26 @@ export function Component() {
     const handleSubmit = async (userInput) => {
         await axios.post("http://localhost:4000/register", userInput)
             .then(response => {
-                console.log(response.data.message);
+                notifications.show({
+                    title: 'Register succesful',
+                    message: response.data.message,
+                    withBorder: true,
+                    color: 'teal',
+                    icon: <IconCheck />,
+                })
                 setUser(response.data.user);
                 return navigate("/campgrounds");
             })
             .catch(error => {
-                console.error(error.response.data.error);
-                handleFormErrors(error.response.data.error)
+                console.error(error);
+                notifications.show({
+                    title: 'Error',
+                    message: error.response.data?.message,
+                    withBorder: true,
+                    color: 'red',
+                    icon: <IconX />,
+                });
+                handleFormErrors(error.response.data?.error)
             });
     };
 
