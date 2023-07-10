@@ -11,15 +11,18 @@ import ReviewsSection from "./components/ReviewsSection";
 import MapSection from "./components/MapSection";
 import { useScrollIntoView } from "@mantine/hooks";
 import ReserveWidget from "./components/ReserveWidget";
+import NavMenu from "./components/NavMenu";
 
 export function Component() {
     const { campgroundId } = useParams();
     const [campground, setCampground] = useState(null);
     const [bookingDates, setBookingDates] = useState([null, null]);
-    const { scrollIntoView: scrollToCalendar, targetRef: targetCalendarRef } = useScrollIntoView({
-        offset: 350,
-    });
-    const { scrollIntoView: scrollToReviews, targetRef: targetReviewsRef } = useScrollIntoView();
+    const [showNavMenu, setShowNavMenu] = useState(false);
+    const { scrollIntoView: scrollToPhotos, targetRef: targetPhotosRef } = useScrollIntoView({ offset: 140 });
+    const { scrollIntoView: scrollToAmenities, targetRef: targetAmenitiesRef } = useScrollIntoView({ offset: 70 });
+    const { scrollIntoView: scrollToActivities, targetRef: targetActivitiesRef } = useScrollIntoView({ offset: 70 });
+    const { scrollIntoView: scrollToCalendar, targetRef: targetCalendarRef } = useScrollIntoView({ offset: 70 });
+    const { scrollIntoView: scrollToReviews, targetRef: targetReviewsRef } = useScrollIntoView({ offset: 70 });
 
     useEffect(() => {
         const getData = async () => {
@@ -32,24 +35,47 @@ export function Component() {
                 })
         }
         getData();
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollPosition = window.scrollY;
+            const threshold = 700;
+
+            if (scrollPosition > threshold) {
+                setShowNavMenu(true);
+            } else {
+                setShowNavMenu(false);
+            }
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () =>
+            window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     return (
         <>
             {campground &&
                 <>
+                    {showNavMenu && <NavMenu campground={campground} actions={{ scrollToPhotos, scrollToAmenities, scrollToActivities, scrollToCalendar, scrollToReviews }} />}
                     <Group spacing={5}>
                         <IconMapPin />
                         <Title order={4} mt={4}>{campground.location}</Title>
                     </Group>
-                    <ImageGallery images={campground.images} />
+                    <Box ref={targetPhotosRef}>
+                        <ImageGallery images={campground.images} />
+                    </Box>
                     <Grid>
                         <Grid.Col span={7}>
                             <Title my={30}>{campground.title}</Title>
                             <Title order={3} my={15}>About this campground</Title>
                             <Text fz='lg'>{campground.description}</Text>
-                            <AmenitiesSection amenities={campground.amenities} />
-                            <ActivitiesSection activities={campground.activities} />
+                            <Box ref={targetAmenitiesRef}>
+                                <AmenitiesSection amenities={campground.amenities} />
+                            </Box>
+                            <Box ref={targetActivitiesRef}>
+                                <ActivitiesSection activities={campground.activities} />
+                            </Box>
                             <Box ref={targetCalendarRef}>
                                 <BookingCalendar campgroundName={campground.title} bookingDates={bookingDates} setBookingDates={setBookingDates} />
                             </Box>
