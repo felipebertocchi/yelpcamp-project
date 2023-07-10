@@ -16,6 +16,8 @@ import Logo from './Logo';
 import PageLink from './PageLink';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { notifications } from '@mantine/notifications';
+import { IconCheck, IconX } from '@tabler/icons-react';
 
 const HEADER_HEIGHT = rem(70);
 
@@ -90,11 +92,25 @@ export default function () {
     const logOut = async (e) => {
         e.preventDefault()
         await axios.get('http://localhost:4000/logout')
-            .then(() => {
+            .then(response => {
                 setUser(null);
+                notifications.show({
+                    title: 'Logout succesful',
+                    message: response.data.message,
+                    withBorder: true,
+                    color: 'teal',
+                    icon: <IconCheck />,
+                })
                 return navigate("/");
             })
             .catch(error => {
+                notifications.show({
+                    title: 'Logout error',
+                    message: error.response.data.message,
+                    withBorder: true,
+                    color: 'red',
+                    icon: <IconX />,
+                })
                 console.error('Error logging out:', error);
             })
             .finally(close);

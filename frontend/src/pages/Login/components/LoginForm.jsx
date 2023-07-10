@@ -1,6 +1,7 @@
 import { Button, Center, Divider, PasswordInput, Text, TextInput, Title } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { IconLock, IconMail } from "@tabler/icons-react";
+import { notifications } from '@mantine/notifications';
+import { IconCheck, IconLock, IconMail, IconX } from "@tabler/icons-react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { z } from 'zod';
@@ -41,12 +42,25 @@ export default function ({ preventRedirect }) {
             .then(response => {
                 console.log(response.data.message);
                 setUser(response.data.user);
+                notifications.show({
+                    title: 'Login',
+                    message: response.data.message,
+                    withBorder: true,
+                    color: 'teal',
+                    icon: <IconCheck />,
+                })
                 if (!preventRedirect) return navigate("/campgrounds");
             })
             .catch(error => {
-                console.log(error);
-                console.error(error.response.data.error);
-                handleFormErrors(error.response.data.error)
+                console.error(error);
+                notifications.show({
+                    title: 'Login error',
+                    message: error.response.data.message,
+                    withBorder: true,
+                    color: 'red',
+                    icon: <IconX />,
+                })
+                handleFormErrors(error.response.data.error);
             })
             .finally(() => setLoading(false));
     };
