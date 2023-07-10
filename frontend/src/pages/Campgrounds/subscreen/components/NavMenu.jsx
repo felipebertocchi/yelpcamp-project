@@ -10,8 +10,9 @@ const useStyles = createStyles((theme) => ({
     }
 }));
 
-export default function ({ campground, actions }) {
+export default function ({ campground, bookingDates, actions }) {
     const { scrollToPhotos, scrollToAmenities, scrollToActivities, scrollToCalendar, scrollToReviews } = actions;
+    const [checkIn, checkOut] = bookingDates;
     const { classes } = useStyles();
 
     const links = {
@@ -56,9 +57,17 @@ export default function ({ campground, actions }) {
                             }
                         </Group>
                     </Stack>
-                    <Button size="lg" onClick={scrollToCalendar}>
-                        Check availability
-                    </Button>
+                    <Group>
+                        {(checkIn && checkOut) ? (
+                            <Button radius={"md"} color="teal" fullWidth size="lg">
+                                Reserve
+                            </Button>
+                        ) : (
+                            <Button radius={"md"} fullWidth size="lg" onClick={scrollToCalendar}>
+                                Check availability
+                            </Button>
+                        )}
+                    </Group>
                 </Group>
             </Group>
         </Header>

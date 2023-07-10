@@ -1,4 +1,4 @@
-import { Button, Container, Divider, Grid, Group, HoverCard, Paper, Text } from "@mantine/core";
+import { Button, Container, Divider, Grid, Group, HoverCard, Paper, Text, rem } from "@mantine/core";
 import { IconInfoCircle, IconStarFilled } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 
@@ -16,7 +16,7 @@ export default function ({ campground, actions, bookingDates }) {
     const totalBeforeTaxes = priceOfStay - weeklyStayDiscount + serviceFee
 
     return (
-        <Paper shadow="lg" p="xl" m={"30px 60px"} radius="lg" withBorder pos="sticky" top={30}>
+        <Paper shadow="lg" p="xl" m={"30px 60px"} radius="lg" withBorder pos="sticky" top={rem(100)}>
             <Group position="apart">
                 <div>
                     <Text fz={24} span fw={500}>
@@ -62,11 +62,11 @@ export default function ({ campground, actions, bookingDates }) {
             </Container>
             <Group>
                 {(checkIn && checkOut) ? (
-                    <Button fullWidth size="lg">
+                    <Button radius={"md"} color="teal" fullWidth size="lg">
                         Reserve
                     </Button>
                 ) : (
-                    <Button fullWidth size="lg" onClick={scrollToCalendar}>
+                    <Button radius={"md"} fullWidth size="lg" onClick={scrollToCalendar}>
                         Check availability
                     </Button>
                 )}

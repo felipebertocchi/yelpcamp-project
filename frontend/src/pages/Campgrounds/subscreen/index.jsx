@@ -57,7 +57,13 @@ export function Component() {
         <>
             {campground &&
                 <>
-                    {showNavMenu && <NavMenu campground={campground} actions={{ scrollToPhotos, scrollToAmenities, scrollToActivities, scrollToCalendar, scrollToReviews }} />}
+                    {showNavMenu &&
+                        <NavMenu
+                            campground={campground}
+                            bookingDates={bookingDates}
+                            actions={{ scrollToPhotos, scrollToAmenities, scrollToActivities, scrollToCalendar, scrollToReviews }}
+                        />
+                    }
                     <Group spacing={5}>
                         <IconMapPin />
                         <Title order={4} mt={4}>{campground.location}</Title>
