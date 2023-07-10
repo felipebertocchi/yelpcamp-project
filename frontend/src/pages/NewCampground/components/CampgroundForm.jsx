@@ -1,7 +1,7 @@
 import { ActionIcon, Alert, Box, Button, Checkbox, Divider, Group, Image, Modal, NumberInput, Paper, SimpleGrid, Stepper, Text, TextInput, Textarea, Title, Tooltip, rem } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
-import { IconAlertCircle, IconAt, IconBlockquote, IconCurrencyDollar, IconMapPin, IconPhone, IconPhoto, IconTent, IconTrash, IconUpload, IconX } from "@tabler/icons-react";
+import { IconAlertCircle, IconAt, IconBlockquote, IconCheck, IconCurrencyDollar, IconMapPin, IconPhone, IconPhoto, IconTent, IconTrash, IconUpload, IconX } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
@@ -12,6 +12,7 @@ import activityIcons from "../../../utils/activityIcons";
 import { getFormData } from "../../../utils/getFormData";
 import LoginForm from "../../Login/components/LoginForm";
 import { useDisclosure } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
 
 export default function () {
     const { user, setUser } = useContext(AuthContext);
@@ -67,13 +68,26 @@ export default function () {
 
         await axios.post("http://localhost:4000/campgrounds", formData, { headers: { "Content-Type": "multipart/form-data", } })
             .then(response => {
-                console.log(response.data.message);
                 const { campground } = response.data
+                notifications.show({
+                    title: 'Campground added',
+                    message: response.data.message,
+                    withBorder: true,
+                    color: 'teal',
+                    icon: <IconCheck />,
+                });
                 return navigate(`/campgrounds/${campground.id}`);
             })
             .catch(error => {
-                console.log(error.response.data.message);
-                if (error.response.data.sessionExpired) {
+                console.error(error);
+                notifications.show({
+                    title: 'Error',
+                    message: error.response.data?.message,
+                    withBorder: true,
+                    color: 'red',
+                    icon: <IconX />,
+                });
+                if (error.response.data?.sessionExpired) {
                     setUser(null);
                     handleLoginModal.open();
                 }
@@ -225,7 +239,15 @@ export default function () {
                         </Text>
                         <Dropzone
                             onDrop={(files) => setImageFiles([...imageFiles, ...files])}
-                            onReject={(files) => console.log('rejected files', files)}
+                            onReject={(files) => {
+                                notifications.show({
+                                    title: 'Error uploading images',
+                                    message: 'File exceeds 5mb size',
+                                    withBorder: true,
+                                    color: 'red',
+                                    icon: <IconX />,
+                                });
+                            }}
                             maxSize={3 * 1024 ** 2}
                             accept={IMAGE_MIME_TYPE}
                             my={"lg"}
