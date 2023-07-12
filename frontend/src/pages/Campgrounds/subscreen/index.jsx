@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { IconMapPin } from '@tabler/icons-react';
+import { IconMapPin, IconX } from '@tabler/icons-react';
 import { Box, Grid, Group, Text, Title, Transition } from "@mantine/core";
 import ImageGallery from "./components/ImageGallery";
 import ActivitiesSection from "./components/ActivitiesSection";
@@ -13,6 +13,7 @@ import { useScrollIntoView } from "@mantine/hooks";
 import ReserveWidget from "./components/ReserveWidget";
 import NavMenu from "./components/NavMenu";
 import { useInView } from 'react-intersection-observer';
+import { notifications } from "@mantine/notifications";
 
 export function Component() {
     const { campgroundId } = useParams();
@@ -35,6 +36,13 @@ export function Component() {
                 })
                 .catch(err => {
                     console.error(err);
+                    notifications.show({
+                        title: 'Error',
+                        message: err.response.data?.message,
+                        withBorder: true,
+                        color: 'red',
+                        icon: <IconX />,
+                    });
                 })
         }
         getData();
