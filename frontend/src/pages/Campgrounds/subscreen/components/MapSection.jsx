@@ -27,7 +27,7 @@ export default function ({ geometry }) {
 
         // Clean up on unmount
         return () => map.remove();
-    });
+    }, []);
 
 
     return (
