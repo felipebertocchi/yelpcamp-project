@@ -31,9 +31,9 @@ module.exports = {
             const pages = Math.ceil(total / limit);
 
             return res.status(200).json({ campgrounds, total, currentPage: page, pages, limit, searchValue: search });
-        } catch (err) {
-            console.log(err)
-            return res.status(500).json({ error: 'There was an error trying to retrieve the campgrounds' });
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({ message: 'There was an error trying to retrieve the campgrounds', error });
         }
     },
     getNewCampgroundForm: (req, res) => {
@@ -41,26 +41,26 @@ module.exports = {
     },
     getCampground: async (req, res) => {
         const { id } = req.params;
-        const campground = await Campground
-            .findById(id)
-            .populate('author')
-            .populate({
-                path: 'reviews',
-                options: { sort: [[['createdAt', 'desc']]] },
-                populate: {
-                    path: 'author',
-                    model: 'User',
-                }
+        try {
+            const campground = await Campground
+                .findById(id)
+                .populate('author')
+                .populate({
+                    path: 'reviews',
+                    options: { sort: [[['createdAt', 'desc']]] },
+                    populate: {
+                        path: 'author',
+                        model: 'User',
+                    }
+                });
+            campground._doc.createdAt = dayjs(campground.createdAt).fromNow();
+            campground._doc.reviews.forEach(review => {
+                review._doc.createdAt = dayjs(review.createdAt).fromNow();
             });
-        if (!campground) {
-            req.flash('error', 'The requested campground was not found');
-            res.redirect(`/campgrounds`);
+            return res.status(200).json(campground);
+        } catch (error) {
+            return res.status(500).json({ message: 'There was an error trying to retrieve the campground' });
         }
-        campground._doc.createdAt = dayjs(campground.createdAt).fromNow();
-        campground._doc.reviews.forEach(review => {
-            review._doc.createdAt = dayjs(review.createdAt).fromNow();
-        });
-        return res.status(200).json(campground);
     },
     getEditCampgroundForm: async (req, res) => {
         const { id } = req.params;
