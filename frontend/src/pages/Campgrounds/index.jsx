@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Group, Pagination, SimpleGrid } from "@mantine/core";
+import { useWindowScroll } from '@mantine/hooks';
 import { notifications } from "@mantine/notifications";
 import { CampCard } from "./components/CampCard";
 import axios from "axios";
@@ -11,6 +12,7 @@ export function Component() {
     const [pages, setPages] = useState(null);
     const [loading, setLoading] = useState(false);
     const [campgrounds, setCampgrounds] = useState([]);
+    const [_, scrollTo] = useWindowScroll();
 
     useEffect(() => {
         const getCampgrounds = async () => {
@@ -35,6 +37,7 @@ export function Component() {
                 .finally(() => setLoading(false));
         }
         getCampgrounds();
+        scrollTo({ y: 0 });
     }, [activePage])
 
     return (
@@ -57,7 +60,7 @@ export function Component() {
                         ))}
             </SimpleGrid>
             <Box mt="xl">
-                <Pagination.Root total={pages} value={activePage} onChange={setPage}>
+                <Pagination.Root total={pages} value={activePage} onChange={(value) => {setPage(value); scrollTo({ y: 0 })}}>
                     <Group spacing={5} position="center">
                         <Pagination.Previous />
                         <Pagination.Items />
