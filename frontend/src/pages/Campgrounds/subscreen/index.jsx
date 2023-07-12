@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IconMapPin } from '@tabler/icons-react';
-import { Box, Grid, Group, Text, Title } from "@mantine/core";
+import { Box, Grid, Group, Text, Title, Transition } from "@mantine/core";
 import ImageGallery from "./components/ImageGallery";
 import ActivitiesSection from "./components/ActivitiesSection";
 import AmenitiesSection from "./components/AmenitiesSection";
@@ -12,12 +12,15 @@ import MapSection from "./components/MapSection";
 import { useScrollIntoView } from "@mantine/hooks";
 import ReserveWidget from "./components/ReserveWidget";
 import NavMenu from "./components/NavMenu";
+import { useInView } from 'react-intersection-observer';
 
 export function Component() {
     const { campgroundId } = useParams();
     const [campground, setCampground] = useState(null);
     const [bookingDates, setBookingDates] = useState([null, null]);
-    const [showNavMenu, setShowNavMenu] = useState(false);
+    const [initialView, setInitialView] = useState(false);
+    const { ref: reserveWidgetRef, inView: reserveWidgetInView } = useInView();
+    const { ref: photosRef, inView: photosInView } = useInView();
     const { scrollIntoView: scrollToPhotos, targetRef: targetPhotosRef } = useScrollIntoView({ offset: 140 });
     const { scrollIntoView: scrollToAmenities, targetRef: targetAmenitiesRef } = useScrollIntoView({ offset: 70 });
     const { scrollIntoView: scrollToActivities, targetRef: targetActivitiesRef } = useScrollIntoView({ offset: 70 });
@@ -37,38 +40,32 @@ export function Component() {
         getData();
     }, []);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            const scrollPosition = window.scrollY;
-            const threshold = 700;
 
-            if (scrollPosition > threshold) {
-                setShowNavMenu(true);
-            } else {
-                setShowNavMenu(false);
-            }
-        };
-        window.addEventListener("scroll", handleScroll);
-        return () =>
-            window.removeEventListener("scroll", handleScroll);
-    }, []);
+    useEffect(() => {
+        if (photosInView === false) return
+        else setInitialView(true);
+    }, [photosInView]);
 
     return (
         <>
             {campground &&
                 <>
-                    {showNavMenu &&
-                        <NavMenu
-                            campground={campground}
-                            bookingDates={bookingDates}
-                            actions={{ scrollToPhotos, scrollToAmenities, scrollToActivities, scrollToCalendar, scrollToReviews }}
-                        />
-                    }
+                    <Transition transition="slide-down" mounted={initialView && !photosInView} duration={150} exitDuration={150}>
+                        {(transitionStyles) => (
+                            <NavMenu
+                                style={transitionStyles}
+                                showReserveDetails={!reserveWidgetInView}
+                                campground={campground}
+                                bookingDates={bookingDates}
+                                actions={{ scrollToPhotos, scrollToAmenities, scrollToActivities, scrollToCalendar, scrollToReviews }}
+                            />
+                        )}
+                    </Transition>
                     <Group spacing={5}>
                         <IconMapPin />
                         <Title order={4} mt={4}>{campground.location}</Title>
                     </Group>
-                    <Box ref={targetPhotosRef}>
+                    <Box ref={(el) => { targetPhotosRef; photosRef(el); }}>
                         <ImageGallery images={campground.images} />
                     </Box>
                     <Grid>
@@ -86,7 +83,7 @@ export function Component() {
                                 <BookingCalendar campgroundName={campground.title} bookingDates={bookingDates} setBookingDates={setBookingDates} />
                             </Box>
                         </Grid.Col>
-                        <Grid.Col span={5}>
+                        <Grid.Col span={5} ref={reserveWidgetRef}>
                             <ReserveWidget campground={campground} bookingDates={bookingDates} actions={{ scrollToCalendar, scrollToReviews }} />
                         </Grid.Col>
                     </Grid>
