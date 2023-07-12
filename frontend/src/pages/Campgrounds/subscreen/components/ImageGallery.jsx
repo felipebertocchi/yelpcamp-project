@@ -2,14 +2,15 @@ import { useState } from "react";
 import { Box, Grid, SimpleGrid } from "@mantine/core";
 import ImageBox from "./ImageBox";
 import FullScreenCarousel from "./FullScreenCarousel";
+import { useDisclosure } from "@mantine/hooks";
 
 export default function ({ images }) {
-    const [openCarousel, setOpenCarousel] = useState(false);
+    const [openedFS, handleOpenFS] = useDisclosure(false);
     const [initialSlide, setInitialSlide] = useState(0);
 
     const handleCarousel = (index) => {
-        setOpenCarousel(true);
         setInitialSlide(index);
+        handleOpenFS.open();
     }
 
     const PhotoGrid = () => {
@@ -93,7 +94,7 @@ export default function ({ images }) {
     return (
         <Box my="md">
             <PhotoGrid />
-            <FullScreenCarousel images={images} open={openCarousel} setOpen={setOpenCarousel} initialSlide={initialSlide} />
+            <FullScreenCarousel images={images} open={openedFS} handleOpen={handleOpenFS} initialSlide={initialSlide} />
         </Box>
     )
 }
