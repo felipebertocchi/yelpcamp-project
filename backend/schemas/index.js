@@ -35,14 +35,8 @@ module.exports = {
                 email: Joi.string().email().allow('').optional(),
                 includeAccContact : Joi.boolean(),
             }),
-            amenities: Joi.array().items(Joi.object({
-                name: Joi.string().required().escapeHTML(),
-                active: Joi.boolean().required(),
-            })),
-            activities: Joi.array().items(Joi.object({
-                name: Joi.string().required().escapeHTML(),
-                active: Joi.boolean().required(),
-            })),
+            amenities: Joi.array(),
+            activities: Joi.array(),
         }).required(),
         deleteImages: Joi.array()
     }),
