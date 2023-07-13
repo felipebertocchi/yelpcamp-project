@@ -52,8 +52,8 @@ export default function () {
                 email: '',
                 includeAccContact: false,
             },
-            amenities: Object.keys(amenityIcons).map(amenity => { return { name: amenity, active: false } }),
-            activities: Object.keys(activityIcons).map(activity => { return { name: activity, active: false } }),
+            amenities: [],
+            activities: [],
         },
         validate: zodResolver(campSchema),
     });
@@ -125,6 +125,14 @@ export default function () {
         );
     });
 
+    const handleListChange = (event, list, value) => {
+        if (event.currentTarget.checked) {
+            form.insertListItem(list, value)
+        } else {
+            form.removeListItem(list, form.values[list].indexOf(value))
+        }
+    }
+
     return (
         <>
             <Title order={3} my={15}>New Campground</Title>
@@ -193,22 +201,22 @@ export default function () {
                             {...form.getInputProps('contact.includeAccContact', { type: 'checkbox' })}
                         />
                     </Stepper.Step>
-                    <Stepper.Step label="Services & Amenities" >
+                    <Stepper.Step label="Amenities & Activities" >
                         <Text c={"dimmed"}>
                             Select all amenities and activities that your campground can offer
                         </Text>
                         <Title order={4} my={"lg"}>Amenities</Title>
                         <Group mb={30}>
-                            {Object.keys(amenityIcons).map((amenity, index) =>
+                            {Object.keys(amenityIcons).map((amenity) =>
                                 <Paper key={amenity} shadow='sm' p='sm' radius='lg' withBorder>
                                     <Group>
                                         {amenityIcons[amenity]}
                                         <Text fz='lg' tt='capitalize'>{amenity}</Text>
                                         <Checkbox
-                                            tabIndex={-1}
                                             size="md"
                                             styles={{ input: { cursor: 'pointer' } }}
-                                            {...form.getInputProps(`amenities.${index}.active`, { type: 'checkbox' })}
+                                            checked={form.values.amenities.includes(amenity)}
+                                            onChange={(e) => handleListChange(e, "amenities", amenity)}
                                         />
                                     </Group>
                                 </Paper>
@@ -217,16 +225,16 @@ export default function () {
                         <Divider />
                         <Title order={4} my={"lg"}>Activities</Title>
                         <Group mb={30}>
-                            {Object.keys(activityIcons).map((activity, index) =>
+                            {Object.keys(activityIcons).map((activity) =>
                                 <Paper key={activity} shadow='sm' p='sm' radius='lg' withBorder>
                                     <Group>
                                         {activityIcons[activity]}
                                         <Text fz='lg' tt='capitalize'>{activity}</Text>
                                         <Checkbox
-                                            tabIndex={-1}
                                             size="md"
                                             styles={{ input: { cursor: 'pointer' } }}
-                                            {...form.getInputProps(`activities.${index}.active`, { type: 'checkbox' })}
+                                            checked={form.values.activities.includes(activity)}
+                                            onChange={(e) => handleListChange(e, "activities", activity)}
                                         />
                                     </Group>
                                 </Paper>
