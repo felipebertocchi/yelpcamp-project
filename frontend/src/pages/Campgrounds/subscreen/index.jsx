@@ -30,7 +30,7 @@ export function Component() {
 
     useEffect(() => {
         const getData = async () => {
-            await axios.get(`http://localhost:4000/campgrounds/${campgroundId}`)
+            await axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/campgrounds/${campgroundId}`)
                 .then(response => {
                     setCampground(response.data);
                 })

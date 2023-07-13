@@ -66,7 +66,7 @@ export default function () {
 
         setUploading(true);
 
-        await axios.post("http://localhost:4000/campgrounds", formData, { headers: { "Content-Type": "multipart/form-data", } })
+        await axios.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/campgrounds`, formData, { headers: { "Content-Type": "multipart/form-data", } })
             .then(response => {
                 const { campground } = response.data
                 notifications.show({

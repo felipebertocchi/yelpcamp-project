@@ -17,7 +17,7 @@ export function Component() {
     useEffect(() => {
         const getCampgrounds = async () => {
             setLoading(true);
-            await axios.get('http://localhost:4000/campgrounds', {
+            await axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/campgrounds`, {
                 params: { page: activePage }
             })
                 .then(response => {

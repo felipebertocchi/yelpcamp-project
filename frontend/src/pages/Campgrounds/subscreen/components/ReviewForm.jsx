@@ -25,7 +25,7 @@ export default function ({ cancel }) {
 
     const postReview = async (review) => {
         toggle()
-        await axios.post(`http://localhost:4000/campgrounds/${campgroundId}/reviews`, { review })
+        await axios.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/campgrounds/${campgroundId}/reviews`, { review })
             .then(response => {
                 notifications.show({
                     title: 'Review submitted',

@@ -91,7 +91,7 @@ export default function () {
 
     const logOut = async (e) => {
         e.preventDefault()
-        await axios.get('http://localhost:4000/logout')
+        await axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/logout`)
             .then(response => {
                 setUser(null);
                 notifications.show({

@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const isUserLoggedIn = async () => {
-            await axios.get('http://localhost:4000/user')
+            await axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/user`)
                 .then(response => {
                     if (response.data.verified) {
                         setUser(response.data.user);

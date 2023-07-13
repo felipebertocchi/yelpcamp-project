@@ -38,7 +38,7 @@ export default function ({ preventRedirect }) {
 
     const handleSubmit = async (userInput) => {
         setLoading(true);
-        await axios.post("http://localhost:4000/login", userInput)
+        await axios.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/login`, userInput)
             .then(response => {
                 setUser(response.data.user);
                 notifications.show({

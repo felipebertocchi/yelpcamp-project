@@ -32,7 +32,7 @@ export function Component() {
     });
 
     const handleSubmit = async (userInput) => {
-        await axios.post("http://localhost:4000/register", userInput)
+        await axios.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/register`, userInput)
             .then(response => {
                 notifications.show({
                     title: 'Register succesful',
