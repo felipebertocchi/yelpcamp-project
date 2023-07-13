@@ -79,6 +79,7 @@ export default function ({ preventRedirect }) {
                 <TextInput
                     required
                     withAsterisk={false}
+                    id="email"
                     label="Email"
                     placeholder="Enter your email"
                     mt="md"
