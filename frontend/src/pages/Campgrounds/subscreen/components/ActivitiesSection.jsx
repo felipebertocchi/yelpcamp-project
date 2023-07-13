@@ -9,11 +9,11 @@ export default function ({ activities }) {
                     <Divider my='lg' />
                     <Title order={3} my={15}>Activities</Title>
                     <Group>
-                        {activities.filter(a => a.active).map(activity =>
-                            <Paper key={activity.name} shadow='md' p='sm' radius='lg' withBorder>
+                        {activities.map(activity =>
+                            <Paper key={activity} shadow='md' p='sm' radius='lg' withBorder>
                                 <Group>
-                                    {activityIcons[activity.name]}
-                                    <Text fz='lg' tt='capitalize'>{activity.name}</Text>
+                                    {activityIcons[activity]}
+                                    <Text fz='lg' tt='capitalize'>{activity}</Text>
                                 </Group>
                             </Paper>
                         )}
