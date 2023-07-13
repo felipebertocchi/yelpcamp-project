@@ -1,4 +1,4 @@
-import { ActionIcon, Alert, Box, Button, Checkbox, Divider, Group, Image, Modal, NumberInput, Paper, SimpleGrid, Stepper, Text, TextInput, Textarea, Title, Tooltip, rem } from "@mantine/core";
+import { ActionIcon, Alert, Box, Button, Checkbox, Divider, Group, Image, Modal, NumberInput, Paper, SimpleGrid, Stepper, Text, TextInput, Textarea, Title, Tooltip, UnstyledButton, rem } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { IconAlertCircle, IconAt, IconBlockquote, IconCheck, IconCurrencyDollar, IconMapPin, IconPhone, IconPhoto, IconTent, IconTrash, IconUpload, IconX } from "@tabler/icons-react";
@@ -125,8 +125,8 @@ export default function () {
         );
     });
 
-    const handleListChange = (event, list, value) => {
-        if (event.currentTarget.checked) {
+    const handleListChange = (list, value) => {
+        if (!form.values[list].includes(value)) {
             form.insertListItem(list, value)
         } else {
             form.removeListItem(list, form.values[list].indexOf(value))
@@ -208,36 +208,40 @@ export default function () {
                         <Title order={4} my={"lg"}>Amenities</Title>
                         <Group mb={30}>
                             {Object.keys(amenityIcons).map((amenity) =>
-                                <Paper key={amenity} shadow='sm' p='sm' radius='lg' withBorder>
-                                    <Group>
-                                        {amenityIcons[amenity]}
-                                        <Text fz='lg' tt='capitalize'>{amenity}</Text>
-                                        <Checkbox
-                                            size="md"
-                                            styles={{ input: { cursor: 'pointer' } }}
-                                            checked={form.values.amenities.includes(amenity)}
-                                            onChange={(e) => handleListChange(e, "amenities", amenity)}
-                                        />
-                                    </Group>
-                                </Paper>
+                                <UnstyledButton onClick={() => handleListChange("amenities", amenity)}>
+                                    <Paper key={amenity} shadow='sm' p='sm' radius='lg' withBorder>
+                                        <Group>
+                                            {amenityIcons[amenity]}
+                                            <Text fz='lg' tt='capitalize'>{amenity}</Text>
+                                            <Checkbox
+                                                size="md"
+                                                checked={form.values.amenities.includes(amenity)}
+                                                styles={{ input: { cursor: 'pointer' } }}
+                                                onChange={() => null}
+                                            />
+                                        </Group>
+                                    </Paper>
+                                </UnstyledButton>
                             )}
                         </Group>
                         <Divider />
                         <Title order={4} my={"lg"}>Activities</Title>
                         <Group mb={30}>
                             {Object.keys(activityIcons).map((activity) =>
-                                <Paper key={activity} shadow='sm' p='sm' radius='lg' withBorder>
-                                    <Group>
-                                        {activityIcons[activity]}
-                                        <Text fz='lg' tt='capitalize'>{activity}</Text>
-                                        <Checkbox
-                                            size="md"
-                                            styles={{ input: { cursor: 'pointer' } }}
-                                            checked={form.values.activities.includes(activity)}
-                                            onChange={(e) => handleListChange(e, "activities", activity)}
-                                        />
-                                    </Group>
-                                </Paper>
+                                <UnstyledButton onClick={() => handleListChange("activities", activity)}>
+                                    <Paper key={activity} shadow='sm' p='sm' radius='lg' withBorder>
+                                        <Group>
+                                            {activityIcons[activity]}
+                                            <Text fz='lg' tt='capitalize'>{activity}</Text>
+                                            <Checkbox
+                                                size="md"
+                                                styles={{ input: { cursor: 'pointer' } }}
+                                                checked={form.values.activities.includes(activity)}
+                                                onChange={() => null}
+                                            />
+                                        </Group>
+                                    </Paper>
+                                </UnstyledButton>
                             )}
                         </Group>
                     </Stepper.Step>
