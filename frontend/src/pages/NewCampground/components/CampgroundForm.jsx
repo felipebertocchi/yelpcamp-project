@@ -25,9 +25,13 @@ export default function () {
 
     const lastStep = 3;
     const nextStep = () => {
-        if (!form.validate().hasErrors) setActive((current) => (current < lastStep ? current + 1 : current))
+        if (!form.validate().hasErrors) setActive((current) => (current < lastStep ? current + 1 : current));
     };
     const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
+
+    const handleSetStep = (step) => {
+        if (!form.validate().hasErrors) setActive(step);
+    }
 
     useEffect(() => {
         if (!user) {
@@ -106,13 +110,11 @@ export default function () {
             .finally(() => setUploading(false));
     };
 
-    console.log(form.values);
-
     return (
         <>
             <Title order={3} my={15}>New Campground</Title>
             <form onSubmit={form.onSubmit(handleSubmit)}>
-                <Stepper size="md" active={active}>
+                <Stepper size="md" active={active} onStepClick={handleSetStep}>
                     <Stepper.Step label="Information">
                         <InfoStep form={form} />
                     </Stepper.Step>
