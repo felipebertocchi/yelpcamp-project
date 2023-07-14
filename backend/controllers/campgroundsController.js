@@ -84,11 +84,14 @@ module.exports = {
                 .then(response => {
                     campground.geometry = response.body.features[0].geometry;
                 })
-                .catch(err => console.log(err));
+                .catch(err => {
+                    console.log(err);
+                    return res.status(500).json({ title: "Geolocation error", message: "There was an error processing the location of your campground", err });
+                });
             await campground.save();
             return res.status(200).json({ message: "Succesfully added a new campground", campground })
         } catch (error) {
-            return res.status(500).json({ message: "", error })
+            return res.status(500).json({ message: "There was an error processing the data", error })
         }
     },
     updateCampground: async (req, res) => {
