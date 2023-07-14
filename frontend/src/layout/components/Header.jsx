@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { notifications } from '@mantine/notifications';
 import { IconCheck, IconX } from '@tabler/icons-react';
+import UserMenu from './UserMenu';
 
 const HEADER_HEIGHT = rem(70);
 
@@ -75,8 +76,7 @@ export default function () {
             return (
                 <>
                     <PageLink page={"new-campground"} label={"Add your campground"} onClick={close} />
-                    <PageLink page={"profile"} onClick={close} />
-                    <PageLink page={"logout"} onClick={logOut} />
+                    <UserMenu user={user} actions={{ logOut }} />
                 </>
             )
         } else {
@@ -96,7 +96,7 @@ export default function () {
                 setUser(null);
                 notifications.show({
                     title: 'Logout succesful',
-                    message: response.data.message,
+                    message: response.data?.message,
                     withBorder: true,
                     color: 'teal',
                     icon: <IconCheck />,
@@ -106,7 +106,7 @@ export default function () {
             .catch(error => {
                 notifications.show({
                     title: 'Logout error',
-                    message: error.response.data.message,
+                    message: error.response.data?.message,
                     withBorder: true,
                     color: 'red',
                     icon: <IconX />,
