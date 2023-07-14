@@ -61,6 +61,16 @@ export default function () {
 
     const handleSubmit = async (input) => {
         const formData = getFormData({ campground: input })
+        if (imageFiles.length === 0) {
+            notifications.show({
+                title: 'Error',
+                message: 'You must upload at least one image of your campground',
+                withBorder: true,
+                color: 'red',
+                icon: <IconX />,
+            });
+            return
+        }
         imageFiles.forEach(img => {
             formData.append("images", img)
         })
