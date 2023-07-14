@@ -1,18 +1,19 @@
-import { ActionIcon, Alert, Box, Button, Checkbox, Divider, Group, Image, Modal, NumberInput, Paper, SimpleGrid, Stepper, Text, TextInput, Textarea, Title, Tooltip, UnstyledButton, rem } from "@mantine/core";
+import { Alert, Button, Group, Modal, Paper, Stepper, Title } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
-import { IconAlertCircle, IconAt, IconBlockquote, IconCheck, IconCurrencyDollar, IconMapPin, IconPhone, IconPhoto, IconTent, IconTrash, IconUpload, IconX } from "@tabler/icons-react";
+import { IconAlertCircle, IconCheck, IconX } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../auth/AuthContext";
 import { campSchema } from "../../../schemas/campSchema";
-import amenityIcons from "../../../utils/amenityIcons";
-import activityIcons from "../../../utils/activityIcons";
 import { getFormData } from "../../../utils/getFormData";
 import LoginForm from "../../Login/components/LoginForm";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
+import InfoStep from "./InfoStep";
+import ContactStep from "./ContactStep";
+import ServicesStep from "./ServicesStep";
+import ImagesStep from "./ImagesStep";
 
 export default function () {
     const { user, setUser } = useContext(AuthContext);
@@ -81,7 +82,7 @@ export default function () {
             .catch(error => {
                 console.error(error);
                 notifications.show({
-                    title: 'Error',
+                    title: error.response.data?.title || 'Error',
                     message: error.response.data?.message,
                     withBorder: true,
                     color: 'red',
@@ -95,43 +96,7 @@ export default function () {
             .finally(() => setUploading(false));
     };
 
-    const deleteImage = (index) => {
-        const newImageFiles = [...imageFiles];
-        newImageFiles.splice(index, 1);
-        setImageFiles(newImageFiles);
-    };
-
-    const previews = imageFiles.map((file, index) => {
-        const imageUrl = URL.createObjectURL(file);
-        return (
-            <Box pos="relative" key={index}>
-                <Image
-                    src={imageUrl}
-                    imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
-                />
-                <Tooltip label="Remove image" position="left">
-                    <ActionIcon
-                        color="red"
-                        radius="xl"
-                        pos="absolute"
-                        top="3%"
-                        right="2%"
-                        onClick={() => deleteImage(index)}
-                    >
-                        <IconTrash size="1.125rem" />
-                    </ActionIcon>
-                </Tooltip>
-            </Box>
-        );
-    });
-
-    const handleListChange = (list, value) => {
-        if (!form.values[list].includes(value)) {
-            form.insertListItem(list, value)
-        } else {
-            form.removeListItem(list, form.values[list].indexOf(value))
-        }
-    }
+    console.log(form.values);
 
     return (
         <>
@@ -139,158 +104,16 @@ export default function () {
             <form onSubmit={form.onSubmit(handleSubmit)}>
                 <Stepper size="md" active={active}>
                     <Stepper.Step label="Information">
-                        <Text c={"dimmed"}>
-                            Include all of your campground's information
-                        </Text>
-                        <TextInput
-                            required
-                            label="Name"
-                            placeholder="Enter your campground's name"
-                            mt="md"
-                            icon={<IconTent size="1rem" />}
-                            {...form.getInputProps('title')}
-                        />
-                        <Textarea
-                            required
-                            label="Description"
-                            placeholder="Tell everyone what's your campground about, and what activities and services you offer"
-                            autosize
-                            mt="md"
-                            icon={<IconBlockquote size="1rem" />}
-                            {...form.getInputProps('description')}
-                        />
-                        <TextInput
-                            required
-                            label="Location"
-                            placeholder="Enter the nearest city to your campground"
-                            mt="md"
-                            icon={<IconMapPin size="1rem" />}
-                            {...form.getInputProps('location')}
-                        />
-                        <NumberInput
-                            required
-                            label="Price per night (USD)"
-                            placeholder="Enter your campground's pricing per night"
-                            mt="md"
-                            precision={2}
-                            icon={<IconCurrencyDollar size="1rem" />}
-                            {...form.getInputProps('price')}
-                        />
+                        <InfoStep form={form} />
                     </Stepper.Step>
                     <Stepper.Step label="Contact" >
-                        <Text c={"dimmed"}>
-                            Give people a means of communicating with your campground. You can also provide your account's contact information
-                        </Text>
-                        <TextInput
-                            label="Phone (Optional)"
-                            placeholder="Enter your campground's phone number"
-                            mt="md"
-                            icon={<IconPhone size="1rem" />}
-                            {...form.getInputProps('contact.phone')}
-                        />
-                        <TextInput
-                            label="Email (Optional)"
-                            placeholder="Enter your campground's email"
-                            mt="md"
-                            icon={<IconAt size="1rem" />}
-                            {...form.getInputProps('contact.email')}
-                        />
-                        <Checkbox
-                            mt="md"
-                            label={"Include my YelpCamp account contact information"}
-                            {...form.getInputProps('contact.includeAccContact', { type: 'checkbox' })}
-                        />
+                        <ContactStep form={form} />
                     </Stepper.Step>
-                    <Stepper.Step label="Amenities & Activities" >
-                        <Text c={"dimmed"}>
-                            Select all amenities and activities that your campground can offer
-                        </Text>
-                        <Title order={4} my={"lg"}>Amenities</Title>
-                        <Group mb={30}>
-                            {Object.keys(amenityIcons).map((amenity) =>
-                                <UnstyledButton onClick={() => handleListChange("amenities", amenity)}>
-                                    <Paper key={amenity} shadow='sm' p='sm' radius='lg' withBorder>
-                                        <Group>
-                                            {amenityIcons[amenity]}
-                                            <Text fz='lg' tt='capitalize'>{amenity}</Text>
-                                            <Checkbox
-                                                size="md"
-                                                checked={form.values.amenities.includes(amenity)}
-                                                styles={{ input: { cursor: 'pointer' } }}
-                                                onChange={() => null}
-                                            />
-                                        </Group>
-                                    </Paper>
-                                </UnstyledButton>
-                            )}
-                        </Group>
-                        <Divider />
-                        <Title order={4} my={"lg"}>Activities</Title>
-                        <Group mb={30}>
-                            {Object.keys(activityIcons).map((activity) =>
-                                <UnstyledButton onClick={() => handleListChange("activities", activity)}>
-                                    <Paper key={activity} shadow='sm' p='sm' radius='lg' withBorder>
-                                        <Group>
-                                            {activityIcons[activity]}
-                                            <Text fz='lg' tt='capitalize'>{activity}</Text>
-                                            <Checkbox
-                                                size="md"
-                                                styles={{ input: { cursor: 'pointer' } }}
-                                                checked={form.values.activities.includes(activity)}
-                                                onChange={() => null}
-                                            />
-                                        </Group>
-                                    </Paper>
-                                </UnstyledButton>
-                            )}
-                        </Group>
+                    <Stepper.Step label="Services" >
+                        <ServicesStep form={form} />
                     </Stepper.Step>
                     <Stepper.Step label="Images" >
-                        <Text c={"dimmed"}>
-                            Upload pictures to show guests your campground
-                        </Text>
-                        <Dropzone
-                            onDrop={(files) => setImageFiles([...imageFiles, ...files])}
-                            onReject={(files) => {
-                                notifications.show({
-                                    title: 'Error uploading images',
-                                    message: 'File exceeds 5mb size',
-                                    withBorder: true,
-                                    color: 'red',
-                                    icon: <IconX />,
-                                });
-                            }}
-                            maxSize={3 * 1024 ** 2}
-                            accept={IMAGE_MIME_TYPE}
-                            my={"lg"}
-                        >
-                            <Group position="center" spacing="xl" style={{ minHeight: rem(220), pointerEvents: 'none' }}>
-                                <Dropzone.Accept>
-                                    <IconUpload size="3.2rem" stroke={1.5} />
-                                </Dropzone.Accept>
-                                <Dropzone.Reject>
-                                    <IconX size="3.2rem" stroke={1.5} />
-                                </Dropzone.Reject>
-                                <Dropzone.Idle>
-                                    <IconPhoto size="3.2rem" stroke={1.5} />
-                                </Dropzone.Idle>
-                                <div>
-                                    <Text size="xl" inline>
-                                        Drag images here or click to select files
-                                    </Text>
-                                    <Text size="sm" color="dimmed" inline mt={7}>
-                                        Attach as many files as you like, each file should not exceed 5mb
-                                    </Text>
-                                </div>
-                            </Group>
-                        </Dropzone>
-                        <SimpleGrid
-                            cols={4}
-                            breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
-                            mt={previews.length > 0 ? 'xl' : 0}
-                        >
-                            {previews}
-                        </SimpleGrid>
+                        <ImagesStep imageFiles={imageFiles} setImageFiles={setImageFiles} />
                     </Stepper.Step>
                 </Stepper>
                 <Group position="center" mt="xl">
