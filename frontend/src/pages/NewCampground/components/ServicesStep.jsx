@@ -1,6 +1,7 @@
-import { Checkbox, Divider, Group, Paper, Text, Title, UnstyledButton } from "@mantine/core";
+import { Divider, Group, Text, Title } from "@mantine/core";
 import amenityIcons from "../../../utils/amenityIcons";
 import activityIcons from "../../../utils/activityIcons";
+import ServiceCheckbox from "./ServiceCheckbox";
 
 export default function ({ form }) {
 
@@ -20,40 +21,28 @@ export default function ({ form }) {
             <Title order={4} my={"lg"}>Amenities</Title>
             <Group mb={30}>
                 {Object.keys(amenityIcons).map((amenity) =>
-                    <UnstyledButton key={amenity} onClick={() => handleListChange("amenities", amenity)}>
-                        <Paper shadow='sm' p='sm' radius='lg' withBorder>
-                            <Group>
-                                {amenityIcons[amenity]}
-                                <Text fz='lg' tt='capitalize'>{amenity}</Text>
-                                <Checkbox
-                                    size="md"
-                                    checked={form.values.amenities.includes(amenity)}
-                                    styles={{ input: { cursor: 'pointer' } }}
-                                    onChange={() => null}
-                                />
-                            </Group>
-                        </Paper>
-                    </UnstyledButton>
+                    <ServiceCheckbox
+                        key={amenity}
+                        checked={form.values.amenities.includes(amenity)}
+                        onClick={handleListChange}
+                        list={"amenities"}
+                        service={amenity}
+                        icon={amenityIcons[amenity]}
+                    />
                 )}
             </Group>
             <Divider />
             <Title order={4} my={"lg"}>Activities</Title>
             <Group mb={30}>
                 {Object.keys(activityIcons).map((activity) =>
-                    <UnstyledButton key={activity} onClick={() => handleListChange("activities", activity)}>
-                        <Paper shadow='sm' p='sm' radius='lg' withBorder>
-                            <Group>
-                                {activityIcons[activity]}
-                                <Text fz='lg' tt='capitalize'>{activity}</Text>
-                                <Checkbox
-                                    size="md"
-                                    styles={{ input: { cursor: 'pointer' } }}
-                                    checked={form.values.activities.includes(activity)}
-                                    onChange={() => null}
-                                />
-                            </Group>
-                        </Paper>
-                    </UnstyledButton>
+                    <ServiceCheckbox
+                        key={activity}
+                        checked={form.values.activities.includes(activity)}
+                        onClick={handleListChange}
+                        list={"activities"}
+                        service={activity}
+                        icon={activityIcons[activity]}
+                    />
                 )}
             </Group>
         </>
