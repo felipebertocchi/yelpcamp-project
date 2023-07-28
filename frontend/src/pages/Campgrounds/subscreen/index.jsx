@@ -1,8 +1,8 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { IconMapPin, IconX } from '@tabler/icons-react';
-import { Box, Grid, Group, Text, Title, Transition } from "@mantine/core";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { IconMapPin, IconPencil, IconX } from '@tabler/icons-react';
+import { Box, Button, Grid, Group, Text, Title, Transition } from "@mantine/core";
 import ImageGallery from "./components/ImageGallery";
 import ActivitiesSection from "./components/ActivitiesSection";
 import AmenitiesSection from "./components/AmenitiesSection";
@@ -14,9 +14,12 @@ import ReserveWidget from "./components/ReserveWidget";
 import NavMenu from "./components/NavMenu";
 import { useInView } from 'react-intersection-observer';
 import { notifications } from "@mantine/notifications";
+import { AuthContext } from "../../../auth/AuthContext";
 
 export function Component() {
     const { campgroundId } = useParams();
+    const navigate = useNavigate();
+    const { user } = useContext(AuthContext);
     const [campground, setCampground] = useState(null);
     const [bookingDates, setBookingDates] = useState([null, null]);
     const [initialView, setInitialView] = useState(false);
@@ -69,6 +72,17 @@ export function Component() {
                             />
                         )}
                     </Transition>
+                    {(user?._id === campground?.author?._id) && (
+                        <Group position="right">
+                            <Button
+                                leftIcon={<IconPencil size={"1.2rem"} />}
+                                variant="default"
+                                onClick={() => navigate('edit')}
+                            >
+                                Edit
+                            </Button>
+                        </Group>
+                    )}
                     <Group spacing={5}>
                         <IconMapPin />
                         <Title order={4} mt={4}>{campground.location}</Title>
