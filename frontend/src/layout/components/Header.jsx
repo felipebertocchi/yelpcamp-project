@@ -14,7 +14,7 @@ import { AuthContext } from '../../auth/AuthContext';
 import ThemeToggle from './ThemeToggle';
 import Logo from './Logo';
 import PageLink from './PageLink';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { notifications } from '@mantine/notifications';
 import { IconCheck, IconX } from '@tabler/icons-react';
@@ -117,10 +117,12 @@ export default function () {
     };
 
     return (
-        <Header height={HEADER_HEIGHT} mb={60} className={classes.root}>
+        <Header height={HEADER_HEIGHT} className={classes.root}>
             <Container size={"xl"} className={classes.header}>
                 <Group spacing={10}>
-                    <Logo />
+                    <Link to={'/'}>
+                        <Logo />
+                    </Link>
                     <Group spacing={5} className={classes.links}>
                         <PageLink page={"campgrounds"} onClick={close} />
                         <PageLink page={"about"} onClick={close} />
