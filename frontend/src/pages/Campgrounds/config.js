@@ -6,8 +6,16 @@ export default {
             lazy: () => import('./index'),
         },
         {
+            path: 'new',
+            lazy: () => import('./new')
+        },
+        {
             path: ':campgroundId',
             lazy: () => import('./subscreen')
+        },
+        {
+            path: ':campgroundId/edit',
+            lazy: () => import('./edit'),
         }
     ]
 };
