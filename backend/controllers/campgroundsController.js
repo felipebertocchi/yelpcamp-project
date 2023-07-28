@@ -96,17 +96,34 @@ module.exports = {
     },
     updateCampground: async (req, res) => {
         const { id } = req.params;
-        const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
-        if (req.body.deleteImages) {
-            for (const filename of req.body.deleteImages) {
-                if (filename.includes("YelpCamp")) await cloudinary.uploader.destroy(filename);
+        try {
+            const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
+            if (req.body.deleteImages) {
+                for (const filename of req.body.deleteImages) {
+                    if (filename.includes("YelpCamp")) await cloudinary.uploader.destroy(filename);
+                }
+                await campground.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } });
             }
-            await campground.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } });
+            campground.images.push(...req.files.map(file => ({ url: file.path, filename: file.filename })));
+            if (campground.location !== req.body.campground.location) {
+                await geocodingClient.forwardGeocode({
+                    query: req.body.campground.location,
+                    limit: 1
+                })
+                    .send()
+                    .then(response => {
+                        campground.geometry = response.body.features[0].geometry;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        return res.status(500).json({ title: "Geolocation error", message: "There was an error processing the location of your campground", err });
+                    });
+            }
+            await campground.save();
+            return res.status(200).json({ message: "Succesfully updated campground", campground })
+        } catch (error) {
+            return res.status(500).json({ message: "There was an error processing the data", error })
         }
-        campground.images.push(...req.files.map(file => ({ url: file.path, filename: file.filename })));
-        await campground.save();
-        req.flash('success', 'Succesfully updated campground');
-        res.redirect(`/campgrounds/${campground._id}`);
     },
     deleteCampground: async (req, res) => {
         const { id } = req.params;
