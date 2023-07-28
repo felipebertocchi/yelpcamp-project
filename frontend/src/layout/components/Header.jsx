@@ -75,7 +75,7 @@ export default function () {
         if (user) {
             return (
                 <>
-                    <PageLink page={"new-campground"} label={"Add your campground"} onClick={close} />
+                    <PageLink page={"campgrounds/new"} label={"Add your campground"} onClick={close} />
                     <UserMenu user={user} actions={{ logOut }} />
                 </>
             )
