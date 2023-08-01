@@ -12,7 +12,7 @@ export function Component() {
     const campgroundValues = useLoaderData();
 
     return (
-        <Container position="center" fluid>
+        <Container position="center" size={"xl"}>
             <Paper withBorder shadow="md" p={30} mt={30} radius="md" miw={800}>
                 {campgroundValues && <CampgroundForm initialValues={campgroundValues} action={"edit"} />}
             </Paper>

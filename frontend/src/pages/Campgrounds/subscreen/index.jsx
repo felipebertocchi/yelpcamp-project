@@ -2,7 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { IconMapPin, IconPencil, IconX } from '@tabler/icons-react';
-import { Box, Button, Grid, Group, Text, Title, Transition } from "@mantine/core";
+import { Box, Button, Container, Grid, Group, Text, Title, Transition } from "@mantine/core";
 import ImageGallery from "./components/ImageGallery";
 import ActivitiesSection from "./components/ActivitiesSection";
 import AmenitiesSection from "./components/AmenitiesSection";
@@ -58,7 +58,7 @@ export function Component() {
     }, [photosInView]);
 
     return (
-        <>
+        <Container size={"xl"} p={30}>
             {campground &&
                 <>
                     <Transition transition="slide-down" mounted={initialView && !photosInView} duration={150} exitDuration={150}>
@@ -72,7 +72,7 @@ export function Component() {
                             />
                         )}
                     </Transition>
-                    {(user?._id === campground?.author?._id) && (
+                    {(campground?.author && user?._id === campground?.author?._id) && (
                         <Group position="right">
                             <Button
                                 leftIcon={<IconPencil size={"1.2rem"} />}
@@ -115,6 +115,6 @@ export function Component() {
                     <MapSection geometry={campground.geometry} />
                 </>
             }
-        </>
+        </Container>
     )
 }

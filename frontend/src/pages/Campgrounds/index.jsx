@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Group, Pagination, SimpleGrid } from "@mantine/core";
+import { Box, Container, Group, Pagination, SimpleGrid } from "@mantine/core";
 import { useWindowScroll } from '@mantine/hooks';
 import { notifications } from "@mantine/notifications";
 import { CampCard } from "./components/CampCard";
@@ -41,7 +41,7 @@ export function Component() {
     }, [activePage])
 
     return (
-        <>
+        <Container size={"xl"} p={30}>
             <SimpleGrid
                 cols={4}
                 spacing="lg"
@@ -68,6 +68,6 @@ export function Component() {
                     </Group>
                 </Pagination.Root>
             </Box>
-        </>
+        </Container>
     );
 }
