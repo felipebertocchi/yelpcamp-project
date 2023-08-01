@@ -1,8 +1,9 @@
-import { createStyles, Container, Group, Anchor, rem } from '@mantine/core';
+import { createStyles, Container, Group, Anchor, rem, Footer } from '@mantine/core';
 
 const useStyles = createStyles((theme) => ({
     footer: {
         borderTop: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2]}`,
+        marginTop: 'auto',
     },
 
     inner: {
@@ -40,11 +41,11 @@ export default function ({ links }) {
     ));
 
     return (
-        <div className={classes.footer}>
+        <Footer className={classes.footer}>
             <Container className={classes.inner}>
                 <span>&copy; YelpCamp 2023</span>
                 <Group className={classes.links}>{items}</Group>
             </Container>
-        </div>
+        </Footer>
     );
 }
