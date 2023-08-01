@@ -38,6 +38,9 @@ export default function ({ initialValues, action }) {
         if (!user) {
             navigate("/login");
         }
+        if (action === 'edit' && (user?._id !== initialValues?.author?._id)) {
+            navigate("/campgrounds");
+        }
     }, [])
 
     useEffect(() => {
