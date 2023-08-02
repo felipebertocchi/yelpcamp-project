@@ -6,7 +6,10 @@ const cities = require('./cities');
 const cloudImages = require('./cloudImages');
 const { getImage } = require('./getImage');
 const { places, descriptors } = require('./seedHelpers');
+const { amenities, activities } = require('./services');
 const args = process.argv.slice(2);
+require('dotenv').config({ path: __dirname + '/../.env' })
+console.log(process.env.MONGODB_URI);
 
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
@@ -21,8 +24,23 @@ db.once("open", () => {
 
 const sample = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-const seedDB = async (type, count = 5, addOn = false) => {
-    if (!addOn) {
+const pickRandomElements = (array, limit) => {
+    const randomElements = [];
+
+    const cloneArray = [...array];
+
+    while (randomElements.length < limit) {
+        const randomIndex = Math.floor(Math.random() * cloneArray.length);
+        const randomElement = cloneArray.splice(randomIndex, 1)[0];
+        randomElements.push(randomElement);
+    }
+
+    return randomElements;
+}
+
+const seedDB = async (type, count, deletePrevious) => {
+    if (deletePrevious) {
+        console.log("Deleting previous data...".red)
         await Campground.deleteMany({});
         await Review.deleteMany({});
     }
@@ -32,6 +50,8 @@ const seedDB = async (type, count = 5, addOn = false) => {
         const price = parseFloat((Math.random() * (60 - 10) + 10).toFixed(2));
         const random1000 = Math.floor(Math.random() * 1000);
         const randomCity = cities[random1000];
+        const randomAmenities = pickRandomElements(amenities, Math.floor(Math.random() * 7) + 2); // random number between 2 and 8
+        const randomActivities = pickRandomElements(activities, Math.floor(Math.random() * 7) + 2);
         const imgCount = Array(Math.floor(Math.random() * 4) + 2); // random number between 2 and 5
         if (type === "unsplash") {
             for (const _ of imgCount) {
@@ -67,6 +87,8 @@ const seedDB = async (type, count = 5, addOn = false) => {
             description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae tenetur minima, hic deleniti iste iusto, omnis pariatur doloribus quis necessitatibus tempora dicta aliquid recusandae esse? Quaerat tempora placeat autem doloribus.',
             price: price,
             location: `${randomCity.city}, ${randomCity.state}`,
+            amenities: randomAmenities,
+            activities: randomActivities,
             geometry: {
                 type: "Point",
                 coordinates: [
@@ -80,8 +102,13 @@ const seedDB = async (type, count = 5, addOn = false) => {
 }
 
 let type;
+let deletePrevious = false;
 let count = args[1] || 5;
-let addOn = args[2];
+
+if (args.includes('deletePrevious')) {
+    deletePrevious = true;
+}
+
 
 if (args.includes('cloudinary')) {
     type = "cloudinary"
@@ -91,7 +118,7 @@ if (args.includes('cloudinary')) {
     type = "both unsplash and cloudinary";
 }
 
-seedDB(type, count, addOn).then(() => {
+seedDB(type, count, deletePrevious).then(() => {
     console.log(`Generated ${count} camps with images from ${type}`.bgYellow)
     console.log("[mongodb] campgrounds collection seeded successfully".cyan);
     mongoose.connection.close();
