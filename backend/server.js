@@ -8,7 +8,6 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
-const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 const passport = require('passport');
@@ -66,7 +65,6 @@ const sessionConfig = {
     }
 }
 app.use(session(sessionConfig));
-app.use(flash());
 app.use(helmet());
 
 const scriptSrcUrls = [
@@ -129,8 +127,6 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
-    res.locals.success = req.flash('success');
-    res.locals.error = req.flash('error');
     next();
 })
 
@@ -149,7 +145,7 @@ app.all('*', (req, res, next) => {
 app.use((err, req, res, next) => {
     if (!err.message) err.message = 'Something went wrong'
     if (!err.statusCode) err.statusCode = 500
-    res.status(err.statusCode).render('error', { err })
+    res.status(err.statusCode).json({ err });
 })
 
 app.listen(port, async () => {
