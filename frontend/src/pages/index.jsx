@@ -1,7 +1,7 @@
 import { default as campgroundsConfig } from './Campgrounds/config'
 import { default as registerConfig } from './Register/config'
 import { default as loginConfig } from './Login/config'
-// import Home from './Landing'
+import { default as aboutConfig } from './About/config'
 
 export default [
     {
@@ -11,4 +11,5 @@ export default [
     campgroundsConfig,
     loginConfig,
     registerConfig,
+    aboutConfig,
 ]
