@@ -1,4 +1,5 @@
-import { createStyles, Container, Group, Anchor, rem, Footer } from '@mantine/core';
+import { createStyles, Container, Group, rem, Footer } from '@mantine/core';
+import { Link } from 'react-router-dom';
 
 const useStyles = createStyles((theme) => ({
     footer: {
@@ -23,21 +24,50 @@ const useStyles = createStyles((theme) => ({
             marginTop: theme.spacing.md,
         },
     },
+
+    link: {
+        textDecoration: 'none',
+        color: 'unset',
+        '&:hover': {
+            color: theme.colorScheme === 'dark' ? theme.colors.gray[0] : theme.colors.dark[6],
+        },
+    },
 }));
 
-export default function ({ links }) {
+const links = [
+    {
+        "link": "/",
+        "label": "Home"
+    },
+    {
+        "link": "/about",
+        "label": "About"
+    },
+    {
+        "link": "/campgrounds",
+        "label": "Campgrounds"
+    },
+    {
+        "link": "/login",
+        "label": "Login"
+    },
+    {
+        "link": "/register",
+        "label": "Register"
+    },
+]
+
+export default function () {
     const { classes } = useStyles();
     const items = links.map((link) => (
-        <Anchor
-            color="dimmed"
+        <Link
             key={link.label}
-            href={link.link}
-            onClick={(event) => event.preventDefault()
-            }
+            to={link.link}
             size="sm"
+            className={classes.link}
         >
             {link.label}
-        </Anchor >
+        </Link >
     ));
 
     return (
