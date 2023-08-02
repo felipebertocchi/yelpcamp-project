@@ -36,9 +36,6 @@ module.exports = {
             return res.status(500).json({ message: 'There was an error trying to retrieve the campgrounds', error });
         }
     },
-    getNewCampgroundForm: (req, res) => {
-        res.render('campgrounds/new');
-    },
     getCampground: async (req, res) => {
         const { id } = req.params;
         try {
@@ -61,15 +58,6 @@ module.exports = {
         } catch (error) {
             return res.status(500).json({ message: 'There was an error trying to retrieve the campground' });
         }
-    },
-    getEditCampgroundForm: async (req, res) => {
-        const { id } = req.params;
-        const campground = await Campground.findById(id);
-        if (!campground) {
-            req.flash('error', 'The requested campground was not found');
-            return res.redirect(`/campgrounds`);
-        }
-        res.render('campgrounds/edit', { campground });
     },
     postNewCampground: async (req, res) => {
         try {
@@ -127,8 +115,11 @@ module.exports = {
     },
     deleteCampground: async (req, res) => {
         const { id } = req.params;
-        await Campground.findByIdAndDelete(id);
-        req.flash('success', 'Succesfully deleted campground');
-        res.redirect('/campgrounds');
+        try {
+            await Campground.findByIdAndDelete(id);
+            return res.status(200).json({ message: "Succesfully deleted campground" })
+        } catch (error) {
+            return res.status(500).json({ message: "There was an error deleting the campground", error })
+        }
     }
 }
