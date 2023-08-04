@@ -9,7 +9,7 @@ const geocodingClient = mbxGeocoding({ accessToken: mbxToken });
 
 module.exports = {
     index: async (req, res) => {
-        const { page = 1, limit = 12, search = '', sort } = req.query;
+        const { page = 1, limit = 12, search = '', sort = "createdAt-desc" } = req.query;
         let sorted = {};
         if (sort) {
             if (sort.includes("desc")) {
