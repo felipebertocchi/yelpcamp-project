@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://yelpcamp-p1p4.onrender.com" target="_blank">
-    <img src=https://github.com/felipebertocchi/yelpcamp-project/blob/main/public/images/logo.png?raw=true/>
+    <img src=https://github.com/felipebertocchi/yelpcamp-project/blob/main/frontend/src/assets/logo-dark.png?raw=true/>
   </a>
 </p>
 
