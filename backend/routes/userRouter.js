@@ -2,17 +2,11 @@ const express = require('express')
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const passport = require('passport');
-const { storeReturnTo } = require('../middleware');
 const authController = require('../controllers/authController');
 
-router.route('/register')
-    .get(authController.getRegisterForm)
-    .post(catchAsync(authController.registerNewUser));
+router.post('/register', catchAsync(authController.registerNewUser));
 
-router.route('/login')
-    .get(authController.getLoginForm)
-    .post(
-        storeReturnTo,
+router.post('/login',
         function (req, res, next) {
             passport.authenticate('local', function (err, user, info) {
                 if (err) {

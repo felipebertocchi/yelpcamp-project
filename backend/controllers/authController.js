@@ -1,9 +1,6 @@
 const User = require('../models/user');
 
 module.exports = {
-    getRegisterForm: (req, res) => {
-        res.render('users/register');
-    },
     registerNewUser: async (req, res) => {
         try {
             const { name, email, phone, password } = req.body;
@@ -21,9 +18,6 @@ module.exports = {
             console.log(err);
             return res.status(500).json({ message: 'Error registering user', error: err.message });
         }
-    },
-    getLoginForm: (req, res) => {
-        res.render('users/login');
     },
     loginUser: async (req, res) => {
         if (req.isAuthenticated()) {
