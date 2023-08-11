@@ -12,7 +12,7 @@ module.exports = {
                 function (err, user, info) {
                     if (err) {
                         res.setHeader('Content-Type', 'application/json');
-                        res.status(500).json({ notif: { msg: 'There was an error with the user registration' }, err, info });
+                        res.status(500).json({ notif: { msg: 'There was an error with the user registration' }, error: err, info });
                     }
                     else {
                         passport.authenticate('local')(req, res, () => {
@@ -35,7 +35,7 @@ module.exports = {
     loginUser: async (req, res) => {
         passport.authenticate("local", function (err, user, info) {
             if (err) {
-                return res.status(500).json({ notif: { msg: 'There was an error processing the login request' }, err });
+                return res.status(500).json({ notif: { msg: 'There was an error processing the login request' }, error: err });
             }
             if (!user) {
                 return res.status(500).json({ notif: { msg: 'Email or password is wrong' }, info });
