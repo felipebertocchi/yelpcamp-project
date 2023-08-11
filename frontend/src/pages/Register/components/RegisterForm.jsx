@@ -4,8 +4,8 @@ import { IconLock, IconMail, IconUser } from "@tabler/icons-react";
 import { Link, useNavigate } from "react-router-dom";
 import { userSchema } from "../../../schemas/userSchema";
 import { useEffect } from "react";
-import API from "../../../api/axios";
 import useAuth from "../../../../hooks/useAuth";
+import { AuthService } from "../../../services/auth.service";
 
 export default function () {
     const navigate = useNavigate();
@@ -29,14 +29,14 @@ export default function () {
     });
 
     const handleSubmit = async (userInput) => {
-        await API.post('/register', userInput)
+        await AuthService.handleSignUp(userInput)
             .then(response => {
-                setUser(response.data.user);
+                setUser(response.user);
                 return navigate('/campgrounds');
             })
             .catch(error => {
                 console.error(error);
-                handleFormErrors(error.response.data?.error);
+                handleFormErrors(error.response.data?.error?.message);
             });
     };
 
