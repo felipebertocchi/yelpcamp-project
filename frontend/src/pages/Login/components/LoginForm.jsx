@@ -1,14 +1,14 @@
+import { useEffect, useState } from "react";
 import { Button, Center, Divider, PasswordInput, Text, TextInput, Title } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { IconLock, IconMail } from "@tabler/icons-react";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from 'zod';
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../../auth/AuthContext";
-import API from "../../../api/axios";
+import { AuthService } from "../../../services/auth.service";
+import useAuth from "../../../../hooks/useAuth";
 
 export default function ({ preventRedirect }) {
-    const { user, setUser } = useContext(AuthContext);
+    const { user, setUser } = useAuth();
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -37,9 +37,9 @@ export default function ({ preventRedirect }) {
 
     const handleSubmit = async (userInput) => {
         setLoading(true);
-        await API.post('/login', userInput)
+        await AuthService.handleLogin(userInput)
             .then(response => {
-                setUser(response.data.user);
+                setUser(response.user);
                 if (!preventRedirect) return navigate("/campgrounds");
             })
             .catch(error => {
