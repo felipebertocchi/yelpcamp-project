@@ -82,7 +82,7 @@ const seedDB = async (type, count, deletePrevious) => {
         }
         const camp = new Campground({
             title: `${sample(descriptors)} ${sample(places)}`,
-            author: "6445bade9c7c107314ba8d10", // admin _id
+            author: "64d69bd60c0c3ba51b6343ad", // admin _id
             images: images,
             description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae tenetur minima, hic deleniti iste iusto, omnis pariatur doloribus quis necessitatibus tempora dicta aliquid recusandae esse? Quaerat tempora placeat autem doloribus.',
             price: price,
