@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { Box, Container, Group, Pagination, SimpleGrid } from "@mantine/core";
 import { useWindowScroll } from '@mantine/hooks';
-import { notifications } from "@mantine/notifications";
 import { CampCard } from "./components/CampCard";
-import axios from "axios";
-import { IconX } from "@tabler/icons-react";
 import { SkeletonCard } from "./components/SkeletonCard";
+import API from "../../api/axios";
 
 export function Component() {
     const [activePage, setPage] = useState(1);
@@ -17,23 +15,12 @@ export function Component() {
     useEffect(() => {
         const getCampgrounds = async () => {
             setLoading(true);
-            await axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/campgrounds`, {
-                params: { page: activePage }
-            })
+            await API.get('/campgrounds', { params: { page: activePage } })
                 .then(response => {
                     setCampgrounds(response.data?.campgrounds);
                     setPages(response.data?.pages);
                 })
-                .catch(err => {
-                    notifications.show({
-                        title: 'Error',
-                        message: err.response.data?.message,
-                        withBorder: true,
-                        color: 'red',
-                        icon: <IconX />,
-                    });
-                    console.error(err);
-                })
+                .catch(err => console.error(err))
                 .finally(() => setLoading(false));
         }
         getCampgrounds();
@@ -60,7 +47,7 @@ export function Component() {
                         ))}
             </SimpleGrid>
             <Box mt="xl">
-                <Pagination.Root total={pages} value={activePage} onChange={(value) => {setPage(value); scrollTo({ y: 0 })}}>
+                <Pagination.Root total={pages} value={activePage} onChange={(value) => { setPage(value); scrollTo({ y: 0 }) }}>
                     <Group spacing={5} position="center">
                         <Pagination.Previous />
                         <Pagination.Items />

@@ -1,37 +1,11 @@
 const express = require('express')
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
-const passport = require('passport');
-const { storeReturnTo } = require('../middleware');
 const authController = require('../controllers/authController');
 
-router.route('/register')
-    .get(authController.getRegisterForm)
-    .post(catchAsync(authController.registerNewUser));
+router.post('/register', catchAsync(authController.registerNewUser));
 
-router.route('/login')
-    .get(authController.getLoginForm)
-    .post(
-        storeReturnTo,
-        function (req, res, next) {
-            passport.authenticate('local', function (err, user, info) {
-                if (err) {
-                    console.error(err);
-                    return res.status(500).json({ message: 'Login failed', error: err });
-                }
-                if (!user) {
-                    return res.status(401).json({ error: info.message });
-                }
-                req.logIn(user, function (err) {
-                    if (err) {
-                        return next(err);
-                    }
-                    next();
-                });
-            })(req, res, next);
-        },
-        catchAsync(authController.loginUser)
-    );
+router.post('/login', catchAsync(authController.loginUser));
 
 router.get('/logout', authController.logoutUser);
 

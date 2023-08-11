@@ -9,16 +9,14 @@ import {
     rem,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { useContext } from 'react';
-import { AuthContext } from '../../auth/AuthContext';
 import ThemeToggle from './ThemeToggle';
 import Logo from './Logo';
 import PageLink from './PageLink';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { notifications } from '@mantine/notifications';
-import { IconCheck, IconX } from '@tabler/icons-react';
 import UserMenu from './UserMenu';
+import API from '../../api/axios';
+import useAuth from '../../../hooks/useAuth';
+import { AuthService } from '../../services/auth.service';
 
 const HEADER_HEIGHT = rem(70);
 
@@ -68,7 +66,7 @@ const useStyles = createStyles((theme) => ({
 export default function () {
     const [opened, { toggle, close }] = useDisclosure(false);
     const { classes } = useStyles();
-    const { user, setUser } = useContext(AuthContext);
+    const { user, setUser } = useAuth();
     const navigate = useNavigate();
 
     const userLinks = (user) => {
@@ -91,28 +89,12 @@ export default function () {
 
     const logOut = async (e) => {
         e.preventDefault()
-        await axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/logout`)
-            .then(response => {
+        await AuthService.handleLogout()
+            .then(() => {
                 setUser(null);
-                notifications.show({
-                    title: 'Logout succesful',
-                    message: response.data?.message,
-                    withBorder: true,
-                    color: 'teal',
-                    icon: <IconCheck />,
-                })
                 return navigate("/");
             })
-            .catch(error => {
-                notifications.show({
-                    title: 'Logout error',
-                    message: error.response.data?.message,
-                    withBorder: true,
-                    color: 'red',
-                    icon: <IconX />,
-                })
-                console.error('Error logging out:', error);
-            })
+            .catch(error => console.error('Error logging out:', error))
             .finally(close);
     };
 

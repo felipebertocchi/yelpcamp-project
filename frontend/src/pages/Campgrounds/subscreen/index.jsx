@@ -1,7 +1,6 @@
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { IconChevronDown, IconMapPin, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
+import { IconChevronDown, IconMapPin, IconPencil, IconTrash } from '@tabler/icons-react';
 import { ActionIcon, Box, Button, Container, Grid, Group, Menu, Text, Title, Transition } from "@mantine/core";
 import ImageGallery from "./components/ImageGallery";
 import ActivitiesSection from "./components/ActivitiesSection";
@@ -13,14 +12,14 @@ import { useDisclosure, useScrollIntoView } from "@mantine/hooks";
 import ReserveWidget from "./components/ReserveWidget";
 import NavMenu from "./components/NavMenu";
 import { useInView } from 'react-intersection-observer';
-import { notifications } from "@mantine/notifications";
-import { AuthContext } from "../../../auth/AuthContext";
 import DeleteModal from "./components/DeleteModal";
+import API from "../../../api/axios";
+import useAuth from "../../../../hooks/useAuth";
 
 export function Component() {
     const { campgroundId } = useParams();
     const navigate = useNavigate();
-    const { user } = useContext(AuthContext);
+    const { user } = useAuth();
     const [campground, setCampground] = useState(null);
     const [bookingDates, setBookingDates] = useState([null, null]);
     const [initialView, setInitialView] = useState(false);
@@ -35,24 +34,12 @@ export function Component() {
 
     useEffect(() => {
         const getData = async () => {
-            await axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/campgrounds/${campgroundId}`)
-                .then(response => {
-                    setCampground(response.data);
-                })
-                .catch(err => {
-                    console.error(err);
-                    notifications.show({
-                        title: 'Error',
-                        message: err.response.data?.message,
-                        withBorder: true,
-                        color: 'red',
-                        icon: <IconX />,
-                    });
-                })
+            await API.get(`/campgrounds/${campgroundId}`)
+                .then(response => setCampground(response.data))
+                .catch(err => console.error(err))
         }
         getData();
     }, []);
-
 
     useEffect(() => {
         if (photosInView === false) return
@@ -63,7 +50,7 @@ export function Component() {
         <Container size={"xl"} p={30}>
             {campground &&
                 <>
-                    <DeleteModal opened={openedDeleteModal} close={closeDeleteModal} campgroundId={campgroundId}/>
+                    <DeleteModal opened={openedDeleteModal} close={closeDeleteModal} campgroundId={campgroundId} />
                     <Transition transition="slide-down" mounted={initialView && !photosInView} duration={150} exitDuration={150}>
                         {(transitionStyles) => (
                             <NavMenu
@@ -75,7 +62,7 @@ export function Component() {
                             />
                         )}
                     </Transition>
-                    {(campground?.author && user?._id === campground?.author?._id) && (
+                    {(campground?.author && user?.userID === campground?.author?._id) && (
                         <Group position="right" noWrap spacing={0}>
                             <Button
                                 leftIcon={<IconPencil size={"1.2rem"} />}
@@ -104,7 +91,7 @@ export function Component() {
                                 </Menu.Target>
                                 <Menu.Dropdown>
                                     <Menu.Item
-                                        onClick={openDeleteModal} 
+                                        onClick={openDeleteModal}
                                         icon={<IconTrash size="1rem" stroke={1.5} />}
                                         color="red"
                                     >

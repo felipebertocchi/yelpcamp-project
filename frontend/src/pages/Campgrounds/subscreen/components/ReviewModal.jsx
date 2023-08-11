@@ -1,14 +1,13 @@
 import { Alert, Button, Group, Modal, Paper, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconAlertCircle } from "@tabler/icons-react";
-import { useContext } from "react";
-import { AuthContext } from "../../../../auth/AuthContext";
 import LoginForm from "../../../Login/components/LoginForm";
 import ReviewForm from "./ReviewForm";
+import useAuth from "../../../../../hooks/useAuth";
 
 export default function () {
     const [opened, { open, close }] = useDisclosure(false);
-    const { user } = useContext(AuthContext);
+    const { user } = useAuth();
 
     return (
         <>
