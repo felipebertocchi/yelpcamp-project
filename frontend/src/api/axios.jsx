@@ -10,7 +10,10 @@ const API = axios.create({
 })
 
 API.interceptors.request.use((config) => {
-    // Do something before request is sent
+    if (localStorage.getItem('user')) {
+        const { token } = JSON.parse(localStorage.getItem('user'));
+        config.headers.Authorization = `Bearer ${token}`
+    }
     return config;
 }, (error) => {
     console.log(error);
