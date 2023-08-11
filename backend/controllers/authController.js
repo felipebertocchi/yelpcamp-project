@@ -55,16 +55,4 @@ module.exports = {
             return res.status(500).json({ notif: { msg: 'User logout failed', msg: error.message }, error });
         }
     },
-    getUser: (req, res) => {
-        if (req.isAuthenticated()) {
-            return res.status(200).json({
-                verified: true,
-                user: req.user
-            });
-        } else {
-            return res.status(200).json({
-                message: "User is not authenticated"
-            });
-        }
-    }
 }

@@ -9,6 +9,4 @@ router.post('/login', catchAsync(authController.loginUser));
 
 router.get('/logout', authController.logoutUser);
 
-router.get('/user', authController.getUser)
-
 module.exports = router;
