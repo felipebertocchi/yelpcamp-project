@@ -26,9 +26,9 @@ exports.jwtPassport = passport.use(new JwtStrategy({
     secretOrKey: process.env.JWT_SECRET
 },
     // "done" is the callback provided by passport
-    (jwt_payload, done) => {
+    async (jwt_payload, done) => {
         // Search the user with jwt.payload userID field
-        const user = User.findOne({ _id: jwt_payload.userID })
+        const user = await User.findOne({ _id: jwt_payload.userID })
         if (user) {
             return done(null, user);
         }
