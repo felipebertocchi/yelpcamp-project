@@ -1,4 +1,4 @@
-import { createStyles, Container, Group, rem, Footer } from '@mantine/core';
+import { createStyles, Container, Group, rem } from '@mantine/core';
 import { Link } from 'react-router-dom';
 
 const useStyles = createStyles((theme) => ({
@@ -71,11 +71,11 @@ export default function () {
     ));
 
     return (
-        <Footer className={classes.footer}>
+        <div className={classes.footer}>
             <Container className={classes.inner}>
                 <span>&copy; YelpCamp 2023</span>
                 <Group className={classes.links}>{items}</Group>
             </Container>
-        </Footer>
+        </div>
     );
 }
