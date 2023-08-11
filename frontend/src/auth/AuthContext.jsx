@@ -1,5 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import { decodeJWT } from '../utils/decodeJWT';
+import { notifications } from '@mantine/notifications';
+import { IconInfoSmall } from '@tabler/icons-react';
+import { Anchor } from '@mantine/core';
 
 export const AuthContext = createContext();
 
@@ -7,24 +10,25 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const isUserLoggedIn = async () => {
-            await axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/user`)
-                .then(response => {
-                    if (response.data.verified) {
-                        setUser(response.data.user);
-                    } else {
-                        setUser(null);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error checking user auth:', error);
+        const token = localStorage.getItem('user');
+        if (token) {
+            const userData = decodeJWT(token);
+            if (new Date((userData.exp * 1000)) < new Date()) {
+                notifications.show({
+                    title: 'Session expired',
+                    message: <>Your session has expired. Please <Anchor href="/login">log in</Anchor> again</>,
+                    withBorder: true,
+                    icon: <IconInfoSmall />,
                 });
-        };
-        isUserLoggedIn();
+                localStorage.removeItem('user');
+            } else {
+                setUser(userData);
+            }
+        }
     }, []);
 
     return (
-        <AuthContext.Provider value={{user, setUser}}>
+        <AuthContext.Provider value={{ user, setUser }}>
             {children}
         </AuthContext.Provider>
     );
