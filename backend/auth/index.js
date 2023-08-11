@@ -38,4 +38,28 @@ exports.jwtPassport = passport.use(new JwtStrategy({
     }));
 
 // Verify an incoming user with jwt strategy we just configured above   
-exports.verifyJwt = passport.authenticate('jwt', { session: false });
+exports.verifyJwt = function (req, res, next) {
+    return passport.authenticate('jwt', { session: false }, (err, user, info) => {
+        if (err) {
+            console.log(err);
+            return next(err);
+        }
+        if (!user) {
+            if (info.name === "TokenExpiredError") {
+                return res.status(401).json({
+                    sessionExpired: true,
+                    error: 'SESSION_EXPIRED',
+                    notif: {
+                        title: 'Session Expired',
+                        msg: 'Your session has expired. Please log in again'
+                    }
+                });
+            }
+            return res.status(401).json({
+                error: 'UNAUTHORIZED_USER',
+            });
+        }
+        req.user = user; 
+        next();
+    })(req, res, next);
+}
