@@ -1,12 +1,11 @@
 import { Button, Center, Divider, PasswordInput, Text, TextInput, Title } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { notifications } from '@mantine/notifications';
-import { IconCheck, IconLock, IconMail, IconX } from "@tabler/icons-react";
+import { IconLock, IconMail } from "@tabler/icons-react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { z } from 'zod';
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../auth/AuthContext";
+import API from "../../../api/axios";
 
 export default function ({ preventRedirect }) {
     const { user, setUser } = useContext(AuthContext);
@@ -38,27 +37,13 @@ export default function ({ preventRedirect }) {
 
     const handleSubmit = async (userInput) => {
         setLoading(true);
-        await axios.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/login`, userInput)
+        await API.post('/login', userInput)
             .then(response => {
                 setUser(response.data.user);
-                notifications.show({
-                    title: 'Login',
-                    message: response.data.message,
-                    withBorder: true,
-                    color: 'teal',
-                    icon: <IconCheck />,
-                })
                 if (!preventRedirect) return navigate("/campgrounds");
             })
             .catch(error => {
                 console.error(error);
-                notifications.show({
-                    title: 'Login error',
-                    message: error.response.data.message,
-                    withBorder: true,
-                    color: 'red',
-                    icon: <IconX />,
-                })
                 handleFormErrors(error.response.data.error);
             })
             .finally(() => setLoading(false));

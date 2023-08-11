@@ -1,8 +1,7 @@
 import { Alert, Button, Group, Modal, Paper, Stepper, Title } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { IconAlertCircle, IconCheck, IconX } from "@tabler/icons-react";
+import { IconAlertCircle, IconX } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../auth/AuthContext";
 import { campSchema } from "../../schemas/campSchema";
@@ -14,6 +13,7 @@ import ContactStep from "./ContactStep";
 import ServicesStep from "./ServicesStep";
 import ImagesStep from "./ImagesStep";
 import LoginForm from "../../pages/Login/components/LoginForm";
+import API from "../../api/axios";
 
 export default function ({ initialValues, action }) {
     const { user, setUser } = useContext(AuthContext);
@@ -106,31 +106,13 @@ export default function ({ initialValues, action }) {
         setUploading(true);
 
         if (initialValues && action === 'edit') {
-            await axios.put(
-                `${import.meta.env.VITE_BACKEND_DOMAIN}/campgrounds/${initialValues.id}`,
-                formData,
-                { headers: { "Content-Type": "multipart/form-data", } }
-            )
+            await API.put(`/campgrounds/${initialValues.id}`, formData, { headers: { "Content-Type": "multipart/form-data" } })
                 .then(response => {
                     const { campground } = response.data
-                    notifications.show({
-                        title: 'Campground changes saved',
-                        message: response.data?.message,
-                        withBorder: true,
-                        color: 'teal',
-                        icon: <IconCheck />,
-                    });
                     return navigate(`/campgrounds/${campground.id}`);
                 })
                 .catch(error => {
                     console.error(error);
-                    notifications.show({
-                        title: error.response.data?.title || 'Error',
-                        message: error.response.data?.message,
-                        withBorder: true,
-                        color: 'red',
-                        icon: <IconX />,
-                    });
                     if (error.response.data?.sessionExpired) {
                         setUser(null);
                         handleLoginModal.open();
@@ -138,27 +120,13 @@ export default function ({ initialValues, action }) {
                 })
                 .finally(() => setUploading(false));
         } else {
-            await axios.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/campgrounds`, formData, { headers: { "Content-Type": "multipart/form-data", } })
+            await API.post('/campgrounds', formData, { headers: { "Content-Type": "multipart/form-data" } })
                 .then(response => {
                     const { campground } = response.data
-                    notifications.show({
-                        title: 'Campground added',
-                        message: response.data.message,
-                        withBorder: true,
-                        color: 'teal',
-                        icon: <IconCheck />,
-                    });
                     return navigate(`/campgrounds/${campground.id}`);
                 })
                 .catch(error => {
                     console.error(error);
-                    notifications.show({
-                        title: error.response.data?.title || 'Error',
-                        message: error.response.data?.message,
-                        withBorder: true,
-                        color: 'red',
-                        icon: <IconX />,
-                    });
                     if (error.response.data?.sessionExpired) {
                         setUser(null);
                         handleLoginModal.open();

@@ -1,10 +1,8 @@
 import { Button, Group, Input, LoadingOverlay, Rating, Textarea } from "@mantine/core";
 import { useForm } from '@mantine/form';
 import { useDisclosure } from "@mantine/hooks";
-import { notifications } from "@mantine/notifications";
-import { IconCheck, IconX } from "@tabler/icons-react";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import API from "../../../../api/axios";
 
 export default function ({ cancel }) {
     const { campgroundId } = useParams();
@@ -24,27 +22,13 @@ export default function ({ cancel }) {
     });
 
     const postReview = async (review) => {
-        toggle()
-        await axios.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/campgrounds/${campgroundId}/reviews`, { review })
-            .then(response => {
-                notifications.show({
-                    title: 'Review submitted',
-                    message: response.data.message,
-                    withBorder: true,
-                    color: 'teal',
-                    icon: <IconCheck />,
-                })
+        toggle();
+        await API.post(`/campgrounds/${campgroundId}/reviews`, { review })
+            .then(() => {
                 navigate(0);
             })
             .catch(error => {
                 console.error(error);
-                notifications.show({
-                    title: 'Review submittion failed',
-                    message: error.response.data?.message,
-                    withBorder: true,
-                    color: 'red',
-                    icon: <IconX />,
-                })
             })
     }
 

@@ -1,7 +1,7 @@
-import axios from "axios";
+import API from "../api/axios";
 
 export async function getCampground(campgroundId) {
-    return await axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/campgrounds/${campgroundId}`)
+    return await API.get(`/campgrounds/${campgroundId}`)
         .then(response => {
             return response.data
         })

@@ -1,33 +1,18 @@
 import { Button, Flex, Modal, Paper, Text } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
-import { IconCheck, IconTrash, IconX } from "@tabler/icons-react";
+import { IconTrash } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import API from "../../../../api/axios";
 
 export default function ({ opened, close, campgroundId }) {
     const navigate = useNavigate();
 
     const deleteCampground = async () => {
-        await axios.delete(`${import.meta.env.VITE_BACKEND_DOMAIN}/campgrounds/${campgroundId}`)
-            .then(response => {
-                notifications.show({
-                    title: 'Campground deleted',
-                    message: response.data?.message,
-                    withBorder: true,
-                    color: 'teal',
-                    icon: <IconCheck />,
-                });
+        await API.delete(`/campgrounds/${campgroundId}`)
+            .then(() => {
                 navigate('/campgrounds')
             })
             .catch(err => {
                 console.error(err);
-                notifications.show({
-                    title: 'Error',
-                    message: err.response.data?.message,
-                    withBorder: true,
-                    color: 'red',
-                    icon: <IconX />,
-                });
             })
     }
 
