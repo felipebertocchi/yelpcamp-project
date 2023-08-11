@@ -11,9 +11,9 @@ module.exports = {
             campground.reviews.push(review);
             await review.save();
             await campground.save();
-            res.status(200).json({ message: 'Successfully added a new review' });
+            res.status(200).json({ notif: { title: "Review submitted", msg: "Successfully added a new review" } });
         } catch (error) {
-            res.status(500).json({ message: 'There was an error processing your review' });
+            res.status(500).json({ notif: { title: "Review submittion failed", msg: "There was an error processing your review" }, error });
         }
     },
     deleteReview: async (req, res) => {
@@ -21,9 +21,9 @@ module.exports = {
             const { id, reviewId } = req.params;
             await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
             await Review.findByIdAndDelete(reviewId);
-            res.status(200).json({ message: 'Successfully deleted your review' });
+            res.status(200).json({ notif: { msg: "Successfully deleted your review" } });
         } catch (error) {
-            res.status(500).json({ message: 'There was an error deleting your review' });
+            res.status(500).json({ notif: { msg: "There was an error deleting your review" }, error });
         }
     }
 }

@@ -33,7 +33,7 @@ module.exports = {
             return res.status(200).json({ campgrounds, total, currentPage: page, pages, limit, searchValue: search });
         } catch (error) {
             console.log(error)
-            return res.status(500).json({ message: 'There was an error trying to retrieve the campgrounds', error });
+            return res.status(500).json({ notif: { msg: 'There was an error trying to retrieve the campgrounds' }, error });
         }
     },
     getCampground: async (req, res) => {
@@ -74,12 +74,12 @@ module.exports = {
                 })
                 .catch(err => {
                     console.log(err);
-                    return res.status(500).json({ title: "Geolocation error", message: "There was an error processing the location of your campground", err });
+                    return res.status(500).json({ notif: { title: "Geolocation error", msg: "There was an error processing the location of your campground" }, err });
                 });
             await campground.save();
-            return res.status(200).json({ message: "Succesfully added a new campground", campground })
+            return res.status(200).json({ notif: { title: "Succesfully added a new campground", msg: "We'll redirect you shortly to it!" }, campground })
         } catch (error) {
-            return res.status(500).json({ message: "There was an error processing the data", error })
+            return res.status(500).json({ notif: { msg: "There was an error processing the data" }, error })
         }
     },
     updateCampground: async (req, res) => {
@@ -104,22 +104,22 @@ module.exports = {
                     })
                     .catch(err => {
                         console.log(err);
-                        return res.status(500).json({ title: "Geolocation error", message: "There was an error processing the location of your campground", err });
+                        return res.status(500).json({ notif: { title: "Geolocation error", msg: "There was an error processing the location of your campground" }, err });
                     });
             }
             await campground.save();
-            return res.status(200).json({ message: "Succesfully updated campground", campground })
+            return res.status(200).json({ notif: { title: "Changes saved", msg: "Succesfully updated campground details" }, campground })
         } catch (error) {
-            return res.status(500).json({ message: "There was an error processing the data", error })
+            return res.status(500).json({ notif: { msg: "There was an error processing the data" }, error })
         }
     },
     deleteCampground: async (req, res) => {
         const { id } = req.params;
         try {
             await Campground.findByIdAndDelete(id);
-            return res.status(200).json({ message: "Succesfully deleted campground" })
+            return res.status(200).json({ notif: { title: "Campground deleted", msg: "Succesfully erased campground details" } })
         } catch (error) {
-            return res.status(500).json({ message: "There was an error deleting the campground", error })
+            return res.status(500).json({ notif: { msg: "There was an error trying to delete the data" }, error })
         }
     }
 }
