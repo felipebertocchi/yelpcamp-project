@@ -18,7 +18,11 @@ module.exports = {
                         passport.authenticate('local')(req, res, () => {
                             const token = getToken({ userID: user._id, name: user.name });
                             res.setHeader('Content-Type', 'application/json');
-                            res.status(200).json({ verified: true, notif: { title: "Sign up successful", msg: "Welcome to YelpCamp!" }, token });
+                            res.status(200).json({
+                                verified: true,
+                                notif: { title: "Sign up successful", msg: "Welcome to YelpCamp!" },
+                                token
+                            });
                         });
                     }
                 }
@@ -36,15 +40,20 @@ module.exports = {
             if (!user) {
                 return res.status(500).json({ notif: { msg: 'Email or password is wrong' }, info });
             }
-            const token = getToken({ userID: user._id, name: user.name });
-            return res.status(200).json({ verified: true, notif: { title: "Login successful", msg: "Welcome back!" }, token });
+            const token = getToken({ userID: user._id, name: user.name, email: user.email });
+            return res.status(200).json({
+                verified: true,
+                notif: { title: "Login successful", msg: "Welcome back!" },
+                token
+            });
         })(req, res)
     },
     logoutUser: (req, res) => {
-        req.logout(function (err) {
-            if (err) return res.status(500).json({ notif: { msg: 'User logout failed', msg: err.message }, error: err });
+        try {
             return res.status(200).json({ notif: { title: "Logout successful", msg: "See you later!" } });
-        });
+        } catch (error) {
+            return res.status(500).json({ notif: { msg: 'User logout failed', msg: error.message }, error });
+        }
     },
     getUser: (req, res) => {
         if (req.isAuthenticated()) {
