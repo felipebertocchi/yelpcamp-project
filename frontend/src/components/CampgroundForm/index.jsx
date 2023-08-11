@@ -2,8 +2,7 @@ import { Alert, Button, Group, Modal, Paper, Stepper, Title } from "@mantine/cor
 import { useForm, zodResolver } from "@mantine/form";
 import { IconAlertCircle, IconX } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../auth/AuthContext";
+import { useEffect, useState } from "react";
 import { campSchema } from "../../schemas/campSchema";
 import { getFormData } from "../../utils/getFormData";
 import { useDisclosure } from "@mantine/hooks";
@@ -14,9 +13,10 @@ import ServicesStep from "./ServicesStep";
 import ImagesStep from "./ImagesStep";
 import LoginForm from "../../pages/Login/components/LoginForm";
 import API from "../../api/axios";
+import useAuth from "../../../hooks/useAuth";
 
 export default function ({ initialValues, action }) {
-    const { user, setUser } = useContext(AuthContext);
+    const { user, setUser } = useAuth();
     const [loginModal, handleLoginModal] = useDisclosure(false);
     const navigate = useNavigate();
     const [imageFiles, setImageFiles] = useState(initialValues?.images ?? []);
@@ -38,7 +38,7 @@ export default function ({ initialValues, action }) {
         if (!user) {
             navigate("/login");
         }
-        if (action === 'edit' && (user?._id !== initialValues?.author?._id)) {
+        if (action === 'edit' && (user?.userID !== initialValues?.author?._id)) {
             navigate("/campgrounds");
         }
     }, [])

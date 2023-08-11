@@ -3,13 +3,13 @@ import { useForm, zodResolver } from "@mantine/form";
 import { IconLock, IconMail, IconPhone, IconUser } from "@tabler/icons-react";
 import { Link, useNavigate } from "react-router-dom";
 import { userSchema } from "../../../schemas/userSchema";
-import { useContext, useEffect } from "react";
-import { AuthContext } from "../../../auth/AuthContext";
+import { useEffect } from "react";
 import API from "../../../api/axios";
+import useAuth from "../../../../hooks/useAuth";
 
 export default function () {
     const navigate = useNavigate();
-    const { user, setUser } = useContext(AuthContext);
+    const { user, setUser } = useAuth();
 
     useEffect(() => {
         if (user) {

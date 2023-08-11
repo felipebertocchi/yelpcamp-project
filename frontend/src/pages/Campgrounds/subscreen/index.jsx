@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { IconChevronDown, IconMapPin, IconPencil, IconTrash } from '@tabler/icons-react';
 import { ActionIcon, Box, Button, Container, Grid, Group, Menu, Text, Title, Transition } from "@mantine/core";
@@ -12,14 +12,14 @@ import { useDisclosure, useScrollIntoView } from "@mantine/hooks";
 import ReserveWidget from "./components/ReserveWidget";
 import NavMenu from "./components/NavMenu";
 import { useInView } from 'react-intersection-observer';
-import { AuthContext } from "../../../auth/AuthContext";
 import DeleteModal from "./components/DeleteModal";
 import API from "../../../api/axios";
+import useAuth from "../../../../hooks/useAuth";
 
 export function Component() {
     const { campgroundId } = useParams();
     const navigate = useNavigate();
-    const { user } = useContext(AuthContext);
+    const { user } = useAuth();
     const [campground, setCampground] = useState(null);
     const [bookingDates, setBookingDates] = useState([null, null]);
     const [initialView, setInitialView] = useState(false);
@@ -40,7 +40,6 @@ export function Component() {
         }
         getData();
     }, []);
-
 
     useEffect(() => {
         if (photosInView === false) return
@@ -63,7 +62,7 @@ export function Component() {
                             />
                         )}
                     </Transition>
-                    {(campground?.author && user?._id === campground?.author?._id) && (
+                    {(campground?.author && user?.userID === campground?.author?._id) && (
                         <Group position="right" noWrap spacing={0}>
                             <Button
                                 leftIcon={<IconPencil size={"1.2rem"} />}
