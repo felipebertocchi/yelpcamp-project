@@ -8,11 +8,6 @@ export const userSchema = z.object({
     email: z
         .string()
         .email({ message: 'Invalid email address' }),
-    phone: z
-        .string()
-        .refine((i) => i.length > 5, {
-            message: "Invalid phone number",
-        }),
     password: z
         .string()
         .min(8, { message: 'Password should be at least 8 characters long' }),

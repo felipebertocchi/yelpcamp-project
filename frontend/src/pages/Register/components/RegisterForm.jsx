@@ -1,6 +1,6 @@
 import { Anchor, Button, Center, Checkbox, Divider, PasswordInput, Text, TextInput, Title } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { IconLock, IconMail, IconPhone, IconUser } from "@tabler/icons-react";
+import { IconLock, IconMail, IconUser } from "@tabler/icons-react";
 import { Link, useNavigate } from "react-router-dom";
 import { userSchema } from "../../../schemas/userSchema";
 import { useEffect } from "react";
@@ -21,7 +21,6 @@ export default function () {
         initialValues: {
             name: '',
             email: '',
-            phone: '',
             password: '',
             confirmPassword: '',
             termsOfService: false,
@@ -66,13 +65,6 @@ export default function () {
                     mt="md"
                     icon={<IconMail size="1rem" />}
                     {...form.getInputProps('email')}
-                />
-                <TextInput
-                    label="Phone number"
-                    placeholder="Enter your phone number"
-                    mt="md"
-                    icon={<IconPhone size="1rem" />}
-                    {...form.getInputProps('phone')}
                 />
                 <PasswordInput
                     required

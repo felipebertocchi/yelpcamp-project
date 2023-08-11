@@ -4,10 +4,10 @@ const { getToken } = require('../auth');
 
 module.exports = {
     registerNewUser: async (req, res) => {
-        const { name, email, phone, password } = req.body;
+        const { name, email, password } = req.body;
         try {
             User.register(
-                new User({ name, email, phone }),
+                new User({ name, email }),
                 password,
                 function (err, user, info) {
                     if (err) {
