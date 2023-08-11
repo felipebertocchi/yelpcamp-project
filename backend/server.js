@@ -6,13 +6,8 @@ require('colors');
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const ejsMate = require('ejs-mate');
-const session = require('express-session');
 const ExpressError = require('./utils/ExpressError');
-const methodOverride = require('method-override');
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const MongoDBStore = require('connect-mongo');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const cors = require('cors')
@@ -21,7 +16,6 @@ const mongo = require('./database/mongo');
 const userRouter = require('./routes/userRouter');
 const campgroundsRouter = require('./routes/campgroundsRouter');
 const reviewsRouter = require('./routes/reviewsRouter');
-const User = require('./models/user');
 
 const app = express();
 const port = 4000;
@@ -35,36 +29,9 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json())
 
-app.engine('ejs', ejsMate)
-app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, 'views'))
-
 app.use(express.urlencoded({ extended: true }))
-app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(mongoSanitize());
-
-const store = MongoDBStore.create({
-    mongoUrl: process.env.MONGODB_URI,
-    touchAfter: 24 * 3600,
-    crypto: {
-        secret: process.env.SESSION_SECRET
-    },
-}) 
-
-const sessionConfig = {
-    store: store,
-    name: 'session',
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        httpOnly: true,
-        // secure: true,
-        maxAge: 1000 * 60 * 60
-    }
-}
-app.use(session(sessionConfig));
 app.use(helmet());
 
 const scriptSrcUrls = [
@@ -115,33 +82,18 @@ app.use(
     })
 );
 
-
 app.use(passport.initialize());
-app.use(passport.session());
-
-passport.use(new LocalStrategy({
-    usernameField: 'email'
-}, User.authenticate()));
-
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 
 app.use('/', userRouter)
 app.use('/campgrounds', campgroundsRouter)
 app.use('/campgrounds/:id/reviews', reviewsRouter)
 
 app.get('/', (req, res) => {
-    res.sendStatus(200)
+    res.status(200).json({ message: 'Yelp Camp' })
 })
 
 app.all('*', (req, res, next) => {
-    next(new ExpressError('Page Not Found', 404))
-})
-
-app.use((err, req, res, next) => {
-    if (!err.message) err.message = 'Something went wrong'
-    if (!err.statusCode) err.statusCode = 500
-    res.status(err.statusCode).json({ err });
+    next(new ExpressError('Something went wrong', 404))
 })
 
 app.listen(port, async () => {
