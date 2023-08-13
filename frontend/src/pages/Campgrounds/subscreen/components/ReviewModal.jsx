@@ -1,32 +1,32 @@
-import { Alert, Button, Group, Modal, Paper, Text } from "@mantine/core";
+import { Alert, Button, Group, Paper, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconAlertCircle } from "@tabler/icons-react";
-import LoginForm from "../../../../components/LoginForm";
 import ReviewForm from "./ReviewForm";
 import useAuth from "../../../../../hooks/useAuth";
+import LoginModal from "../../../../components/modals/LoginModal";
+import CustomModal from "../../../../components/modals/CustomModal";
 
 export default function () {
-    const [opened, { open, close }] = useDisclosure(false);
+    const [reviewModalOpened, reviewModal] = useDisclosure(false);
+    const [loginModalOpened, loginModal] = useDisclosure(false);
     const { user } = useAuth();
 
     return (
         <>
-            <Modal opened={opened} onClose={close} title={<Text fw={700}>Submit a review</Text>} radius="md" centered>
+            <CustomModal opened={reviewModalOpened} close={reviewModal.close} title={<Text fw={700}>Submit a review</Text>}>
                 <Paper p={14} radius="md" miw={400}>
-                    {user ? (
-                        <ReviewForm cancel={close} />
-                    ) : (
-                        <>
-                            <Alert icon={<IconAlertCircle size="1rem" />} title="">
-                                You need to log in to submit a review
-                            </Alert>
-                            <LoginForm preventRedirect />
-                        </>
-                    )}
+                    <ReviewForm cancel={reviewModal.close} />
                 </Paper>
-            </Modal>
+            </CustomModal>
+            <LoginModal opened={loginModalOpened} close={loginModal.close} onSuccess={reviewModal.open} preventRedirect>
+                <Alert mb={15} icon={<IconAlertCircle size="1.2rem" />}>
+                    You need to log in to submit a review
+                </Alert>
+            </LoginModal>
             <Group my={25}>
-                <Button onClick={open}>Submit a review</Button>
+                <Button onClick={user ? reviewModal.open : loginModal.open}>
+                    Submit a review
+                </Button>
             </Group>
         </>
     )
