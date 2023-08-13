@@ -10,7 +10,7 @@ export default function ({ opened, close, onSuccess, preventRedirect, children }
                 <LoginForm
                     preventRedirect={preventRedirect}
                     onSuccess={() => {
-                        onSuccess();
+                        if (onSuccess) onSuccess();
                         close();
                     }}
                 />
