@@ -1,29 +1,27 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { IconChevronDown, IconMapPin, IconPencil, IconTrash } from '@tabler/icons-react';
-import { ActionIcon, Box, Button, Container, Grid, Group, Menu, Text, Title, Transition } from "@mantine/core";
+import { useParams } from "react-router-dom";
+import { IconMapPin } from '@tabler/icons-react';
+import { Box, Container, Grid, Group, Text, Title, Transition } from "@mantine/core";
 import ImageGallery from "./components/ImageGallery";
 import ActivitiesSection from "./components/ActivitiesSection";
 import AmenitiesSection from "./components/AmenitiesSection";
 import BookingCalendar from "./components/BookingCalendar";
 import ReviewsSection from "./components/ReviewsSection";
 import MapSection from "./components/MapSection";
-import { useDisclosure, useScrollIntoView } from "@mantine/hooks";
+import { useScrollIntoView } from "@mantine/hooks";
 import ReserveWidget from "./components/ReserveWidget";
 import NavMenu from "./components/NavMenu";
 import { useInView } from 'react-intersection-observer';
-import DeleteModal from "./components/DeleteModal";
 import API from "../../../api/axios";
 import useAuth from "../../../../hooks/useAuth";
+import EditDeleteButtons from "./components/EditDeleteButtons";
 
 export function Component() {
     const { campgroundId } = useParams();
-    const navigate = useNavigate();
     const { user } = useAuth();
     const [campground, setCampground] = useState(null);
     const [bookingDates, setBookingDates] = useState([null, null]);
     const [initialView, setInitialView] = useState(false);
-    const [openedDeleteModal, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
     const { ref: reserveWidgetRef, inView: reserveWidgetInView } = useInView();
     const { ref: photosRef, inView: photosInView } = useInView();
     const { scrollIntoView: scrollToPhotos, targetRef: targetPhotosRef } = useScrollIntoView({ offset: 140 });
@@ -50,7 +48,6 @@ export function Component() {
         <Container size={"xl"} p={30}>
             {campground &&
                 <>
-                    <DeleteModal opened={openedDeleteModal} close={closeDeleteModal} campgroundId={campgroundId} />
                     <Transition transition="slide-down" mounted={initialView && !photosInView} duration={150} exitDuration={150}>
                         {(transitionStyles) => (
                             <NavMenu
@@ -62,45 +59,9 @@ export function Component() {
                             />
                         )}
                     </Transition>
-                    {(campground?.author && user?.userID === campground?.author?._id) && (
-                        <Group position="right" noWrap spacing={0}>
-                            <Button
-                                leftIcon={<IconPencil size={"1.2rem"} />}
-                                variant="default"
-                                style={{
-                                    borderTopRightRadius: 0,
-                                    borderBottomRightRadius: 0,
-                                }}
-                                onClick={() => navigate('edit')}
-                            >
-                                Edit
-                            </Button>
-                            <Menu transitionProps={{ transition: 'pop' }} position="bottom-end" withinPortal>
-                                <Menu.Target>
-                                    <ActionIcon
-                                        variant="default"
-                                        size={36}
-                                        style={{
-                                            borderTopLeftRadius: 0,
-                                            borderBottomLeftRadius: 0,
-                                            borderLeft: 0
-                                        }}
-                                    >
-                                        <IconChevronDown size="1rem" stroke={1.5} />
-                                    </ActionIcon>
-                                </Menu.Target>
-                                <Menu.Dropdown>
-                                    <Menu.Item
-                                        onClick={openDeleteModal}
-                                        icon={<IconTrash size="1rem" stroke={1.5} />}
-                                        color="red"
-                                    >
-                                        Delete
-                                    </Menu.Item>
-                                </Menu.Dropdown>
-                            </Menu>
-                        </Group>
-                    )}
+                    {(campground?.author && user?.userID === campground?.author?._id) && 
+                        <EditDeleteButtons />
+                    }
                     <Group spacing={5}>
                         <IconMapPin />
                         <Title order={4} mt={4}>{campground.location}</Title>
