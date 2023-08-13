@@ -1,4 +1,4 @@
-import { Alert, Button, Group, Modal, Paper, Stepper, Title } from "@mantine/core";
+import { Alert, Button, Group, Modal, Paper, Stepper, Text, Title } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { IconAlertCircle, IconX } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
@@ -14,10 +14,12 @@ import ImagesStep from "./ImagesStep";
 import LoginForm from "../../pages/Login/components/LoginForm";
 import API from "../../api/axios";
 import useAuth from "../../../hooks/useAuth";
+import ConfirmModal from "../modals/ConfirmModal";
 
 export default function ({ initialValues, action }) {
     const { user, setUser } = useAuth();
     const [loginModal, handleLoginModal] = useDisclosure(false);
+    const [confirmModalOpened, handleConfirmModal] = useDisclosure(false);
     const navigate = useNavigate();
     const [imageFiles, setImageFiles] = useState(initialValues?.images ?? []);
     const [deleteImages, setDeleteImages] = useState([]);
@@ -143,11 +145,16 @@ export default function ({ initialValues, action }) {
                 <Title order={3}>
                     {(action === 'edit') ? 'Edit Campground' : 'New Campground'}
                 </Title>
-                {action === 'edit' &&
-                    <Button mb={5} variant="light" color="red" leftIcon={<IconX size={"1rem"}/>} onClick={() => navigate(-1)}>
-                        Cancel
-                    </Button>
-                }
+                <Button mb={5} variant="light" color="red" leftIcon={<IconX size={"1rem"} />} onClick={handleConfirmModal.open}>
+                    Cancel
+                </Button>
+                <ConfirmModal
+                    opened={confirmModalOpened}
+                    close={handleConfirmModal.close}
+                    confirmProps={{ text: "Exit", onClick: () => (action === 'edit') ? navigate(-1) : navigate('/campgrounds') }}
+                >
+                    <Text mx={"md"}>Are you sure you want to exit? The changes you made so far will be lost.</Text>
+                </ConfirmModal>
             </Group>
             <form onSubmit={form.onSubmit(handleSubmit)}>
                 <Stepper size="md" active={active} onStepClick={handleSetStep}>
