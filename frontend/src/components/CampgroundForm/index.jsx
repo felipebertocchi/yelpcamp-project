@@ -1,4 +1,4 @@
-import { Alert, Button, Group, Modal, Paper, Stepper, Text, Title } from "@mantine/core";
+import { Alert, Button, Group, Stepper, Text, Title } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { IconAlertCircle, IconX } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
@@ -11,15 +11,15 @@ import InfoStep from "./InfoStep";
 import ContactStep from "./ContactStep";
 import ServicesStep from "./ServicesStep";
 import ImagesStep from "./ImagesStep";
-import LoginForm from "../LoginForm";
 import API from "../../api/axios";
 import useAuth from "../../../hooks/useAuth";
 import ConfirmModal from "../modals/ConfirmModal";
+import LoginModal from "../modals/LoginModal";
 
 export default function ({ initialValues, action }) {
     const { user, setUser } = useAuth();
-    const [loginModal, handleLoginModal] = useDisclosure(false);
-    const [confirmModalOpened, handleConfirmModal] = useDisclosure(false);
+    const [loginModalOpened, loginModal] = useDisclosure(false);
+    const [confirmModalOpened, confirmModal] = useDisclosure(false);
     const navigate = useNavigate();
     const [imageFiles, setImageFiles] = useState(initialValues?.images ?? []);
     const [deleteImages, setDeleteImages] = useState([]);
@@ -46,8 +46,8 @@ export default function ({ initialValues, action }) {
     }, [])
 
     useEffect(() => {
-        if (loginModal && user) {
-            handleLoginModal.close();
+        if (loginModalOpened && user) {
+            loginModal.close();
         }
     }, [user])
 
@@ -117,7 +117,7 @@ export default function ({ initialValues, action }) {
                     console.error(error);
                     if (error.response.data?.sessionExpired) {
                         setUser(null);
-                        handleLoginModal.open();
+                        loginModal.open();
                     }
                 })
                 .finally(() => setUploading(false));
@@ -131,7 +131,7 @@ export default function ({ initialValues, action }) {
                     console.error(error);
                     if (error.response.data?.sessionExpired) {
                         setUser(null);
-                        handleLoginModal.open();
+                        loginModal.open();
                     }
                 })
                 .finally(() => setUploading(false));
@@ -145,12 +145,12 @@ export default function ({ initialValues, action }) {
                 <Title order={3}>
                     {(action === 'edit') ? 'Edit Campground' : 'New Campground'}
                 </Title>
-                <Button mb={5} variant="light" color="red" leftIcon={<IconX size={"1rem"} />} onClick={handleConfirmModal.open}>
+                <Button mb={5} variant="light" color="red" leftIcon={<IconX size={"1rem"} />} onClick={confirmModal.open}>
                     Cancel
                 </Button>
                 <ConfirmModal
                     opened={confirmModalOpened}
-                    close={handleConfirmModal.close}
+                    close={confirmModal.close}
                     confirmProps={{ text: "Exit", onClick: () => (action === 'edit') ? navigate(-1) : navigate('/campgrounds') }}
                 >
                     <Text mx={"md"}>Are you sure you want to exit? The changes you made so far will be lost.</Text>
@@ -191,14 +191,11 @@ export default function ({ initialValues, action }) {
                     )}
                 </Group>
             </form>
-            <Modal opened={loginModal} onClose={handleLoginModal.close} title="Action requires login" centered>
-                <Paper p={14} radius="md" miw={400}>
-                    <Alert icon={<IconAlertCircle />} color="yellow">
-                        Your session has expired! Log in to continue
-                    </Alert>
-                    <LoginForm preventRedirect />
-                </Paper>
-            </Modal>
+            <LoginModal opened={loginModalOpened} close={loginModal.close} preventRedirect>
+                <Alert mb={15} icon={<IconAlertCircle size="1.2rem" />} color="yellow">
+                    You need to log in to submit a review
+                </Alert>
+            </LoginModal>
         </>
     )
 }
