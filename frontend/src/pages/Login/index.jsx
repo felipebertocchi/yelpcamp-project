@@ -1,5 +1,5 @@
 import { Container, Group, Paper } from "@mantine/core";
-import LoginForm from "./components/LoginForm";
+import LoginForm from "../../components/LoginForm";
 
 export function Component() {
     return (

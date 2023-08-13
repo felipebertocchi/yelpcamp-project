@@ -1,7 +1,7 @@
 import { Alert, Button, Group, Modal, Paper, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconAlertCircle } from "@tabler/icons-react";
-import LoginForm from "../../../Login/components/LoginForm";
+import LoginForm from "../../../../components/LoginForm";
 import ReviewForm from "./ReviewForm";
 import useAuth from "../../../../../hooks/useAuth";
 

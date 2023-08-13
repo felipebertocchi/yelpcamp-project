@@ -11,7 +11,7 @@ import InfoStep from "./InfoStep";
 import ContactStep from "./ContactStep";
 import ServicesStep from "./ServicesStep";
 import ImagesStep from "./ImagesStep";
-import LoginForm from "../../pages/Login/components/LoginForm";
+import LoginForm from "../LoginForm";
 import API from "../../api/axios";
 import useAuth from "../../../hooks/useAuth";
 import ConfirmModal from "../modals/ConfirmModal";
