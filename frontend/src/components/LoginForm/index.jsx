@@ -45,7 +45,7 @@ export default function ({ preventRedirect, closeModal }) {
             })
             .catch(error => {
                 console.error(error);
-                handleFormErrors(error.response.data.error);
+                handleFormErrors(error.response.data?.info?.message);
             })
             .finally(() => setLoading(false));
     };
