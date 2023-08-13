@@ -139,7 +139,16 @@ export default function ({ initialValues, action }) {
 
     return (
         <>
-            <Title order={3} my={15}>{(action === 'edit') ? 'Edit Campground' : 'New Campground'}</Title>
+            <Group position="apart" mb={20}>
+                <Title order={3}>
+                    {(action === 'edit') ? 'Edit Campground' : 'New Campground'}
+                </Title>
+                {action === 'edit' &&
+                    <Button mb={5} variant="light" color="red" leftIcon={<IconX size={"1rem"}/>} onClick={() => navigate(-1)}>
+                        Cancel
+                    </Button>
+                }
+            </Group>
             <form onSubmit={form.onSubmit(handleSubmit)}>
                 <Stepper size="md" active={active} onStepClick={handleSetStep}>
                     <Stepper.Step label="Information">
@@ -162,7 +171,7 @@ export default function ({ initialValues, action }) {
                 </Stepper>
                 <Group position="center" mt="xl">
                     <Button variant="default" onClick={prevStep} disabled={active === 0}>
-                        Back
+                        Previous step
                     </Button>
                     {active === lastStep ? (
                         <Button key="submitBtn" type="submit" color="teal" loading={uploading}>
