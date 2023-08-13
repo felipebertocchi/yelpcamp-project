@@ -1,11 +1,11 @@
 import { Button, Group, Header, Stack, Text, Transition, UnstyledButton, createStyles, rem } from "@mantine/core";
 import { IconStarFilled } from "@tabler/icons-react";
 
-const useStyles = createStyles(() => ({
+const useStyles = createStyles((theme) => ({
     navBtn: {
         borderBottom: "0.2rem solid transparent",
         '&:hover': {
-            borderBottom: "0.2rem solid black"
+            borderBottom: `0.2rem solid ${theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.colors.dark[5]}`
         },
     }
 }));
