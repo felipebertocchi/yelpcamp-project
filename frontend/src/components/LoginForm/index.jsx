@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { AuthService } from "../../services/auth.service";
 import useAuth from "../../../hooks/useAuth";
 
-export default function ({ preventRedirect, closeModal }) {
+export default function ({ preventRedirect, onSuccess }) {
     const { user, setUser } = useAuth();
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -40,7 +40,7 @@ export default function ({ preventRedirect, closeModal }) {
         await AuthService.handleLogin(userInput)
             .then(response => {
                 setUser(response.user);
-                if (closeModal) closeModal();
+                if (onSuccess) onSuccess();
                 if (!preventRedirect) return navigate("/campgrounds");
             })
             .catch(error => {
@@ -60,7 +60,7 @@ export default function ({ preventRedirect, closeModal }) {
 
     return (
         <>
-            <Title order={3} my={15}>Login</Title>
+            <Title order={3} mb={15}>Login</Title>
             <form onSubmit={form.onSubmit(handleSubmit)}>
                 <TextInput
                     required
