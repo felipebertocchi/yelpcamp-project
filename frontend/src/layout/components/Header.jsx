@@ -14,9 +14,10 @@ import Logo from './Logo';
 import PageLink from './PageLink';
 import { Link, useNavigate } from 'react-router-dom';
 import UserMenu from './UserMenu';
-import API from '../../api/axios';
 import useAuth from '../../../hooks/useAuth';
 import { AuthService } from '../../services/auth.service';
+import LoginModal from '../../components/modals/LoginModal';
+import PageButton from './PageButton';
 
 const HEADER_HEIGHT = rem(70);
 
@@ -65,6 +66,7 @@ const useStyles = createStyles((theme) => ({
 
 export default function () {
     const [opened, { toggle, close }] = useDisclosure(false);
+    const [loginModalOpened, loginModal] = useDisclosure(false);
     const { classes } = useStyles();
     const { user, setUser } = useAuth();
     const navigate = useNavigate();
@@ -80,7 +82,7 @@ export default function () {
         } else {
             return (
                 <>
-                    <PageLink page={"login"} onClick={close} />
+                    <PageButton label={"Login"} onClick={loginModal.open} active={loginModalOpened} />
                     <PageLink page={"register"} onClick={close} />
                 </>
             )
@@ -127,6 +129,7 @@ export default function () {
                     )}
                 </Transition>
             </Container>
+            <LoginModal opened={loginModalOpened} close={loginModal.close} />
         </Header>
     );
 }
