@@ -13,6 +13,7 @@ export default function ({ opened, close, onSuccess, preventRedirect, children }
                         if (onSuccess) onSuccess();
                         close();
                     }}
+                    onClose={close}
                 />
             </Paper>
         </CustomModal>

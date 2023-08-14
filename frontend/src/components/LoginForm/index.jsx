@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { AuthService } from "../../services/auth.service";
 import useAuth from "../../../hooks/useAuth";
 
-export default function ({ preventRedirect, onSuccess }) {
+export default function ({ preventRedirect, onSuccess, onClose }) {
     const { user, setUser } = useAuth();
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -88,7 +88,7 @@ export default function ({ preventRedirect, onSuccess }) {
             <Divider my="lg" />
             <Center>
                 <Text mr={5}>Don't have an account?</Text>
-                <Link style={{ textDecorationLine: "none" }} to="/register">
+                <Link style={{ textDecorationLine: "none" }} to="/register" onClick={onClose}>
                     <Text c="blue">
                         Sign up
                     </Text>
