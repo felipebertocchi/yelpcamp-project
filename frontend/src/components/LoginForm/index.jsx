@@ -5,7 +5,7 @@ import { IconLock, IconMail } from "@tabler/icons-react";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from 'zod';
 import { AuthService } from "../../services/auth.service";
-import useAuth from "../../../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
 export default function ({ preventRedirect, onSuccess, onClose }) {
     const { user, setUser } = useAuth();

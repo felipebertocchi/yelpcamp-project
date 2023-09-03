@@ -4,7 +4,7 @@ import { IconLock, IconMail, IconUser } from "@tabler/icons-react";
 import { Link, useNavigate } from "react-router-dom";
 import { userSchema } from "../../../schemas/userSchema";
 import { useEffect } from "react";
-import useAuth from "../../../../hooks/useAuth";
+import useAuth from "../../../hooks/useAuth";
 import { AuthService } from "../../../services/auth.service";
 
 export default function () {

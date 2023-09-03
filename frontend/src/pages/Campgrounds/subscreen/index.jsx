@@ -13,7 +13,7 @@ import ReserveWidget from "./components/ReserveWidget";
 import NavMenu from "./components/NavMenu";
 import { useInView } from 'react-intersection-observer';
 import API from "../../../api/axios";
-import useAuth from "../../../../hooks/useAuth";
+import useAuth from "../../../hooks/useAuth";
 import EditDeleteButtons from "./components/EditDeleteButtons";
 
 export function Component() {

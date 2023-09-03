@@ -12,7 +12,7 @@ import ContactStep from "./ContactStep";
 import ServicesStep from "./ServicesStep";
 import ImagesStep from "./ImagesStep";
 import API from "../../api/axios";
-import useAuth from "../../../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 import ConfirmModal from "../modals/ConfirmModal";
 import LoginModal from "../modals/LoginModal";
 

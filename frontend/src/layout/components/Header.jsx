@@ -14,7 +14,7 @@ import Logo from './Logo';
 import PageLink from './PageLink';
 import { Link, useNavigate } from 'react-router-dom';
 import UserMenu from './UserMenu';
-import useAuth from '../../../hooks/useAuth';
+import useAuth from '../../hooks/useAuth';
 import { AuthService } from '../../services/auth.service';
 import LoginModal from '../../components/modals/LoginModal';
 import PageButton from './PageButton';
