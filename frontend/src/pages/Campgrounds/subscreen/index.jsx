@@ -16,6 +16,7 @@ import API from "../../../api/axios";
 import EditDeleteButtons from "./components/EditDeleteButtons";
 import useCamp from "../../../hooks/useCamp";
 import useAuth from "../../../hooks/useAuth";
+import AboutSection from "./components/AboutSection";
 
 export function Component() {
     const { campgroundId } = useParams();
@@ -72,9 +73,7 @@ export function Component() {
                     </Box>
                     <Grid>
                         <Grid.Col span={7}>
-                            <Title my={30}>{campground.title}</Title>
-                            <Title order={3} my={15}>About this campground</Title>
-                            <Text fz='lg'>{campground.description}</Text>
+                            <AboutSection />
                             <Box ref={targetAmenitiesRef}>
                                 <AmenitiesSection />
                             </Box>
