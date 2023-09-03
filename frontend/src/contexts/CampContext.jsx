@@ -5,8 +5,6 @@ export const CampContext = createContext();
 export const CampProvider = ({ children }) => {
     const [campground, setCampground] = useState(null);
 
-    console.log(campground);
-
     return (
         <CampContext.Provider value={{ campground, setCampground }}>
             {children}
