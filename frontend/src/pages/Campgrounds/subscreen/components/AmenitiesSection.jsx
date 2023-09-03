@@ -1,7 +1,11 @@
 import { Divider, Group, Paper, Text, Title } from "@mantine/core";
 import amenityIcons from "../../../../utils/amenityIcons";
+import useCamp from "../../../../hooks/useCamp";
 
-export default function ({ amenities }) {
+export default function () {
+    const { campground } = useCamp();
+    const { amenities } = campground;
+
     return (
         <>
             {amenities &&

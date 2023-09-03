@@ -1,9 +1,11 @@
 import { Button, Container, Divider, Grid, Group, HoverCard, Paper, Text, rem } from "@mantine/core";
 import { IconInfoCircle, IconStarFilled } from '@tabler/icons-react';
 import dayjs from 'dayjs';
+import useCamp from "../../../../hooks/useCamp";
 
-export default function ({ campground, actions, bookingDates }) {
+export default function ({ actions, bookingDates }) {
     const { scrollToCalendar, scrollToReviews } = actions;
+    const { campground } = useCamp();
     const [checkIn, checkOut] = bookingDates;
     const checkInDate = dayjs(checkIn);
     const checkOutDate = dayjs(checkOut);

@@ -13,13 +13,14 @@ import ReserveWidget from "./components/ReserveWidget";
 import NavMenu from "./components/NavMenu";
 import { useInView } from 'react-intersection-observer';
 import API from "../../../api/axios";
-import useAuth from "../../../hooks/useAuth";
 import EditDeleteButtons from "./components/EditDeleteButtons";
+import useCamp from "../../../hooks/useCamp";
+import useAuth from "../../../hooks/useAuth";
 
 export function Component() {
     const { campgroundId } = useParams();
     const { user } = useAuth();
-    const [campground, setCampground] = useState(null);
+    const { campground, setCampground } = useCamp();
     const [bookingDates, setBookingDates] = useState([null, null]);
     const [initialView, setInitialView] = useState(false);
     const { ref: reserveWidgetRef, inView: reserveWidgetInView } = useInView();
@@ -37,6 +38,7 @@ export function Component() {
                 .catch(err => console.error(err))
         }
         getData();
+        return () => setCampground(null);
     }, []);
 
     useEffect(() => {
@@ -53,7 +55,6 @@ export function Component() {
                             <NavMenu
                                 style={transitionStyles}
                                 showReserveDetails={!reserveWidgetInView}
-                                campground={campground}
                                 bookingDates={bookingDates}
                                 actions={{ scrollToPhotos, scrollToAmenities, scrollToActivities, scrollToCalendar, scrollToReviews }}
                             />
@@ -67,7 +68,7 @@ export function Component() {
                         <Title order={4} mt={4}>{campground.location}</Title>
                     </Group>
                     <Box ref={(el) => { targetPhotosRef; photosRef(el); }}>
-                        <ImageGallery images={campground.images} />
+                        <ImageGallery />
                     </Box>
                     <Grid>
                         <Grid.Col span={7}>
@@ -75,23 +76,23 @@ export function Component() {
                             <Title order={3} my={15}>About this campground</Title>
                             <Text fz='lg'>{campground.description}</Text>
                             <Box ref={targetAmenitiesRef}>
-                                <AmenitiesSection amenities={campground.amenities} />
+                                <AmenitiesSection />
                             </Box>
                             <Box ref={targetActivitiesRef}>
-                                <ActivitiesSection activities={campground.activities} />
+                                <ActivitiesSection />
                             </Box>
                             <Box ref={targetCalendarRef}>
-                                <BookingCalendar campgroundName={campground.title} bookingDates={bookingDates} setBookingDates={setBookingDates} />
+                                <BookingCalendar bookingDates={bookingDates} setBookingDates={setBookingDates} />
                             </Box>
                         </Grid.Col>
                         <Grid.Col span={5} ref={reserveWidgetRef}>
-                            <ReserveWidget campground={campground} bookingDates={bookingDates} actions={{ scrollToCalendar, scrollToReviews }} />
+                            <ReserveWidget bookingDates={bookingDates} actions={{ scrollToCalendar, scrollToReviews }} />
                         </Grid.Col>
                     </Grid>
                     <Box ref={targetReviewsRef}>
-                        <ReviewsSection campgroundId={campgroundId} reviews={campground.reviews} avgRating={campground.averageRating} />
+                        <ReviewsSection />
                     </Box>
-                    <MapSection geometry={campground.geometry} />
+                    <MapSection />
                 </>
             }
         </Container>

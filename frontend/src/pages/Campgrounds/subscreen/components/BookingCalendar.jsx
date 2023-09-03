@@ -2,8 +2,11 @@ import { Box, Button, Divider, Group, Text, Title } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { useState } from 'react';
 import dayjs from 'dayjs';
+import useCamp from '../../../../hooks/useCamp';
 
-export default function ({ campgroundName, bookingDates, setBookingDates }) {
+export default function ({ bookingDates, setBookingDates }) {
+    const { campground } = useCamp();
+    const { title } = campground;
     const [checkIn, checkOut] = bookingDates;
     const [calendarTitle, setCalendarTitle] = useState("Select check-in date");
     const [calendarSubtitle, setCalendarSubtitle] = useState("Add your travel dates for exact pricing");
@@ -16,7 +19,7 @@ export default function ({ campgroundName, bookingDates, setBookingDates }) {
         if (checkin !== null && checkout !== null) {
             setCalendarSubtitle(checkinDate.format('MMM DD, YYYY') + " - " + checkoutDate.format('MMM DD, YYYY'));
             const nights = checkoutDate.diff(checkinDate, 'day');
-            setCalendarTitle(`${nights} ${nights > 1 ? "nights" : "night"} at ${campgroundName}`);
+            setCalendarTitle(`${nights} ${nights > 1 ? "nights" : "night"} at ${title}`);
         } else if (checkin !== null && checkout === null) {
             setCalendarTitle("Select check-out date");
             setCalendarSubtitle("Add your travel dates for exact pricing");

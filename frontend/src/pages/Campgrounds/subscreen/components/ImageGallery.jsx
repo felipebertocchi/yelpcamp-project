@@ -3,10 +3,13 @@ import { Box, Grid, SimpleGrid } from "@mantine/core";
 import ImageBox from "./ImageBox";
 import FullScreenCarousel from "./FullScreenCarousel";
 import { useDisclosure } from "@mantine/hooks";
+import useCamp from "../../../../hooks/useCamp";
 
-export default function ({ images }) {
+export default function () {
     const [openedFS, handleOpenFS] = useDisclosure(false);
     const [initialSlide, setInitialSlide] = useState(0);
+    const { campground } = useCamp();
+    const { images } = campground;
 
     const handleCarousel = (index) => {
         setInitialSlide(index);

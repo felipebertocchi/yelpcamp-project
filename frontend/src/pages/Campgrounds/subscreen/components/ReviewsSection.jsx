@@ -1,8 +1,11 @@
 import { Avatar, Divider, Group, Paper, Rating, SimpleGrid, Spoiler, Text, Title } from "@mantine/core";
 import { IconStarFilled } from "@tabler/icons-react";
 import ReviewModal from "./ReviewModal";
+import useCamp from "../../../../hooks/useCamp";
 
-export default function ({ campgroundId, reviews, avgRating }) {
+export default function () {
+    const { campground } = useCamp();
+    const { reviews, averageRating } = campground;
 
     return (
         <>
@@ -11,7 +14,7 @@ export default function ({ campgroundId, reviews, avgRating }) {
                 <Group spacing={5}>
                     {reviews && reviews.length > 0 &&
                         <Group spacing={5}>
-                            <IconStarFilled size={20} /> {`${avgRating} · ${reviews.length} `}
+                            <IconStarFilled size={20} /> {`${averageRating} · ${reviews.length} `}
                         </Group>
                     }
                     Reviews
@@ -40,7 +43,7 @@ export default function ({ campgroundId, reviews, avgRating }) {
             ) : (
                 <Text color="dimmed">There are no reviews yet. Be the first one to write one!</Text>
             )}
-            <ReviewModal campgroundId={campgroundId} />
+            <ReviewModal />
         </>
     )
 }

@@ -1,5 +1,6 @@
 import { Button, Group, Header, Stack, Text, Transition, UnstyledButton, createStyles, rem } from "@mantine/core";
 import { IconStarFilled } from "@tabler/icons-react";
+import useCamp from "../../../../hooks/useCamp";
 
 const useStyles = createStyles((theme) => ({
     navBtn: {
@@ -10,10 +11,11 @@ const useStyles = createStyles((theme) => ({
     }
 }));
 
-export default function ({ campground, bookingDates, showReserveDetails, actions, style }) {
+export default function ({ bookingDates, showReserveDetails, actions, style }) {
     const { scrollToPhotos, scrollToAmenities, scrollToActivities, scrollToCalendar, scrollToReviews } = actions;
     const [checkIn, checkOut] = bookingDates;
     const { classes } = useStyles();
+    const { campground } = useCamp();
 
     const links = {
         "Photos": scrollToPhotos,
