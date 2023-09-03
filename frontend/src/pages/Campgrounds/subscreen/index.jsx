@@ -17,6 +17,7 @@ import EditDeleteButtons from "./components/EditDeleteButtons";
 import useCamp from "../../../hooks/useCamp";
 import useAuth from "../../../hooks/useAuth";
 import AboutSection from "./components/AboutSection";
+import HostSection from "./components/HostSection";
 
 export function Component() {
     const { campgroundId } = useParams();
@@ -92,6 +93,7 @@ export function Component() {
                         <ReviewsSection />
                     </Box>
                     <MapSection />
+                    <HostSection />
                 </>
             }
         </Container>
