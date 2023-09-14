@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IconMapPin } from '@tabler/icons-react';
-import { Box, Container, Grid, Group, Text, Title, Transition } from "@mantine/core";
+import { Box, Container, Flex, Grid, Group, Loader, Title, Transition } from "@mantine/core";
 import ImageGallery from "./components/ImageGallery";
 import ActivitiesSection from "./components/ActivitiesSection";
 import AmenitiesSection from "./components/AmenitiesSection";
@@ -23,8 +23,8 @@ export function Component() {
     const { campgroundId } = useParams();
     const { user } = useAuth();
     const { campground, setCampground } = useCamp();
-    const [bookingDates, setBookingDates] = useState([null, null]);
     const [initialView, setInitialView] = useState(false);
+    const [loading, setLoading] = useState(true);
     const { ref: reserveWidgetRef, inView: reserveWidgetInView } = useInView();
     const { ref: photosRef, inView: photosInView } = useInView();
     const { scrollIntoView: scrollToPhotos, targetRef: targetPhotosRef } = useScrollIntoView({ offset: 140 });
@@ -38,9 +38,9 @@ export function Component() {
             await API.get(`/campgrounds/${campgroundId}`)
                 .then(response => setCampground(response.data))
                 .catch(err => console.error(err))
+                .finally(() => setLoading(false))
         }
         getData();
-        return () => setCampground(null);
     }, []);
 
     useEffect(() => {
@@ -50,14 +50,17 @@ export function Component() {
 
     return (
         <Container size={"xl"} p={30}>
-            {campground &&
+            {loading ?
+                <Flex justify={"center"} mt={"20%"}>
+                    <Loader size={"xl"} />
+                </Flex>
+            :
                 <>
                     <Transition transition="slide-down" mounted={initialView && !photosInView} duration={150} exitDuration={150}>
                         {(transitionStyles) => (
                             <NavMenu
                                 style={transitionStyles}
                                 showReserveDetails={!reserveWidgetInView}
-                                bookingDates={bookingDates}
                                 actions={{ scrollToPhotos, scrollToAmenities, scrollToActivities, scrollToCalendar, scrollToReviews }}
                             />
                         )}
@@ -82,11 +85,11 @@ export function Component() {
                                 <ActivitiesSection />
                             </Box>
                             <Box ref={targetCalendarRef}>
-                                <BookingCalendar bookingDates={bookingDates} setBookingDates={setBookingDates} />
+                                <BookingCalendar />
                             </Box>
                         </Grid.Col>
                         <Grid.Col span={5} ref={reserveWidgetRef}>
-                            <ReserveWidget bookingDates={bookingDates} actions={{ scrollToCalendar, scrollToReviews }} />
+                            <ReserveWidget actions={{ scrollToCalendar, scrollToReviews }} />
                         </Grid.Col>
                     </Grid>
                     <Box ref={targetReviewsRef}>

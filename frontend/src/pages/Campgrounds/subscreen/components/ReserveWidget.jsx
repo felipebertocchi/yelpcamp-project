@@ -1,21 +1,25 @@
 import { Button, Container, Divider, Grid, Group, HoverCard, Paper, Text, rem } from "@mantine/core";
 import { IconInfoCircle, IconStarFilled } from '@tabler/icons-react';
-import dayjs from 'dayjs';
 import useCamp from "../../../../hooks/useCamp";
+import { useNavigate } from "react-router-dom";
 
-export default function ({ actions, bookingDates }) {
+export default function ({ actions }) {
     const { scrollToCalendar, scrollToReviews } = actions;
-    const { campground } = useCamp();
-    const [checkIn, checkOut] = bookingDates;
-    const checkInDate = dayjs(checkIn);
-    const checkOutDate = dayjs(checkOut);
-    const nights = checkOutDate.diff(checkInDate, 'day');
+    const navigate = useNavigate();
+    const { campground, checkoutDetails } = useCamp();
+    const {
+        checkInDate,
+        checkOutDate,
+        nights,
+        priceOfStay,
+        weeklyStayDiscount,
+        serviceFee,
+        totalBeforeTaxes
+    } = checkoutDetails;
 
-    const serviceFee = 25
-    const priceOfStay = (campground.price * nights).toFixed(0)
-    let weeklyStayDiscount = 0
-    if (nights >= 7) weeklyStayDiscount = (priceOfStay * 0.04).toFixed(0)
-    const totalBeforeTaxes = priceOfStay - weeklyStayDiscount + serviceFee
+    const handleCheckout = () => {
+        navigate('/checkout');
+    }
 
     return (
         <Paper shadow="lg" p="xl" m={"30px 60px"} radius="lg" withBorder pos="sticky" top={rem(100)}>
@@ -43,7 +47,7 @@ export default function ({ actions, bookingDates }) {
                     <Grid.Col span={6}>
                         <Paper p="xs" withBorder sx={{ cursor: "pointer" }} onClick={scrollToCalendar}>
                             <Text tt="uppercase" fz="xs" fw={700}>Check-in</Text>
-                            {checkIn ? (
+                            {checkInDate ? (
                                 <Text fz="sm">{checkInDate.format("DD/MM/YYYY")}</Text>
                             ) : (
                                 <Text c="dimmed" fz="sm">Add date</Text>
@@ -53,7 +57,7 @@ export default function ({ actions, bookingDates }) {
                     <Grid.Col span={6}>
                         <Paper p="xs" withBorder sx={{ cursor: "pointer" }} onClick={scrollToCalendar}>
                             <Text tt="uppercase" fz="xs" fw={700}>Check-out</Text>
-                            {checkOut ? (
+                            {checkOutDate ? (
                                 <Text fz="sm">{checkOutDate.format("DD/MM/YYYY")}</Text>
                             ) : (
                                 <Text c="dimmed" fz="sm">Add date</Text>
@@ -63,8 +67,8 @@ export default function ({ actions, bookingDates }) {
                 </Grid>
             </Container>
             <Group>
-                {(checkIn && checkOut) ? (
-                    <Button radius={"md"} color="teal" fullWidth size="lg">
+                {nights ? (
+                    <Button radius={"md"} color="teal" fullWidth size="lg" onClick={handleCheckout} >
                         Reserve
                     </Button>
                 ) : (
@@ -73,7 +77,7 @@ export default function ({ actions, bookingDates }) {
                     </Button>
                 )}
             </Group>
-            {(checkIn && checkOut) &&
+            {nights &&
                 <>
                     <Group position="apart" fz="lg" my={20}>
                         <Text>{`$${campground.price.toFixed(0)} x ${nights} ${nights > 1 ? "nights" : "night"}`}</Text>

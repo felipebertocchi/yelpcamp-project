@@ -11,11 +11,11 @@ const useStyles = createStyles((theme) => ({
     }
 }));
 
-export default function ({ bookingDates, showReserveDetails, actions, style }) {
+export default function ({ showReserveDetails, actions, style }) {
     const { scrollToPhotos, scrollToAmenities, scrollToActivities, scrollToCalendar, scrollToReviews } = actions;
-    const [checkIn, checkOut] = bookingDates;
+    const { campground, checkoutDetails } = useCamp();
+    const { nights } = checkoutDetails;
     const { classes } = useStyles();
-    const { campground } = useCamp();
 
     const links = {
         "Photos": scrollToPhotos,
@@ -62,7 +62,7 @@ export default function ({ bookingDates, showReserveDetails, actions, style }) {
                                 </Group>
                             </Stack>
                             <Group>
-                                {(checkIn && checkOut) ? (
+                                {nights ? (
                                     <Button radius={"md"} color="teal" fullWidth size="lg">
                                         Reserve
                                     </Button>

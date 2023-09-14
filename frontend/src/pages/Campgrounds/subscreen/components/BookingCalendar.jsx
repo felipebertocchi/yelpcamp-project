@@ -4,8 +4,8 @@ import { useState } from 'react';
 import dayjs from 'dayjs';
 import useCamp from '../../../../hooks/useCamp';
 
-export default function ({ bookingDates, setBookingDates }) {
-    const { campground } = useCamp();
+export default function () {
+    const { campground, bookingDates, setBookingDates } = useCamp();
     const { title } = campground;
     const [checkIn, checkOut] = bookingDates;
     const [calendarTitle, setCalendarTitle] = useState("Select check-in date");
