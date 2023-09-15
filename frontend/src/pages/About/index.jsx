@@ -1,26 +1,8 @@
-import { Button, Container, Flex, Image, Paper, Text, Title } from "@mantine/core";
-import { IconBrandGithub } from "@tabler/icons-react";
+import { Container, Flex, Image, Paper, Text, Title } from "@mantine/core";
+import GithubBtn from "../../components/buttons/GithubBtn";
 
 export function Component() {
-    function GithubButton(props) {
-        return (
-            <Button
-                {...props}
-                component="a"
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://github.com/felipebertocchi/yelpcamp-project"
-                leftIcon={<IconBrandGithub size="1rem" />}
-                sx={(theme) => ({
-                    backgroundColor: theme.colors.dark[theme.colorScheme === 'dark' ? 9 : 6],
-                    color: '#fff',
-                    '&:hover': {
-                        backgroundColor: theme.colors.dark[theme.colorScheme === 'dark' ? 9 : 6],
-                    },
-                })}
-            />
-        );
-    }
+    
     return (
         <Container size={"lg"} mt={60}>
             <Paper withBorder p={24} radius={10}>
@@ -37,7 +19,7 @@ export function Component() {
                     </Text>
                     <Image width={275} m={24} src={'src/assets/undraw_developer.svg'} />
                 </Flex>
-                <GithubButton>Link to Repository</GithubButton>
+                <GithubBtn>Link to Repository</GithubBtn>
             </Paper>
         </Container>
     )
