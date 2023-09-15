@@ -11,7 +11,7 @@ export default function ({ opened, onClose, onSuccess, preventRedirect, children
                     preventRedirect={preventRedirect}
                     onSuccess={() => {
                         if (onSuccess) onSuccess();
-                        close();
+                        onClose();
                     }}
                     onClose={onClose}
                 />
