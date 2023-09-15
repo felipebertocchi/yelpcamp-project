@@ -60,7 +60,7 @@ export default function () {
                     classNames={classes}
                     className={classes.root}
                 >
-                    <Accordion.Item value="cash" onClick={() => handleSelectPaymentMethod("cash")} pb="xs">
+                    <Accordion.Item value="cash" onClick={() => handleSelectPaymentMethod("cash")}>
                         <Accordion.Control>
                             <Group>
                                 <Radio checked={paymentMethod === "cash"} readOnly />
@@ -71,7 +71,7 @@ export default function () {
                             <Text ml="xs">Pay the total (${totalBeforeTaxes}) when you arrive at the campground</Text>
                         </Accordion.Panel>
                     </Accordion.Item>
-                    <Accordion.Item value="credit-card" onClick={() => handleSelectPaymentMethod("credit-card")} pb="xs">
+                    <Accordion.Item value="credit-card" onClick={() => handleSelectPaymentMethod("credit-card")}>
                         <Accordion.Control>
                             <Group>
                                 <Radio checked={paymentMethod === "credit-card"} readOnly />
