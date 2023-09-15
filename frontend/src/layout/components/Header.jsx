@@ -129,7 +129,7 @@ export default function () {
                     )}
                 </Transition>
             </Container>
-            <LoginModal opened={loginModalOpened} close={loginModal.close} />
+            <LoginModal opened={loginModalOpened} onClose={loginModal.close} />
         </Header>
     );
 }

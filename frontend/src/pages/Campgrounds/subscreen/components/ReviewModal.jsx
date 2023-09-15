@@ -13,12 +13,12 @@ export default function () {
 
     return (
         <>
-            <CustomModal opened={reviewModalOpened} close={reviewModal.close} title={<Text fw={700}>Submit a review</Text>}>
+            <CustomModal opened={reviewModalOpened} onClose={reviewModal.close} title={<Text fw={700}>Submit a review</Text>}>
                 <Paper p={14} radius="md" miw={400}>
                     <ReviewForm cancel={reviewModal.close} />
                 </Paper>
             </CustomModal>
-            <LoginModal opened={loginModalOpened} close={loginModal.close} onSuccess={reviewModal.open} preventRedirect>
+            <LoginModal opened={loginModalOpened} onClose={loginModal.close} onSuccess={reviewModal.open} preventRedirect>
                 <Alert mb={15} icon={<IconAlertCircle size="1.2rem" />}>
                     You need to log in to submit a review
                 </Alert>

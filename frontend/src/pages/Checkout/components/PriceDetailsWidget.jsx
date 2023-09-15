@@ -81,7 +81,7 @@ export default function () {
                     Reserve
                 </Button>
             </Paper>
-            <CustomModal opened={demoModalOpened} close={demoModal.close} size="lg" title={<Text fw={700}>The end</Text>}>
+            <CustomModal opened={demoModalOpened} onClose={demoModal.close} size="lg" title={<Text fw={700}>The end</Text>}>
                 <Paper px="xl">
                     <Text>
                         Thank you for exploring the campground rental demo!

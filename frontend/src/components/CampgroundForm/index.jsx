@@ -150,7 +150,7 @@ export default function ({ initialValues, action }) {
                 </Button>
                 <ConfirmModal
                     opened={confirmModalOpened}
-                    close={confirmModal.close}
+                    onClose={confirmModal.close}
                     confirmProps={{ text: "Exit", onClick: () => (action === 'edit') ? navigate(-1) : navigate('/campgrounds') }}
                 >
                     <Text mx={"md"}>Are you sure you want to exit? The changes you made so far will be lost.</Text>
@@ -191,7 +191,7 @@ export default function ({ initialValues, action }) {
                     )}
                 </Group>
             </form>
-            <LoginModal opened={loginModalOpened} close={loginModal.close} preventRedirect>
+            <LoginModal opened={loginModalOpened} onClose={loginModal.close} preventRedirect>
                 <Alert mb={15} icon={<IconAlertCircle size="1.2rem" />} color="yellow">
                     You need to log in to submit a review
                 </Alert>

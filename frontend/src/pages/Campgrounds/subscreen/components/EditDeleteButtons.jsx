@@ -61,7 +61,7 @@ export default function () {
             </Menu>
             <ConfirmModal
                 opened={deleteModalOpened}
-                close={deleteModal.close}
+                onClose={deleteModal.close}
                 confirmProps={{
                     text: "Delete",
                     color: "red",

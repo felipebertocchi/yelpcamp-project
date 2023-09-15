@@ -37,12 +37,12 @@ export default function () {
                     </Group>
                 </Group>
                 <Button variant="default" onClick={user ? contactModal.open : loginModal.open}>Contact</Button>
-                <CustomModal opened={contactModalOpened} close={contactModal.close}>
+                <CustomModal opened={contactModalOpened} onClose={contactModal.close}>
                     <Alert icon={<IconAlertCircle size="1.2rem" />}>
                         To keep every user's data private, we decided not to display their contact information (This is a public web project after all 😇)
                     </Alert>
                 </CustomModal>
-                <LoginModal opened={loginModalOpened} close={loginModal.close} preventRedirect>
+                <LoginModal opened={loginModalOpened} onClose={loginModal.close} preventRedirect>
                     <Alert mb={15} icon={<IconAlertCircle size="1.2rem" />}>
                         You need to log in to submit a review
                     </Alert>

@@ -27,7 +27,7 @@ export default function ({ nights, scrollToCalendar }) {
                     </Button>
                 )}
             </Group>
-            <LoginModal opened={loginModalOpened} close={loginModal.close} onSuccess={handleCheckout} preventRedirect>
+            <LoginModal opened={loginModalOpened} onClose={loginModal.close} onSuccess={handleCheckout} preventRedirect>
                 <Alert mb={15} icon={<IconAlertCircle size="1.2rem" />}>
                     You need to log in to book a stay
                 </Alert>
