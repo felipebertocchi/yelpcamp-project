@@ -1,13 +1,13 @@
 import { Modal, useMantineTheme } from '@mantine/core';
 
-export default function ({ opened, close, children, title }) {
+export default function (props) {
+    const { close, children, title } = props;
     const theme = useMantineTheme();
 
     return (
         <Modal
-            opened={opened}
+            {...props}
             onClose={close}
-            title={title}
             yOffset={"10%"}
             withCloseButton={Boolean(title)}
             overlayProps={{
