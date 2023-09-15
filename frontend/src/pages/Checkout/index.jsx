@@ -27,6 +27,10 @@ const useStyles = createStyles((theme) => ({
             zIndex: 1,
         },
     },
+
+    option: {
+        cursor: "pointer",
+    }
 }));
 
 export function Component() {
@@ -42,14 +46,19 @@ export function Component() {
         serviceFee,
         totalBeforeTaxes
     } = checkoutDetails;
-    const [payment, setPayment] = useState("cash-full");
+    const [paymentMethod, setPaymentMethod] = useState("cash")
+    const [paymentPlan, setPaymentPlan] = useState("full");
 
     useEffect(() => {
         if (!campground) navigate('/');
     }, []);
 
-    const handleSelectPayment = (option) => {
-        setPayment(option);
+    const handleSelectPaymentMethod = (option) => {
+        setPaymentMethod(option);
+    }
+
+    const handleSelectPaymentPlan = (option) => {
+        setPaymentPlan(option);
     }
 
     return (
@@ -68,7 +77,7 @@ export function Component() {
                         </Text>
                         <Divider my="lg" />
                         <Title order={3} mb="lg">
-                            Choose how to pay
+                            Choose payment method
                         </Title>
                         <Paper withBorder>
                             <Accordion
@@ -78,38 +87,50 @@ export function Component() {
                                 classNames={classes}
                                 className={classes.root}
                             >
-                                <Accordion.Item value="cash">
+                                <Accordion.Item value="cash" onClick={() => handleSelectPaymentMethod("cash")} pb="xs">
                                     <Accordion.Control>
-                                        <Title order={4}>Cash</Title>
+                                        <Group>
+                                            <Radio checked={paymentMethod === "cash"} readOnly/>
+                                            <Title order={4}>Cash</Title>
+                                        </Group>
                                     </Accordion.Control>
                                     <Accordion.Panel>
-                                        <Paper p="lg" withBorder mb="xs" onClick={() => handleSelectPayment("cash-full")}>
-                                            <Group>
-                                                <Radio checked={payment === "cash-full"} readOnly/>
-                                                <div>
-                                                    <Title order={4}>Pay in full</Title>
-                                                    <Text>Pay the total (${checkoutDetails.totalBeforeTaxes}) now and you're all set.</Text>
-                                                </div>
-                                            </Group>
-                                        </Paper>
-                                        <Paper p="lg" withBorder onClick={() => handleSelectPayment("cash-part")}>
-                                            <Group>
-                                                <Radio checked={payment === "cash-part"} readOnly/>
-                                                <div>
-                                                    <Title order={4}>Pay part now, part later</Title>
-                                                    <Text>${checkoutDetails.totalBeforeTaxes / 2} due today, ${checkoutDetails.totalBeforeTaxes / 2} on {checkOutDate.add(3, 'days').format("MMM DD YYYY")}. No extra fees.</Text>
-                                                </div>
-                                            </Group>
-                                        </Paper>
+                                        <Text ml="xs">Pay the total (${checkoutDetails.totalBeforeTaxes}) when you arrive at the campground</Text>
                                     </Accordion.Panel>
                                 </Accordion.Item>
-                                <Accordion.Item value="credit-card">
+                                <Accordion.Item value="credit-card" onClick={() => handleSelectPaymentMethod("credit-card")} pb="xs">
                                     <Accordion.Control>
-                                        <Title order={4}>Credit card</Title>
+                                        <Group>
+                                            <Radio checked={paymentMethod === "credit-card"} readOnly/>
+                                            <Title order={4}>Credit card</Title>
+                                        </Group>
                                     </Accordion.Control>
                                     <Accordion.Panel>
                                         <Text ml="xs">Please enter your credit card information below</Text>
                                         <CreditCardForm />
+                                        <Title order={4} my="sm" ml="xs">
+                                            Choose payment plan
+                                        </Title>
+                                        <Stack spacing={5} mx="sm">
+                                            <Paper withBorder className={classes.option} p="lg" mb="xs" onClick={() => handleSelectPaymentPlan("full")}>
+                                                <Group>
+                                                    <Radio checked={paymentPlan === "full"} readOnly/>
+                                                    <div>
+                                                        <Title order={4}>Pay in full</Title>
+                                                        <Text>Pay the total (${checkoutDetails.totalBeforeTaxes}) now and you're all set.</Text>
+                                                    </div>
+                                                </Group>
+                                            </Paper>
+                                            <Paper withBorder className={classes.option} p="lg" onClick={() => handleSelectPaymentPlan("part")}>
+                                                <Group>
+                                                    <Radio checked={paymentPlan === "part"} readOnly/>
+                                                    <div>
+                                                        <Title order={4}>Pay part now, part later</Title>
+                                                        <Text>${checkoutDetails.totalBeforeTaxes / 2} due today, ${checkoutDetails.totalBeforeTaxes / 2} on {checkOutDate.add(3, 'days').format("MMM DD YYYY")}. No extra fees.</Text>
+                                                    </div>
+                                                </Group>
+                                            </Paper>
+                                        </Stack>
                                     </Accordion.Panel>
                                 </Accordion.Item>
                             </Accordion>
