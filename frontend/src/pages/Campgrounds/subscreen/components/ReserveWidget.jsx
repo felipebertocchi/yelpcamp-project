@@ -1,11 +1,10 @@
-import { Button, Container, Divider, Grid, Group, HoverCard, Paper, Text, rem } from "@mantine/core";
+import { Container, Divider, Grid, Group, HoverCard, Paper, Text, rem } from "@mantine/core";
 import { IconInfoCircle, IconStarFilled } from '@tabler/icons-react';
 import useCamp from "../../../../hooks/useCamp";
-import { useNavigate } from "react-router-dom";
+import ReserveBtn from "./ReserveBtn";
 
 export default function ({ actions }) {
     const { scrollToCalendar, scrollToReviews } = actions;
-    const navigate = useNavigate();
     const { campground, checkoutDetails } = useCamp();
     const {
         checkInDate,
@@ -16,10 +15,6 @@ export default function ({ actions }) {
         serviceFee,
         totalBeforeTaxes
     } = checkoutDetails;
-
-    const handleCheckout = () => {
-        navigate('/checkout');
-    }
 
     return (
         <Paper shadow="lg" p="xl" m={"30px 60px"} radius="lg" withBorder pos="sticky" top={rem(100)}>
@@ -66,17 +61,7 @@ export default function ({ actions }) {
                     </Grid.Col>
                 </Grid>
             </Container>
-            <Group>
-                {nights ? (
-                    <Button radius={"md"} color="teal" fullWidth size="lg" onClick={handleCheckout} >
-                        Reserve
-                    </Button>
-                ) : (
-                    <Button radius={"md"} fullWidth size="lg" onClick={scrollToCalendar}>
-                        Check availability
-                    </Button>
-                )}
-            </Group>
+            <ReserveBtn nights={nights} scrollToCalendar={scrollToCalendar} />
             {nights &&
                 <>
                     <Group position="apart" fz="lg" my={20}>

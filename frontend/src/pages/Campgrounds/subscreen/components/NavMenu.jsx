@@ -1,6 +1,7 @@
-import { Button, Group, Header, Stack, Text, Transition, UnstyledButton, createStyles, rem } from "@mantine/core";
+import { Group, Header, Stack, Text, Transition, UnstyledButton, createStyles, rem } from "@mantine/core";
 import { IconStarFilled } from "@tabler/icons-react";
 import useCamp from "../../../../hooks/useCamp";
+import ReserveBtn from "./ReserveBtn";
 
 const useStyles = createStyles((theme) => ({
     navBtn: {
@@ -61,17 +62,7 @@ export default function ({ showReserveDetails, actions, style }) {
                                     }
                                 </Group>
                             </Stack>
-                            <Group>
-                                {nights ? (
-                                    <Button radius={"md"} color="teal" fullWidth size="lg">
-                                        Reserve
-                                    </Button>
-                                ) : (
-                                    <Button radius={"md"} fullWidth size="lg" onClick={scrollToCalendar}>
-                                        Check availability
-                                    </Button>
-                                )}
-                            </Group>
+                            <ReserveBtn nights={nights} scrollToCalendar={scrollToCalendar} />
                         </Group>
                     )}
                 </Transition>
