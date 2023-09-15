@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "embla-carousel-react": "^8.0.0-rc12",
-    "react-credit-cards": "^0.8.3"
-  }
-}
