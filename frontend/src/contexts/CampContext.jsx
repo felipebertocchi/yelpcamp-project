@@ -31,7 +31,7 @@ export const CampProvider = ({ children }) => {
                 totalBeforeTaxes,
             })
         }
-    }, [bookingDates]);
+    }, [bookingDates, campground]);
 
     return (
         <CampContext.Provider value={{ campground, setCampground, checkoutDetails, bookingDates, setBookingDates }}>
